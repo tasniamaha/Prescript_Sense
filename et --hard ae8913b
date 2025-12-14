@@ -1,0 +1,12 @@
+[33m9f3773a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackend_initial[m[33m, [m[1;31morigin/backend_initial[m[33m)[m Uploaded files for image upload from storage
+[33md741a25[m Created branch for backend
+[33mae8913b[m[33m ([m[1;31morigin/HEAD[m[33m, [m[1;31morigin/Frontend_initial[m[33m, [m[1;32mFrontend_initial[m[33m)[m Emptied the readme file
+[33ma6ec703[m Added full flutter project with some changes in pubspec and some files,to work
+[33ma6ab0f3[m Delete pubspec.yaml
+[33md6c4d68[m Delete lib directory
+[33mcd1de48[m Delete lib/prescription_upload_page.dart
+[33m287c808[m Delete lib/prescription_result_page.dart
+[33m185c620[m Delete lib/main.dart
+[33m3e8e94f[m Delete lib/landing_page.dart
+[33meaca3f3[m Create SIgnup_Login.dart
+[33mf1b98ea[m Add initial frontend Dart files
