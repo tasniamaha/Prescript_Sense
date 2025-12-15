@@ -118,7 +118,7 @@ class DashboardPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PrescriptionUploadPage(),
+                      builder: (context) =>  PrescriptionUploadPage(),
                     ),
                   );
                 },
