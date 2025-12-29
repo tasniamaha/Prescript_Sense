@@ -2,7 +2,7 @@ name: prescript_sense
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -34,6 +34,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  image_picker: ^1.2.1
+  shared_preferences: ^2.5.4
+  google_mlkit_text_recognition: ^0.15.0
+  sqflite: ^2.4.2
+  speech_to_text: ^7.3.0
 
 dev_dependencies:
   flutter_test:
@@ -51,11 +56,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assests/image/Prescript_Sense.png
+    # - assests/database/medicines.db
+    # If you plan to add more images in the future, you can also include the whole folder:
 
   # To add assets to your application, add an assets section, like this:
   # assets:
