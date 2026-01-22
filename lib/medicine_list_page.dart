@@ -193,6 +193,7 @@ class _MedicineListPageState extends State<MedicineListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // --- Generic Name & Indications (Always Visible) ---
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -220,8 +221,6 @@ class _MedicineListPageState extends State<MedicineListPage> {
                           color: _primaryColor,
                         ),
                       ),
-
-                      // Indications Section
                       if (medicine['indications'] != null) ...[
                         const SizedBox(height: 4),
                         Container(
@@ -243,16 +242,6 @@ class _MedicineListPageState extends State<MedicineListPage> {
                           ),
                         ),
                       ],
-
-                      const SizedBox(height: 4),
-                      Text(
-                        "Common Brands: ${medicine['brand_names_bd']}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.grey[700],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -261,67 +250,118 @@ class _MedicineListPageState extends State<MedicineListPage> {
 
             const Divider(height: 30, thickness: 1),
 
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            // --- Expandable Sections (Tap to View) ---
+            ExpansionTile(
+              title: const Text(
+                "Common Brands",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              initiallyExpanded: false,
               children: [
-                Expanded(
-                  child: _buildInfoBlock(
-                    icon: Icons.person,
-                    title: "Adult Dosage",
-                    content: medicine['dosage_adult'],
-                    color: Colors.blueGrey,
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildInfoBlock(
-                    icon: Icons.child_care,
-                    title: "Child Dosage",
-                    content: medicine['dosage_child'],
-                    color: Colors.teal,
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Text(medicine['brand_names_bd'] ?? "N/A"),
                 ),
               ],
             ),
 
-            const SizedBox(height: 20),
-
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: _warningColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _warningColor.withOpacity(0.3)),
+            ExpansionTile(
+              title: const Text(
+                "Adult Dosage",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.warning_amber_rounded, color: _warningColor),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      medicine['cautions'],
-                      style: TextStyle(
-                        color: Colors.brown[900],
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                      ),
-                    ),
+              initiallyExpanded: false,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
                   ),
-                ],
-              ),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(medicine['dosage_adult'] ?? "N/A"),
+                ),
+              ],
             ),
 
-            const SizedBox(height: 12),
-
-            Row(
+            ExpansionTile(
+              title: const Text(
+                "Child Dosage",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              initiallyExpanded: false,
               children: [
-                const Icon(Icons.sick_outlined, size: 18, color: Colors.grey),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    "Side Effects: ${medicine['side_effects']}",
-                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
                   ),
+                  decoration: BoxDecoration(
+                    color: Colors.teal.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(medicine['dosage_child'] ?? "N/A"),
+                ),
+              ],
+            ),
+
+            ExpansionTile(
+              title: const Text(
+                "Cautions",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              initiallyExpanded: false,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _warningColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(medicine['cautions'] ?? "N/A"),
+                ),
+              ],
+            ),
+
+            ExpansionTile(
+              title: const Text(
+                "Side Effects",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              initiallyExpanded: false,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(medicine['side_effects'] ?? "N/A"),
                 ),
               ],
             ),
