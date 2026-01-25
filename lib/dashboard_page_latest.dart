@@ -1,22 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'prescription_upload_page.dart';
 import 'auth_service.dart';
 import 'landing_page.dart';
-import 'reminder_list_page.dart'; // Add this import
+import 'reminder_list_page.dart';
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
 
-// Calming & Welcoming Palette – matching the Landing Page's futuristic yet soothing vibe
 const Color _deepIndigo = Color(0xFF1E3A8A);
 const Color _softBlue = Color(0xFF3B82F6);
 const Color _emerald = Color(0xFF10B981);
-const Color _lightBackground = Color(0xFFF8FAFF); 
+const Color _lightBackground = Color(0xFFF8FAFF);
 const Color _cardBackground = Colors.white;
-const Color _textPrimary = Color(0xFF1E293B); 
-const Color _textSecondary = Color(0xFF64748B); 
+const Color _textPrimary = Color(0xFF1E293B);
+const Color _textSecondary = Color(0xFF64748B);
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  final TextEditingController _problemController = TextEditingController(
+      text: "I am 26 years old with severe headache");
+  String _geminiResponse = "";
+  bool _isLoading = false;
+
+  Future<void> sendToGemini(String userText) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final uri = Uri.parse("https://your-gemini-api-endpoint.com/ask");
+      final response = await http.post(
+        uri,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"query": userText}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          _geminiResponse = data['answer'] ?? "No response from our database";
+        });
+      } else {
+        setState(() {
+          _geminiResponse =
+              "Failed to get response: ${response.statusCode}";
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _geminiResponse = "Error sending checking: $e";
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +108,12 @@ class DashboardPage extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            // Welcome Card
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(28),
@@ -123,9 +170,9 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
-            // Comment box section
+            // Gemini Comment Box
             Text(
               'Tell us your problem, we will try to help',
               style: TextStyle(
@@ -150,17 +197,42 @@ class DashboardPage extends StatelessWidget {
                 ],
               ),
               child: TextField(
+                controller: _problemController,
                 maxLines: 4,
-                controller: TextEditingController(text: "I am 26 years old with severe headache"),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: "Describe your problem here...",
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      sendToGemini(_problemController.text);
+                    },
+              icon: const Icon(Icons.send),
+              label: Text(_isLoading ? "Sending..." : "Send to the database"),
+            ),
+            const SizedBox(height: 12),
+            if (_geminiResponse.isNotEmpty)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  _geminiResponse,
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                ),
+              ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
+            // Upload Prescription
             SizedBox(
               width: double.infinity,
               height: 72,
@@ -191,8 +263,9 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
+            // Recent Prescriptions Title
             Text(
               'Your Recent Prescriptions',
               style: TextStyle(
@@ -204,91 +277,92 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            Expanded(
-              child: ListView(
-                children: [
-                  _PrescriptionHistoryCard(
-                    date: '12 Sep 2025',
-                    medicines: 'Paracetamol, Amoxicillin',
-                    status: 'Reviewed',
-                  ),
-                  _PrescriptionHistoryCard(
-                    date: '05 Sep 2025',
-                    medicines: 'Napa Extra, Seclo 20',
-                    status: 'Reviewed',
-                  ),
-                  _PrescriptionHistoryCard(
-                    date: '28 Aug 2025',
-                    medicines: 'Azithromycin, Oral Saline',
-                    status: 'Reviewed',
-                  ),
-                  const SizedBox(height: 30),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ReminderListPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.alarm, size: 28),
-                      label: const Text(
-                        'Medicine Reminders',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: _softBlue,
-                        side: const BorderSide(color: _softBlue, width: 2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                    ),
-                  ),
+            // Prescription Cards
+            _PrescriptionHistoryCard(
+              date: '12 Sep 2025',
+              medicines: 'Paracetamol, Amoxicillin',
+              status: 'Reviewed',
+            ),
+            _PrescriptionHistoryCard(
+              date: '05 Sep 2025',
+              medicines: 'Napa Extra, Seclo 20',
+              status: 'Reviewed',
+            ),
+            _PrescriptionHistoryCard(
+              date: '28 Aug 2025',
+              medicines: 'Azithromycin, Oral Saline',
+              status: 'Reviewed',
+            ),
+            const SizedBox(height: 30),
 
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MedicineListPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.library_books_rounded, size: 28),
-                      label: const Text(
-                        'Medicine Database',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF1E3A8A),
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
+            // Reminders Button
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReminderListPage(),
                     ),
+                  );
+                },
+                icon: const Icon(Icons.alarm, size: 28),
+                label: const Text(
+                  'Medicine Reminders',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: _softBlue,
+                  side: const BorderSide(color: _softBlue, width: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
               ),
             ),
+
+            const SizedBox(height: 24),
+
+            // Medicine Database Button
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MedicineListPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.library_books_rounded, size: 28),
+                label: const Text(
+                  'Medicine Database',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF1E3A8A),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 32),
           ],
         ),
       ),
@@ -365,7 +439,8 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: _emerald.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
