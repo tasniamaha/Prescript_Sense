@@ -63,21 +63,60 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> sendToGemini(String userText) async {
-    if (userText.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your problem')),
-      );
-      return;
-    }
+  if (userText.trim().isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please enter your problem')),
+    );
+    return;
+  }
 
-    setState(() {
-      _isLoading = true;
-      _hasError = false;
-    });
+  setState(() {
+    _isLoading = true;
+    _hasError = false;
+  });
 
-    try {
-      final prompt =
-          '''
+  try {
+    // STEP 1: Check local database first
+    final localResults = await DatabaseHelper().searchMedicines(userText);
+
+    if (localResults.isNotEmpty) {
+      // Found in database - format the response
+      String response = "Found in our database:\n\n";
+      
+      for (var medicine in localResults.take(2)) {  // Show top 2 results
+        response += "${medicine['generic_name']}\n";
+        
+        if (medicine['brand_names_bd'] != null) {
+          response += "Brands: ${medicine['brand_names_bd']}\n";
+        }
+        
+        if (medicine['indications'] != null) {
+          response += "Used for: ${medicine['indications']}\n";
+        }
+        
+        if (medicine['dosage_adult'] != null) {
+          response += "Dosage: ${medicine['dosage_adult']}\n";
+        }
+        
+        if (medicine['cautions'] != null) {
+          response += "Cautions: ${medicine['cautions']}\n";
+        }
+        
+        response += "\n";
+      }
+      
+      if (localResults.length > 2) {
+        response += "...and ${localResults.length - 2} more results. Check Medicine Database for details.\n\n";
+      }
+      
+      response += "Note: Always consult a healthcare professional before taking any medication.";
+      
+      setState(() {
+        _geminiResponse = response;
+      });
+    } else {
+      // STEP 2: Not found in database - use Gemini AI
+      final prompt = '''
 You are a medical assistant. A user has described their health problem.
 Provide helpful, general medical information and suggestions.
 Always remind them to consult a healthcare professional for serious issues.
@@ -91,18 +130,19 @@ User's problem: $userText
       setState(() {
         _geminiResponse = response.text ?? "No response received";
       });
-    } catch (e) {
-      setState(() {
-        _geminiResponse = "Error: Unable to get response. Please try again.";
-        _hasError = true;
-      });
-      print('Gemini API Error: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
+  } catch (e) {
+    setState(() {
+      _geminiResponse = "Error: Unable to get response. Please try again.";
+      _hasError = true;
+    });
+    print('Gemini API Error: $e');
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
