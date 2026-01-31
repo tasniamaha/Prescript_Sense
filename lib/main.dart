@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 //import 'package:prescript_sense/backend_test_page.dart';
+=======
+import 'auth_service.dart';
+>>>>>>> sakline_branch
 import 'landing_page.dart';
+import 'dashboard_page.dart';
 
-void main() {
-  runApp(const PrescriptSenseApp());
+void main() async {
+  // Ensure Flutter binding is initialized before calling async code
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Check auth status before app starts
+  final authService = AuthService();
+  final bool isLoggedIn = await authService.isLoggedIn();
+
+  runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
 }
 
 class PrescriptSenseApp extends StatelessWidget {
-  const PrescriptSenseApp({super.key});
+  final bool initialRoute;
+
+  const PrescriptSenseApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PrescriptSense',
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(
+        // ... (Keep your existing Light Theme) ...
         primaryColor: const Color(0xFF4A90E2),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF4A90E2),
@@ -30,29 +44,15 @@ class PrescriptSenseApp extends StatelessWidget {
           backgroundColor: Color(0xFF4A90E2),
           foregroundColor: Colors.white,
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-          ),
-        ),
         useMaterial3: true,
       ),
-
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0A1A2F),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0A1A2F),
-          foregroundColor: Colors.white,
-        ),
-        useMaterial3: true,
-      ),
-
+      // ... (Keep your existing Dark Theme) ...
+      
       themeMode: ThemeMode.light,
-      home: const LandingPage(),
+      
+      // ROUTING LOGIC:
+      // If logged in, go to Dashboard. If not, go to Landing Page.
+      home: initialRoute ? const DashboardPage() : const LandingPage(),
     );
   }
 }
