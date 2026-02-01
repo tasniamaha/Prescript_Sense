@@ -5,6 +5,7 @@ import 'landing_page.dart';
 import 'reminder_list_page.dart'; // Add this import
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
+import 'medicine_calendar_page.dart';
 
 // Calming & Welcoming Palette – matching the Landing Page's futuristic yet soothing vibe
 // Deep indigo to soft blue with emerald accents, light backgrounds for calm readability
@@ -230,6 +231,41 @@ class DashboardPage extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: _softBlue,
                         side: const BorderSide(color: _softBlue, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // NEW: Medicine Calendar Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MedicineCalendarPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.calendar_month_rounded, size: 28),
+                      label: const Text(
+                        'Medicine Calendar',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF10B981), // Emerald green
+                        foregroundColor: Colors.white,
+                        elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
