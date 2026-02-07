@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'prescription_upload_page.dart';
-<<<<<<< HEAD
-=======
 import 'auth_service.dart';
 import 'landing_page.dart';
 import 'reminder_list_page.dart'; // Add this import
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
->>>>>>> sakline_branch
 
 // Calming & Welcoming Palette – matching the Landing Page's futuristic yet soothing vibe
 // Deep indigo to soft blue with emerald accents, light backgrounds for calm readability
@@ -39,12 +36,6 @@ class DashboardPage extends StatelessWidget {
           ),
         ),
         actions: [
-<<<<<<< HEAD
-          IconButton(
-            icon: Icon(Icons.person_rounded, color: _softBlue, size: 30),
-            onPressed: () {
-              // Navigate to Profile later
-=======
           // IconButton(
           //   icon: Icon(Icons.person_rounded, color: _softBlue, size: 30),
           //   onPressed: () {
@@ -77,7 +68,6 @@ class DashboardPage extends StatelessWidget {
                   (route) => false,
                 );
               }
->>>>>>> sakline_branch
             },
           ),
           const SizedBox(width: 8),
@@ -98,14 +88,7 @@ class DashboardPage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-<<<<<<< HEAD
-                  colors: [
-                    _cardBackground,
-                    _cardBackground.withOpacity(0.95),
-                  ],
-=======
                   colors: [_cardBackground, _cardBackground.withOpacity(0.95)],
->>>>>>> sakline_branch
                 ),
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
@@ -165,11 +148,7 @@ class DashboardPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-<<<<<<< HEAD
-                      builder: (context) =>  PrescriptionUploadPage(),
-=======
                       builder: (context) => const PrescriptionUploadPage(),
->>>>>>> sakline_branch
                     ),
                   );
                 },
@@ -224,9 +203,6 @@ class DashboardPage extends StatelessWidget {
                     medicines: 'Azithromycin, Oral Saline',
                     status: 'Reviewed',
                   ),
-<<<<<<< HEAD
-                  const SizedBox(height: 40), // Extra bottom padding
-=======
                   const SizedBox(height: 30), // Extra bottom padding
                   // ... (Previous code for Upload Button) ...
                   // const SizedBox(height: 20), // Spacing between buttons
@@ -299,7 +275,6 @@ class DashboardPage extends StatelessWidget {
                   // Section title
                   // Text('Your Recent Prescriptions'),
                   // ...
->>>>>>> sakline_branch
                 ],
               ),
             ),
@@ -337,14 +312,7 @@ class _PrescriptionHistoryCard extends StatelessWidget {
             offset: const Offset(0, 6),
           ),
         ],
-<<<<<<< HEAD
-        border: Border.all(
-          color: _emerald.withOpacity(0.2),
-          width: 1,
-        ),
-=======
         border: Border.all(color: _emerald.withOpacity(0.2), width: 1),
->>>>>>> sakline_branch
       ),
       child: Row(
         children: [
@@ -360,15 +328,7 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                 ],
               ),
             ),
-<<<<<<< HEAD
-            child: Icon(
-              Icons.medication_rounded,
-              color: _emerald,
-              size: 28,
-            ),
-=======
             child: Icon(Icons.medication_rounded, color: _emerald, size: 28),
->>>>>>> sakline_branch
           ),
 
           const SizedBox(width: 18),
@@ -388,18 +348,6 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-<<<<<<< HEAD
-                    Text(
-                      'Last reviewed: $date',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: _textSecondary,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-=======
                     // FIX: Wrapped Text in Flexible so it shrinks instead of overflowing
                     Flexible(
                       child: Text(
@@ -419,7 +367,6 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                         horizontal: 10,
                         vertical: 4,
                       ),
->>>>>>> sakline_branch
                       decoration: BoxDecoration(
                         color: _emerald.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
@@ -448,8 +395,4 @@ class _PrescriptionHistoryCard extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> sakline_branch

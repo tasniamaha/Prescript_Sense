@@ -1,33 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-
-class ReminderSetupPage extends StatelessWidget {
-  const ReminderSetupPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Set Up Reminder'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.alarm_add, size: 100, color: Colors.blue),
-            const SizedBox(height: 20),
-            const Text(
-              'Set up your medicine reminders here',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Placeholder for adding reminder
-              },
-              child: const Text('Add Reminder'),
-=======
 import 'reminder_service.dart';
 
 class ReminderSetupPage extends StatefulWidget {
@@ -163,15 +134,10 @@ class _ReminderSetupPageState extends State<ReminderSetupPage> {
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Set Reminder', style: TextStyle(fontSize: 18)),
               ),
->>>>>>> sakline_branch
             ),
           ],
         ),
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> sakline_branch

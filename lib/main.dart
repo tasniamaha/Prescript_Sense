@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-//import 'package:prescript_sense/backend_test_page.dart';
-=======
 import 'auth_service.dart';
->>>>>>> sakline_branch
 import 'landing_page.dart';
 import 'dashboard_page.dart';
 
