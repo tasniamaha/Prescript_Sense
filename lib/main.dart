@@ -4,15 +4,18 @@ import 'auth_service.dart';
 import 'landing_page.dart';
 import 'dashboard_page.dart';
 import 'notification_service.dart';
-
+import 'package:flutter/foundation.dart';
 
 
 void main() async {
   // Ensure Flutter binding is initialized before calling async code
   WidgetsFlutterBinding.ensureInitialized();
-  
+  // Check auth status before app starts
+  final authService = AuthService();
+  final bool isLoggedIn = await authService.isLoggedIn();
   // Initialize the medicine notification service
-  final notificationService = NotificationService();
+  if(!kIsWeb) {
+    final notificationService = NotificationService();
   await notificationService.initialize();
   
   // Request notification permissions
@@ -21,9 +24,7 @@ void main() async {
   // Cleanup expired medicines and reschedule active ones
   await notificationService.checkExpiredMedicines();
   
-  // Check auth status before app starts
-  final authService = AuthService();
-  final bool isLoggedIn = await authService.isLoggedIn();
+  
   await AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
     null,
@@ -42,12 +43,14 @@ void main() async {
     // Debug mode helps you see logs if something fails
     debug: true,
   );
-
   // 2. Request Permission immediately (for simplicity)
   bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
   if (!isAllowed) {
     await AwesomeNotifications().requestPermissionToSendNotifications();
   }
+  }
+
+  
 
   runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
 }

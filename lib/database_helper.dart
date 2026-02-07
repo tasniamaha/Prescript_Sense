@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:sqflite_common/sqflite.dart';
 /// Data model for scheduled medicines with calendar support
 class ScheduledMedicine {
   final int? id;
@@ -155,6 +157,19 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+  if (kIsWeb) {
+    // WEB IMPLEMENTATION
+    var factory = databaseFactoryFfiWeb;
+    return await factory.openDatabase(
+      'prescript_sense_medicines.db',
+      options: OpenDatabaseOptions(
+        version: _databaseVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+      ),
+    );
+  } else {
+    // MOBILE IMPLEMENTATION (Android/iOS)
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, "prescript_sense_medicines.db");
 
@@ -165,6 +180,7 @@ class DatabaseHelper {
       onUpgrade: _onUpgrade,
     );
   }
+}
 
   Future<void> _onCreate(Database db, int version) async {
     // 1. Create original medicines table (for medicine database/lookup)
