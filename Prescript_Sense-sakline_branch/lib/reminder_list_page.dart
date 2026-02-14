@@ -95,18 +95,54 @@ class _ReminderListPageState extends State<ReminderListPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        elevation: 2,
                         child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           leading: CircleAvatar(
                             backgroundColor: Colors.blue.withOpacity(0.1),
-                            child: const Icon(Icons.alarm, color: Colors.blue),
+                            radius: 28,
+                            child: const Icon(Icons.alarm, color: Colors.blue, size: 28),
                           ),
                           title: Text(
                             reminder.medicineName,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
                           ),
-                          subtitle: Text(reminder.formattedTime),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 4),
+                              Text(
+                                "${reminder.formattedTime} • ${reminder.formattedDays}",
+                                style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontSize: 14,
+                                ),
+                              ),
+                              if (reminder.formattedPeriod != 'No date limit') ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  reminder.formattedPeriod,
+                                  style: TextStyle(
+                                    color: Colors.blueGrey[700],
+                                    fontSize: 13,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline, color: Colors.red),
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                              size: 26,
+                            ),
                             onPressed: () => _deleteReminder(reminder.id),
                           ),
                         ),
