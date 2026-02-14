@@ -1,0 +1,3254 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: android/**, ios/**, macos/**, linux/**, web/**, windows/**, test/**, **/*.g.dart, **/*.freezed.dart, assets/**, pubspec.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+.metadata
+.repomixignore
+analysis_options.yaml
+assests/image/Prescript_Sense.png
+lib/audio_reader_page.dart
+lib/auth_service.dart
+lib/dashboard_page.dart
+lib/handwritten_to_text_page.dart
+lib/landing_page.dart
+lib/main.dart
+lib/ocr_service.dart
+lib/prescription_result_page.dart
+lib/prescription_scanner_page.dart
+lib/prescription_upload_page.dart
+lib/profile_page.dart
+lib/reminder_list_page.dart
+lib/reminder_service.dart
+lib/reminder_setup_page.dart
+lib/settings_page.dart
+lib/SIgnup_Login.dart
+pubspec.yaml
+README.md
+repomix.config.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+</file>
+
+<file path=".metadata">
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess capabilities and perform upgrades etc.
+#
+# This file should be version controlled and should not be manually edited.
+
+version:
+  revision: "66dd93f9a27ffe2a9bfc8297506ce066ff51265f"
+  channel: "stable"
+
+project_type: app
+
+# Tracks metadata for the flutter migrate command
+migration:
+  platforms:
+    - platform: root
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: android
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: ios
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: linux
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: macos
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: web
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+    - platform: windows
+      create_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+      base_revision: 66dd93f9a27ffe2a9bfc8297506ce066ff51265f
+
+  # User provided section
+
+  # List of Local paths (relative to this file) that should be
+  # ignored by the migrate tool.
+  #
+  # Files that are not part of the templates will be ignored by default.
+  unmanaged_files:
+    - 'lib/main.dart'
+    - 'ios/Runner.xcodeproj/project.pbxproj'
+</file>
+
+<file path=".repomixignore">
+# Add patterns to ignore here, one per line
+# Example:
+# *.log
+# tmp/
+</file>
+
+<file path="analysis_options.yaml">
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at https://dart.dev/lints.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+</file>
+
+<file path="lib/audio_reader_page.dart">
+import 'package:flutter/material.dart';
+
+class AudioReaderPage extends StatelessWidget {
+  const AudioReaderPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Prescription Audio Reader'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Upload Section
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surface
+                      .withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.upload_file,
+                      size: 80,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Upload Prescription',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Upload or select a prescription image to convert it into audio.',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Camera upload placeholder
+                      },
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text('Take Photo'),
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Gallery upload placeholder
+                      },
+                      icon: const Icon(Icons.photo_library),
+                      label: const Text('Choose from Gallery'),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Audio Section
+              Icon(
+                Icons.volume_up,
+                size: 120,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+
+              const SizedBox(height: 24),
+
+              const Text(
+                'Listen to your prescription',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              const Text(
+                'Convert your scanned prescription or extracted text into clear audio output using AI-powered text-to-speech.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 32),
+
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Play audio placeholder
+                },
+                icon: const Icon(Icons.play_arrow),
+                label: const Text('Play Prescription Audio'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Stop audio placeholder
+                },
+                icon: const Icon(Icons.stop),
+                label: const Text('Stop Audio'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  backgroundColor: Colors.redAccent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/auth_service.dart">
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AuthService {
+  // Keys
+  static const String _isLoggedInKey = 'isLoggedIn';
+  static const String _storedEmailKey = 'storedEmail';
+  static const String _storedPasswordKey = 'storedPassword';
+  static const String _storedNameKey = 'storedName';
+  static const String _storedImageKey = 'storedImage'; // NEW: For Profile Picture
+
+  // --- Getters ---
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isLoggedInKey) ?? false;
+  }
+
+  Future<String?> getUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedEmailKey);
+  }
+
+  Future<String?> getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedNameKey);
+  }
+
+  // NEW: Get Profile Picture Path
+  Future<String?> getProfileImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedImageKey);
+  }
+
+  // --- Actions ---
+
+  // LOGIN
+  Future<bool> login(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final prefs = await SharedPreferences.getInstance();
+    
+    final String? registeredEmail = prefs.getString(_storedEmailKey);
+    final String? registeredPassword = prefs.getString(_storedPasswordKey);
+
+    if (registeredEmail == null || registeredPassword == null) return false;
+
+    if (email.trim() == registeredEmail && password.trim() == registeredPassword) {
+      await prefs.setBool(_isLoggedInKey, true);
+      return true;
+    }
+    return false;
+  }
+
+  // SIGNUP
+  Future<bool> signup(String name, String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(_storedNameKey, name.trim());
+    await prefs.setString(_storedEmailKey, email.trim());
+    await prefs.setString(_storedPasswordKey, password.trim());
+    await prefs.setBool(_isLoggedInKey, true);
+    
+    return true;
+  }
+
+  // LOGOUT
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isLoggedInKey, false);
+  }
+
+  // NEW: Update Profile Data
+  Future<void> updateProfile({String? name, String? email, String? imagePath}) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (name != null) await prefs.setString(_storedNameKey, name);
+    if (email != null) await prefs.setString(_storedEmailKey, email);
+    if (imagePath != null) await prefs.setString(_storedImageKey, imagePath);
+  }
+}
+</file>
+
+<file path="lib/dashboard_page.dart">
+import 'package:flutter/material.dart';
+import 'prescription_upload_page.dart';
+import 'auth_service.dart';
+import 'landing_page.dart';
+import 'reminder_list_page.dart'; // Add this import
+import 'profile_page.dart';
+// Calming & Welcoming Palette – matching the Landing Page's futuristic yet soothing vibe
+// Deep indigo to soft blue with emerald accents, light backgrounds for calm readability
+const Color _deepIndigo = Color(0xFF1E3A8A);
+const Color _softBlue = Color(0xFF3B82F6);
+const Color _emerald = Color(0xFF10B981);
+const Color _lightBackground = Color(0xFFF8FAFF); // Very pale blue-ish white
+const Color _cardBackground = Colors.white;
+const Color _textPrimary = Color(0xFF1E293B); // Slate dark
+const Color _textSecondary = Color(0xFF64748B); // Soft gray
+
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _lightBackground,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'PrescriptSense',
+          style: TextStyle(
+            color: _deepIndigo,
+            fontWeight: FontWeight.w800,
+            fontSize: 28,
+            letterSpacing: 1.2,
+          ),
+        ),
+        actions: [
+          // IconButton(
+          //   icon: Icon(Icons.person_rounded, color: _softBlue, size: 30),
+          //   onPressed: () {
+          //     // Navigate to Profile later
+          //   },
+          // ),
+          IconButton(
+            icon: Icon(Icons.person_rounded, color: _softBlue, size: 30),
+            onPressed: () {
+              // Connect navigation here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: _softBlue,
+              size: 30,
+            ), // Changed icon to logout for demo
+            onPressed: () async {
+              await AuthService().logout();
+              if (context.mounted) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LandingPage()),
+                  (route) => false,
+                );
+              }
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+
+            // Warm, personalized welcome card with subtle gradient accent
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [_cardBackground, _cardBackground.withOpacity(0.95)],
+                ),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: _softBlue.withOpacity(0.12),
+                    blurRadius: 25,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+                border: Border.all(
+                  color: _emerald.withOpacity(0.15),
+                  width: 1.5,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Good morning!',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      color: _textPrimary,
+                      height: 1.1,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Saturday, December 13, 2025',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: _textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'We\'re here to make managing your prescriptions simple, safe, and stress-free.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: _textSecondary,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            // Primary action – Upload new prescription
+            SizedBox(
+              width: double.infinity,
+              height: 72,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrescriptionUploadPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add_circle_rounded, size: 32),
+                label: const Text(
+                  'Upload New Prescription',
+                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _softBlue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 8,
+                  shadowColor: _softBlue.withOpacity(0.3),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            // Section title
+            Text(
+              'Your Recent Prescriptions',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: _textPrimary,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Prescription history list
+            Expanded(
+              child: ListView(
+                children: [
+                  _PrescriptionHistoryCard(
+                    date: '12 Sep 2025',
+                    medicines: 'Paracetamol, Amoxicillin',
+                    status: 'Reviewed',
+                  ),
+                  _PrescriptionHistoryCard(
+                    date: '05 Sep 2025',
+                    medicines: 'Napa Extra, Seclo 20',
+                    status: 'Reviewed',
+                  ),
+                  _PrescriptionHistoryCard(
+                    date: '28 Aug 2025',
+                    medicines: 'Azithromycin, Oral Saline',
+                    status: 'Reviewed',
+                  ),
+                  const SizedBox(height: 30), // Extra bottom padding
+                  // ... (Previous code for Upload Button) ...
+                  // const SizedBox(height: 20), // Spacing between buttons
+                  // NEW BUTTON: Navigate to Reminders
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ReminderListPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.alarm, size: 28),
+                      label: const Text(
+                        'Medicine Reminders',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: _softBlue,
+                        side: const BorderSide(color: _softBlue, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 40,
+                  ), // Spacing before the "Recent" list
+                  // Section title
+                  // Text('Your Recent Prescriptions'),
+                  // ...
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Unique calming prescription card with soft emerald accent and glass-like feel
+class _PrescriptionHistoryCard extends StatelessWidget {
+  final String date;
+  final String medicines;
+  final String status;
+
+  const _PrescriptionHistoryCard({
+    required this.date,
+    required this.medicines,
+    required this.status,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _cardBackground,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: _emerald.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
+          ),
+        ],
+        border: Border.all(color: _emerald.withOpacity(0.2), width: 1),
+      ),
+      child: Row(
+        children: [
+          // Soft circular icon with subtle gradient
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  _emerald.withOpacity(0.25),
+                  _softBlue.withOpacity(0.15),
+                ],
+              ),
+            ),
+            child: Icon(Icons.medication_rounded, color: _emerald, size: 28),
+          ),
+
+          const SizedBox(width: 18),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  medicines,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: _textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    // FIX: Wrapped Text in Flexible so it shrinks instead of overflowing
+                    Flexible(
+                      child: Text(
+                        'Last reviewed: $date',
+                        maxLines: 1, // Force single line
+                        overflow: TextOverflow
+                            .ellipsis, // Add "..." if it's still too long
+                        style: TextStyle(fontSize: 14, color: _textSecondary),
+                      ),
+                    ),
+
+                    const SizedBox(width: 12),
+
+                    // Status Badge (stays fixed size)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _emerald.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        status,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: _emerald,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: _textSecondary,
+            size: 18,
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/handwritten_to_text_page.dart">
+import 'package:flutter/material.dart';
+
+class HandwrittenToTextPage extends StatelessWidget {
+  const HandwrittenToTextPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Handwritten to Text (OCR)'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // OCR Icon
+              Icon(
+                Icons.text_snippet_outlined,
+                size: 120,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+
+              const SizedBox(height: 30),
+
+              // Title
+              const Text(
+                'Convert Handwritten Prescription',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Description
+              const Text(
+                'Our AI will read handwritten or printed prescriptions and convert them into clear digital text.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Upload / Scan Button
+              ElevatedButton.icon(
+                onPressed: () {
+                  // TODO: Add OCR logic here
+                  _showDummyResult(context);
+                },
+                icon: const Icon(Icons.document_scanner),
+                label: const Text('Scan Prescription'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 36, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Upload from gallery
+              OutlinedButton.icon(
+                onPressed: () {
+                  // TODO: Gallery OCR
+                },
+                icon: const Icon(Icons.photo_library_outlined),
+                label: const Text('Upload from Gallery'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Dummy OCR Result Dialog (for demo)
+  void _showDummyResult(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Extracted Text'),
+        content: const Text(
+          '• Paracetamol 500mg\n'
+          '• Amoxicillin 500mg\n'
+          '• Take twice daily after food\n'
+          '• Duration: 5 days',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/ocr_service.dart">
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+class OcrService {
+  // 1. Create the recognizer instance (Latin script for English)
+  final _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+  /// Processes an image path and returns the extracted text as a String.
+  Future<String> processImage(String imagePath) async {
+    try {
+      final inputImage = InputImage.fromFilePath(imagePath);
+      final RecognizedText recognizedText = await _textRecognizer.processImage(
+        inputImage,
+      );
+      return recognizedText.text;
+    } catch (e) {
+      return "Error processing image: $e";
+    }
+  }
+
+  /// MUST call this when the app is closing or the service is no longer needed
+  /// to free up native resources.
+  void dispose() {
+    _textRecognizer.close();
+  }
+}
+</file>
+
+<file path="lib/prescription_scanner_page.dart">
+import 'package:flutter/material.dart';
+
+class PrescriptionScannerPage extends StatelessWidget {
+  const PrescriptionScannerPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan Prescription'),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              Theme.of(context).scaffoldBackgroundColor,
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Scanner Frame
+            Container(
+              height: 320,
+              width: 260,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Corner accents
+                  _scannerCorner(Alignment.topLeft),
+                  _scannerCorner(Alignment.topRight),
+                  _scannerCorner(Alignment.bottomLeft),
+                  _scannerCorner(Alignment.bottomRight),
+
+                  // Scan icon
+                  const Center(
+                    child: Icon(
+                      Icons.document_scanner_outlined,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Instruction
+            const Text(
+              'Align prescription inside the frame',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Make sure the text is clear and well-lit for accurate AI analysis.',
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 40),
+
+            // Scan button
+            ElevatedButton.icon(
+              onPressed: () {
+                // Camera scan placeholder
+              },
+              icon: const Icon(Icons.camera_alt),
+              label: const Text('Scan Now'),
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Gallery button
+            TextButton.icon(
+              onPressed: () {
+                // Gallery placeholder
+              },
+              icon: const Icon(Icons.photo_library),
+              label: const Text('Upload from Gallery'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _scannerCorner(Alignment alignment) {
+    return Align(
+      alignment: alignment,
+      child: Container(
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          border: Border(
+            top: alignment == Alignment.topLeft ||
+                    alignment == Alignment.topRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            bottom: alignment == Alignment.bottomLeft ||
+                    alignment == Alignment.bottomRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            left: alignment == Alignment.topLeft ||
+                    alignment == Alignment.bottomLeft
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            right: alignment == Alignment.topRight ||
+                    alignment == Alignment.bottomRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/profile_page.dart">
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'auth_service.dart';
+import 'landing_page.dart'; // Needed for Logout navigation
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final AuthService _authService = AuthService();
+
+  // State Variables
+  String _name = "Loading...";
+  String _email = "Loading...";
+  String? _imagePath;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  // 1. Load Data from Storage
+  Future<void> _loadUserData() async {
+    final name = await _authService.getUserName();
+    final email = await _authService.getUserEmail();
+    final imagePath = await _authService.getProfileImagePath();
+
+    if (mounted) {
+      setState(() {
+        _name = name ?? "User";
+        _email = email ?? "No Email";
+        _imagePath = imagePath;
+        _isLoading = false;
+      });
+    }
+  }
+
+  // 2. Pick and Save Image
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    // Show modal to ask Camera or Gallery
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Photo Library'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final XFile? image = await picker.pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (image != null) _saveImage(image.path);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: const Text('Camera'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final XFile? image = await picker.pickImage(
+                  source: ImageSource.camera,
+                );
+                if (image != null) _saveImage(image.path);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveImage(String path) async {
+    await _authService.updateProfile(imagePath: path);
+    setState(() {
+      _imagePath = path;
+    });
+  }
+
+  // 3. Edit Profile Dialog
+  void _showEditDialog() {
+    final nameController = TextEditingController(text: _name);
+    final emailController = TextEditingController(text: _email);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Profile'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Full Name",
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                prefixIcon: Icon(Icons.email),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // Save changes
+              await _authService.updateProfile(
+                name: nameController.text,
+                email: emailController.text,
+              );
+              // Update UI
+              setState(() {
+                _name = nameController.text;
+                _email = emailController.text;
+              });
+              if (mounted) Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 4. Logout Logic
+  void _handleLogout() async {
+    await _authService.logout();
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LandingPage()),
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        backgroundColor: Colors.transparent, // Clean look
+        elevation: 0,
+        foregroundColor: Theme.of(context).primaryColor,
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+
+                  // --- Profile Picture Section ---
+                  Center(
+                    child: Stack(
+                      children: [
+                        // The Image Avatar
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.blue.shade100,
+                              width: 4,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 70,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: _imagePath != null
+                                ? FileImage(File(_imagePath!))
+                                : null,
+                            child: _imagePath == null
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 80,
+                                    color: Colors.grey,
+                                  )
+                                : null,
+                          ),
+                        ),
+                        // The Edit Icon Badge
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: _pickImage,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // --- User Details ---
+                  Text(
+                    _name,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _email,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // --- Action Buttons ---
+
+                  // Edit Profile
+                  ListTile(
+                    onTap: _showEditDialog,
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.edit, color: Colors.blue),
+                    ),
+                    title: const Text(
+                      "Edit Profile Details",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Settings (Placeholder navigation)
+                  ListTile(
+                    onTap: () {
+                      // Navigate to Settings Page if you have one
+                    },
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.settings, color: Colors.purple),
+                    ),
+                    title: const Text(
+                      "App Settings",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Logout Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _handleLogout,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red[50],
+                        foregroundColor: Colors.red,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      icon: const Icon(Icons.logout),
+                      label: const Text("Log Out"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
+  }
+}
+</file>
+
+<file path="lib/reminder_list_page.dart">
+import 'package:flutter/material.dart';
+import 'reminder_service.dart';
+import 'reminder_setup_page.dart';
+
+class ReminderListPage extends StatefulWidget {
+  const ReminderListPage({super.key});
+
+  @override
+  State<ReminderListPage> createState() => _ReminderListPageState();
+}
+
+class _ReminderListPageState extends State<ReminderListPage> {
+  final ReminderService _reminderService = ReminderService();
+  List<Reminder> _reminders = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReminders();
+  }
+
+  Future<void> _loadReminders() async {
+    final list = await _reminderService.getReminders();
+    setState(() {
+      _reminders = list;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _deleteReminder(String id) async {
+    await _reminderService.deleteReminder(id);
+    _loadReminders(); // Refresh list
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Reminders')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // Wait for the result from Setup Page
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ReminderSetupPage()),
+          );
+
+          // If true (saved successfully), refresh the list
+          if (result == true) {
+            _loadReminders();
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _reminders.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.alarm_off, size: 80, color: Colors.grey[300]),
+                  const SizedBox(height: 16),
+                  const Text('No reminders set yet'),
+                ],
+              ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: _reminders.length,
+              itemBuilder: (context, index) {
+                final reminder = _reminders[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue.withOpacity(0.1),
+                      child: const Icon(Icons.alarm, color: Colors.blue),
+                    ),
+                    title: Text(
+                      reminder.medicineName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(reminder.formattedTime),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline, color: Colors.red),
+                      onPressed: () => _deleteReminder(reminder.id),
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+</file>
+
+<file path="lib/reminder_service.dart">
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// 1. The Data Model
+class Reminder {
+  final String id;
+  final String medicineName;
+  final int hour;
+  final int minute;
+
+  Reminder({
+    required this.id,
+    required this.medicineName,
+    required this.hour,
+    required this.minute,
+  });
+
+  // Convert object to JSON map for storage
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'medicineName': medicineName,
+    'hour': hour,
+    'minute': minute,
+  };
+
+  // Create object from JSON map
+  factory Reminder.fromJson(Map<String, dynamic> json) => Reminder(
+    id: json['id'],
+    medicineName: json['medicineName'],
+    hour: json['hour'],
+    minute: json['minute'],
+  );
+
+  // Helper to format time nicely (e.g., "8:05 AM")
+  String get formattedTime {
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final h = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+    final m = minute.toString().padLeft(2, '0');
+    return '$h:$m $period';
+  }
+}
+
+// 2. The Service (The Vault)
+class ReminderService {
+  static const String _storageKey = 'saved_reminders';
+
+  // Get all reminders
+  Future<List<Reminder>> getReminders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? data = prefs.getString(_storageKey);
+    if (data == null) return [];
+
+    final List<dynamic> decoded = jsonDecode(data);
+    return decoded.map((item) => Reminder.fromJson(item)).toList();
+  }
+
+  // Add a new reminder
+  Future<void> addReminder(Reminder reminder) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Reminder> currentList = await getReminders();
+
+    currentList.add(reminder);
+
+    // Save back to storage
+    final String encoded = jsonEncode(
+      currentList.map((e) => e.toJson()).toList(),
+    );
+    await prefs.setString(_storageKey, encoded);
+  }
+
+  // Delete a reminder
+  Future<void> deleteReminder(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Reminder> currentList = await getReminders();
+
+    currentList.removeWhere((item) => item.id == id);
+
+    final String encoded = jsonEncode(
+      currentList.map((e) => e.toJson()).toList(),
+    );
+    await prefs.setString(_storageKey, encoded);
+  }
+}
+</file>
+
+<file path="lib/reminder_setup_page.dart">
+import 'package:flutter/material.dart';
+import 'reminder_service.dart';
+
+class ReminderSetupPage extends StatefulWidget {
+  const ReminderSetupPage({super.key});
+
+  @override
+  State<ReminderSetupPage> createState() => _ReminderSetupPageState();
+}
+
+class _ReminderSetupPageState extends State<ReminderSetupPage> {
+  final TextEditingController _medicineController = TextEditingController();
+  TimeOfDay _selectedTime = TimeOfDay.now();
+  final ReminderService _reminderService = ReminderService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _medicineController.dispose();
+    super.dispose();
+  }
+
+  // Function to show the Time Picker
+  Future<void> _pickTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
+  // Function to Save
+  Future<void> _saveReminder() async {
+    if (_medicineController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a medicine name')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    // Create the object
+    final newReminder = Reminder(
+      id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
+      medicineName: _medicineController.text.trim(),
+      hour: _selectedTime.hour,
+      minute: _selectedTime.minute,
+    );
+
+    // Save to storage
+    await _reminderService.addReminder(newReminder);
+
+    setState(() => _isLoading = false);
+
+    if (mounted) {
+      Navigator.pop(context, true); // Return 'true' to indicate success
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add Reminder')),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Medicine Name',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _medicineController,
+              decoration: InputDecoration(
+                hintText: 'Ex: Paracetamol',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                prefixIcon: const Icon(Icons.medication),
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            const Text(
+              'Time',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            
+            // Time Picker Card
+            InkWell(
+              onTap: _pickTime,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.access_time, color: Colors.blue),
+                    const SizedBox(width: 12),
+                    Text(
+                      _selectedTime.format(context),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const Spacer(),
+                    const Text('Change', style: TextStyle(color: Colors.blue)),
+                  ],
+                ),
+              ),
+            ),
+
+            const Spacer(),
+
+            // Save Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _saveReminder,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: _isLoading 
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Set Reminder', style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/settings_page.dart">
+import 'package:flutter/material.dart';
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ListTile(
+            leading: const Icon(Icons.color_lens),
+            title: const Text('Theme'),
+            subtitle: const Text('Light / Dark Mode'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: const Text('Language'),
+            subtitle: const Text('English / Bangla'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notification Settings'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/SIgnup_Login.dart">
+import 'package:flutter/material.dart';
+import 'auth_service.dart'; // Import your new auth service
+import 'dashboard_page.dart'; // Import dashboard for navigation
+
+// ---------------- LOGIN PAGE ----------------
+class LoginPage extends StatefulWidget {
+  final bool isDark;
+  final VoidCallback onToggleTheme;
+
+  const LoginPage({
+    super.key,
+    required this.isDark,
+    required this.onToggleTheme,
+  });
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleLogin() async {
+    setState(() => _isLoading = true);
+
+    // Call the mock auth service
+    bool success = await _authService.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (success) {
+      // Navigate to Dashboard and remove history so user can't "back" to login
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Login failed. Please enter any email and password."),
+          backgroundColor: Colors.redAccent,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthScaffold(
+      title: "Welcome Back",
+      subtitle: "Login to your account",
+      buttonText: "Login",
+      isLoading: _isLoading, // Pass loading state to UI
+      isDark: widget.isDark,
+      onToggleTheme: widget.onToggleTheme,
+      
+      // Pass controllers to the generic scaffold
+      emailController: _emailController,
+      passwordController: _passwordController,
+      onButtonPressed: _handleLogin, // Connect the button action
+      
+      onSwitch: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SignupPage(
+              isDark: widget.isDark,
+              onToggleTheme: widget.onToggleTheme,
+            ),
+          ),
+        );
+      },
+      switchText: "Don't have an account? Sign Up",
+    );
+  }
+}
+
+// ---------------- SIGNUP PAGE ----------------
+class SignupPage extends StatefulWidget {
+  final bool isDark;
+  final VoidCallback onToggleTheme;
+
+  const SignupPage({
+    super.key,
+    required this.isDark,
+    required this.onToggleTheme,
+  });
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleSignup() async {
+    setState(() => _isLoading = true);
+
+    bool success = await _authService.signup(
+      _nameController.text.trim(),
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (success) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Signup failed. Please try again.")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthScaffold(
+      title: "Create Account",
+      subtitle: "Sign up to get started",
+      buttonText: "Sign Up",
+      isLoading: _isLoading,
+      isDark: widget.isDark,
+      onToggleTheme: widget.onToggleTheme,
+      
+      // Pass controllers
+      nameController: _nameController,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      onButtonPressed: _handleSignup,
+      
+      onSwitch: () => Navigator.pop(context),
+      switchText: "Already have an account? Login",
+      showExtraField: true, // Enable the "Name" field
+    );
+  }
+}
+
+// ---------------- SHARED AUTH UI ----------------
+class AuthScaffold extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String buttonText;
+  final bool isDark;
+  final bool isLoading;
+  final VoidCallback onToggleTheme;
+  final VoidCallback onSwitch;
+  final VoidCallback onButtonPressed; // Action when button is clicked
+  final String switchText;
+  final bool showExtraField;
+  
+  // Controllers
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController? nameController;
+
+  const AuthScaffold({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.buttonText,
+    required this.isDark,
+    this.isLoading = false,
+    required this.onToggleTheme,
+    required this.onSwitch,
+    required this.onButtonPressed,
+    required this.switchText,
+    required this.emailController,
+    required this.passwordController,
+    this.nameController,
+    this.showExtraField = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final gradient = isDark
+        ? [Colors.black87, Colors.black54]
+        : [const Color(0xFF1976D2), const Color(0xFF42A5F5)];
+
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView( // Added to prevent overflow on small screens
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                margin: const EdgeInsets.symmetric(horizontal: 22),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey[900] : Colors.white.withOpacity(0.95),
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 15,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Top Row: Back Button + Theme Toggle
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                          color: isDark ? Colors.white70 : Colors.blue[700],
+                          onPressed: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                          color: isDark ? Colors.white70 : Colors.blue[700],
+                          onPressed: onToggleTheme,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      subtitle,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                    ),
+                    const SizedBox(height: 22),
+                    
+                    // Input Fields
+                    if (showExtraField && nameController != null)
+                      _inputField(Icons.person_outline, "Full Name", isDark, nameController!),
+                    if (showExtraField) const SizedBox(height: 14),
+                    
+                    _inputField(Icons.email_outlined, "Email", isDark, emailController),
+                    const SizedBox(height: 14),
+                    _inputField(Icons.lock_outline, "Password", isDark, passwordController, obscure: true),
+                    
+                    const SizedBox(height: 22),
+                    
+                    // Main Action Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: isLoading ? null : onButtonPressed, // Disable if loading
+                        child: isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                buttonText,
+                                style: const TextStyle(fontSize: 18, color: Colors.white),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: isLoading ? null : onSwitch,
+                      child: Text(
+                        switchText,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inputField(IconData icon, String hint, bool isDark, TextEditingController controller, {bool obscure = false}) {
+    return TextField(
+      controller: controller, // Connect the controller
+      obscureText: obscure,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: isDark ? Colors.grey[850] : Colors.grey[100],
+        prefixIcon: Icon(icon, color: Colors.blue),
+        hintText: hint,
+        hintStyle: TextStyle(color: isDark ? Colors.grey[500] : Colors.grey[600]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Colors.blue, width: 2),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="README.md">
+# prescript_sense
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+</file>
+
+<file path="repomix.config.json">
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "input": {
+    "maxFileSize": 52428800
+  },
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "parsableStyle": false,
+    "fileSummary": true,
+    "directoryStructure": true,
+    "files": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "compress": false,
+    "topFilesLength": 5,
+    "showLineNumbers": false,
+    "truncateBase64": false,
+    "copyToClipboard": false,
+    "includeFullDirectoryStructure": false,
+    "tokenCountTree": false,
+    "git": {
+      "sortByChanges": true,
+      "sortByChangesMaxCommits": 100,
+      "includeDiffs": false,
+      "includeLogs": false,
+      "includeLogsCount": 50
+    }
+  },
+  "include": [],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "android/**",
+      "ios/**",
+      "macos/**",
+      "linux/**",
+      "web/**",
+      "windows/**",
+      "test/**",
+      "**/*.g.dart",
+      "**/*.freezed.dart",
+      "assets/**",
+      "pubspec.lock"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
+</file>
+
+<file path="lib/landing_page.dart">
+import 'package:flutter/material.dart';
+import 'SIgnup_Login.dart';
+import 'dashboard_page.dart';
+// Import to check login status if needed
+
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage>
+    with SingleTickerProviderStateMixin {
+  final ScrollController _scrollController = ScrollController();
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
+    _slideAnimation = Tween<double>(begin: 60.0, end: 0.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Get screen dimensions for responsive sizing
+    final Size screenSize = MediaQuery.of(context).size;
+    final bool isSmallScreen = screenSize.width < 380;
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF5DD5E8), Color(0xFF6B8FF5), Color(0xFF9D7BFF)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            // Main Scrollable Content
+            SingleChildScrollView(
+              controller: _scrollController,
+              padding: EdgeInsets.only(
+                top: 100, // Space for the Top Nav Bar
+                bottom: 40,
+              ),
+              child: Column(
+                children: [
+                  _buildHeroSection(context, screenSize, isSmallScreen),
+                  _buildFeaturesSection(context),
+                  _buildFooterSection(context),
+                ],
+              ),
+            ),
+
+            // Fixed Top Nav Bar
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _buildTopNavBar(context, isSmallScreen),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopNavBar(BuildContext context, bool isSmallScreen) {
+    return Container(
+      // Add a slight gradient fade behind the nav for readability
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.black.withOpacity(0.1), Colors.transparent],
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Flexible Title to prevent overflow
+              Flexible(
+                child: Text(
+                  'PrescriptSense',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: isSmallScreen ? 22 : 26,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.0,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // Login Button
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginPage(
+                        isDark: false,
+                        onToggleTheme: _dummyCallback,
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF5A8DEE),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isSmallScreen ? 16 : 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 8,
+                ),
+                child: const Text(
+                  'Login/Signup',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroSection(
+    BuildContext context,
+    Size screenSize,
+    bool isSmallScreen,
+  ) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _slideAnimation.value),
+          child: Opacity(
+            opacity: _fadeAnimation.value,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  // Hero Image - Responsive Height
+                  Container(
+                    width: double.infinity,
+                    constraints: BoxConstraints(
+                      maxHeight:
+                          screenSize.height * 0.35, // Max 35% of screen height
+                      minHeight: 200,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(36),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 30,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(36),
+                      child: Image.asset(
+                        'assests/image/Prescript_Sense.png',
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.white.withOpacity(0.2),
+                            child: const Center(
+                              child: Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Title - Scaled down slightly for better fit
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'PrescriptSense',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: isSmallScreen ? 36 : 46, // Reduced from 52
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                        height: 1.0,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Subtitle
+                  Text(
+                    'Transforming handwritten medical prescriptions into clear, safe, and accessible digital insights.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.95),
+                      fontSize: 16,
+                      height: 1.5,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // CTA Button
+                  ElevatedButton(
+                    onPressed: () {
+                      _scrollController.animateTo(
+                        screenSize.height *
+                            0.7, // Scroll down about 70% of screen
+                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.easeInOutCubic,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF5A8DEE),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 10,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text(
+                          'Explore Features',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_downward_rounded, size: 20),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFeaturesSection(BuildContext context) {
+    final features = [
+      {
+        'icon': Icons.document_scanner_rounded,
+        'title': 'Scan & Align',
+        'subtitle': 'Handwritten → Digital Text',
+        'colors': [const Color(0xFF4FC3F7), const Color(0xFF29B6F6)],
+      },
+      {
+        'icon': Icons.record_voice_over_rounded,
+        'title': 'Audio Reader',
+        'subtitle': 'Listen to your schedule',
+        'colors': [const Color(0xFF9575CD), const Color(0xFF7E57C2)],
+      },
+      {
+        'icon': Icons.notifications_active_rounded,
+        'title': 'Reminders',
+        'subtitle': 'Never miss a dose',
+        'colors': [const Color(0xFF4DB6AC), const Color(0xFF26A69A)],
+      },
+      {
+        'icon': Icons.security_rounded,
+        'title': 'Safety Checks',
+        'subtitle': 'Identify drug risks',
+        'colors': [const Color(0xFFEF5350), const Color(0xFFE53935)],
+      },
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 60, 24, 40),
+      child: Column(
+        children: [
+          Text(
+            'Key Features',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1,
+              shadows: [
+                Shadow(color: Colors.black.withOpacity(0.2), blurRadius: 15),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Intelligent medication management',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.92),
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 40),
+
+          // CHANGED: Use Column instead of GridView for better mobile layout
+          // This prevents "squished" cards and overflow issues.
+          Column(
+            children: features.map((feature) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _buildFuturisticFeatureCard(
+                  icon: feature['icon'] as IconData,
+                  title: feature['title'] as String,
+                  subtitle: feature['subtitle'] as String,
+                  gradientColors: feature['colors'] as List<Color>,
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFuturisticFeatureCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required List<Color> gradientColors,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [...gradientColors, gradientColors[0].withOpacity(0.8)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: gradientColors[0].withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.25),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white.withOpacity(0.3)),
+            ),
+            child: Icon(icon, size: 32, color: Colors.white),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.95),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooterSection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 40),
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DashboardPage()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF5A8DEE),
+              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32),
+              ),
+              elevation: 12,
+            ),
+            child: const Text(
+              'Get Started Now',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          const SizedBox(height: 60),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withOpacity(0.2)),
+            ),
+            child: Column(
+              children: [
+                const Text(
+                  '© 2025 PrescriptSense',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Powered by AI • Built with Flutter',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static void _dummyCallback() {}
+}
+</file>
+
+<file path="lib/main.dart">
+import 'package:flutter/material.dart';
+import 'auth_service.dart';
+import 'landing_page.dart';
+import 'dashboard_page.dart';
+
+void main() async {
+  // Ensure Flutter binding is initialized before calling async code
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Check auth status before app starts
+  final authService = AuthService();
+  final bool isLoggedIn = await authService.isLoggedIn();
+
+  runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
+}
+
+class PrescriptSenseApp extends StatelessWidget {
+  final bool initialRoute;
+
+  const PrescriptSenseApp({super.key, required this.initialRoute});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PrescriptSense',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // ... (Keep your existing Light Theme) ...
+        primaryColor: const Color(0xFF4A90E2),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4A90E2),
+          primary: const Color(0xFF4A90E2),
+          secondary: const Color(0xFFA17CF5),
+          tertiary: const Color(0xFF4FF1D0),
+          background: const Color(0xFFF7F9FC),
+          surface: const Color(0xFFE5E7EB),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF4A90E2),
+          foregroundColor: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
+      // ... (Keep your existing Dark Theme) ...
+      
+      themeMode: ThemeMode.light,
+      
+      // ROUTING LOGIC:
+      // If logged in, go to Dashboard. If not, go to Landing Page.
+      home: initialRoute ? const DashboardPage() : const LandingPage(),
+    );
+  }
+}
+</file>
+
+<file path="lib/prescription_result_page.dart">
+import 'package:flutter/material.dart';
+import 'ocr_service.dart'; // Import the service
+
+class PrescriptionResultPage extends StatefulWidget {
+  final String imagePath; // Receive the image path
+
+  const PrescriptionResultPage({super.key, required this.imagePath});
+
+  @override
+  State<PrescriptionResultPage> createState() => _PrescriptionResultPageState();
+}
+
+class _PrescriptionResultPageState extends State<PrescriptionResultPage> {
+  final OcrService _ocrService = OcrService();
+  final TextEditingController _textController = TextEditingController();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _analyzeImage();
+  }
+
+  @override
+  void dispose() {
+    _ocrService.dispose(); // Clean up ML Kit resources
+    _textController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _analyzeImage() async {
+    // Run the OCR
+    final text = await _ocrService.processImage(widget.imagePath);
+
+    if (mounted) {
+      setState(() {
+        _textController.text = text;
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('Prescription Result'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF4A90E2), Colors.transparent],
+            ),
+          ),
+        ),
+      ),
+      body: Container(
+        height: double.infinity, // Ensure background covers full height
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFF5F7FA), Color(0xFFE8EEF5)],
+          ),
+        ),
+        child: SafeArea(
+          child: _isLoading
+              ? const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      Text("Analyzing Prescription..."),
+                    ],
+                  ),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ---------------- Editable Text Section ----------------
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            'Extracted Text',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4A90E2),
+                            ),
+                          ),
+                          Icon(Icons.edit_note, color: Color(0xFF4A90E2)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // The Editable Text Box
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.blue.withOpacity(0.3),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _textController,
+                          maxLines: null, // Allows infinite vertical expansion
+                          keyboardType: TextInputType.multiline,
+                          style: const TextStyle(fontSize: 16, height: 1.5),
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "No text detected. Try scanning again.",
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // ---------------- Action Buttons ----------------
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                // Logic to Copy to Clipboard can go here
+                                // Clipboard.setData(ClipboardData(text: _textController.text));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Copied to Clipboard!'),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.copy),
+                              label: const Text("Copy Text"),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                // Save logic placeholder
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Changes Saved!'),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.check),
+                              label: const Text("Save Edits"),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                backgroundColor: const Color(0xFF4A90E2),
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="lib/prescription_upload_page.dart">
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'prescription_result_page.dart';
+import 'dashboard_page.dart';
+
+class PrescriptionUploadPage extends StatefulWidget {
+  const PrescriptionUploadPage({super.key});
+
+  @override
+  State<PrescriptionUploadPage> createState() => _PrescriptionUploadPageState();
+}
+
+class _PrescriptionUploadPageState extends State<PrescriptionUploadPage> {
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to pick image: $e')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Upload Prescription'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const DashboardPage()),
+            );
+          },
+        ),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _selectedImage != null
+                  ? Container(
+                      height: 300,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueAccent),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(_selectedImage!, fit: BoxFit.cover),
+                      ),
+                    )
+                  : Icon(
+                      Icons.document_scanner,
+                      size: 100,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+
+              const SizedBox(height: 20),
+
+              Text(
+                _selectedImage != null
+                    ? 'Prescription Selected'
+                    : 'Upload your prescription image',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 10),
+
+              if (_selectedImage == null)
+                const Text(
+                  'Our AI will read, analyze, and check safety issues.',
+                  textAlign: TextAlign.center,
+                ),
+
+              const SizedBox(height: 40),
+
+              ElevatedButton.icon(
+                icon: const Icon(Icons.camera_alt),
+                label: const Text('Take Photo'),
+                onPressed: () => _pickImage(ImageSource.camera),
+              ),
+
+              const SizedBox(height: 15),
+
+              ElevatedButton.icon(
+                icon: const Icon(Icons.photo_library),
+                label: const Text('Choose from Gallery'),
+                onPressed: () => _pickImage(ImageSource.gallery),
+              ),
+
+              const SizedBox(height: 30),
+
+              // This is the button that was causing issues
+              ElevatedButton(
+                onPressed: _selectedImage == null
+                    ? null
+                    : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            // Note: No 'const' here because imagePath is dynamic
+                            builder: (context) => PrescriptionResultPage(
+                              imagePath: _selectedImage!.path,
+                            ),
+                          ),
+                        );
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _selectedImage == null ? Colors.grey : null,
+                ),
+                child: const Text('Analyze Prescription'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="pubspec.yaml">
+name: prescript_sense
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.3
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.2.1
+  shared_preferences: ^2.5.4
+  google_mlkit_text_recognition: ^0.15.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assests/image/Prescript_Sense.png
+    # If you plan to add more images in the future, you can also include the whole folder:
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+</file>
+
+</files>
