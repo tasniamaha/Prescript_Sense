@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'prescription_upload_page.dart';
 import 'auth_service.dart';
 import 'landing_page.dart';
 import 'reminder_list_page.dart';
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
-import 'database_helper.dart';
 
 const Color _deepIndigo = Color(0xFF1E3A8A);
 const Color _softBlue = Color(0xFF3B82F6);
@@ -16,7 +16,6 @@ const Color _lightBackground = Color(0xFFF8FAFF);
 const Color _cardBackground = Colors.white;
 const Color _textPrimary = Color(0xFF1E293B);
 const Color _textSecondary = Color(0xFF64748B);
-const String GEMINI_API_KEY = 'AIzaSyDGxkfcu2VxM-2x4Im8eQ2FkY2IqOhUSpY';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -26,129 +25,44 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final TextEditingController _problemController = TextEditingController();
+  final TextEditingController _problemController = TextEditingController(
+      text: "I am 26 years old with severe headache");
   String _geminiResponse = "";
   bool _isLoading = false;
-  bool _hasError = false;
-  late GenerativeModel _model;
-
-  // Prescription data
-  List<Map<String, dynamic>> _recentPrescriptions = [];
-  bool _isLoadingPrescriptions = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _initGemini();
-    _loadPrescriptions();
-  }
-
-  void _initGemini() {
-    _model = GenerativeModel(model: 'gemini-pro', apiKey: GEMINI_API_KEY);
-  }
-
-  Future<void> _loadPrescriptions() async {
-    try {
-      final data = await DatabaseHelper().getAllMedicines();
-      setState(() {
-        _recentPrescriptions = data;
-        _isLoadingPrescriptions = false;
-      });
-    } catch (e) {
-      print('Error loading prescriptions: $e');
-      setState(() {
-        _isLoadingPrescriptions = false;
-      });
-    }
-  }
 
   Future<void> sendToGemini(String userText) async {
-  if (userText.trim().isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please enter your problem')),
-    );
-    return;
-  }
+    setState(() {
+      _isLoading = true;
+    });
 
-  setState(() {
-    _isLoading = true;
-    _hasError = false;
-  });
+    try {
+      final uri = Uri.parse("https://your-gemini-api-endpoint.com/ask");
+      final response = await http.post(
+        uri,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"query": userText}),
+      );
 
-  try {
-    // STEP 1: Check local database first
-    final localResults = await DatabaseHelper().searchMedicines(userText);
-
-    if (localResults.isNotEmpty) {
-      // Found in database - format the response
-      String response = "Found in our database:\n\n";
-      
-      for (var medicine in localResults.take(2)) {  // Show top 2 results
-        response += "${medicine['generic_name']}\n";
-        
-        if (medicine['brand_names_bd'] != null) {
-          response += "Brands: ${medicine['brand_names_bd']}\n";
-        }
-        
-        if (medicine['indications'] != null) {
-          response += "Used for: ${medicine['indications']}\n";
-        }
-        
-        if (medicine['dosage_adult'] != null) {
-          response += "Dosage: ${medicine['dosage_adult']}\n";
-        }
-        
-        if (medicine['cautions'] != null) {
-          response += "Cautions: ${medicine['cautions']}\n";
-        }
-        
-        response += "\n";
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          _geminiResponse = data['answer'] ?? "No response from our database";
+        });
+      } else {
+        setState(() {
+          _geminiResponse =
+              "Failed to get response: ${response.statusCode}";
+        });
       }
-      
-      if (localResults.length > 2) {
-        response += "...and ${localResults.length - 2} more results. Check Medicine Database for details.\n\n";
-      }
-      
-      response += "Note: Always consult a healthcare professional before taking any medication.";
-      
+    } catch (e) {
       setState(() {
-        _geminiResponse = response;
+        _geminiResponse = "Error sending checking: $e";
       });
-    } else {
-      // STEP 2: Not found in database - use Gemini AI
-      final prompt = '''
-You are a medical assistant. A user has described their health problem.
-Provide helpful, general medical information and suggestions.
-Always remind them to consult a healthcare professional for serious issues.
-
-User's problem: $userText
-''';
-
-      final content = [Content.text(prompt)];
-      final response = await _model.generateContent(content);
-
+    } finally {
       setState(() {
-        _geminiResponse = response.text ?? "No response received";
+        _isLoading = false;
       });
     }
-  } catch (e) {
-    setState(() {
-      _geminiResponse = "Error: Unable to get response. Please try again.";
-      _hasError = true;
-    });
-    print('Gemini API Error: $e');
-  } finally {
-    setState(() {
-      _isLoading = false;
-    });
-  }
-}
-
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good morning!';
-    if (hour < 17) return 'Good afternoon!';
-    return 'Good evening!';
   }
 
   @override
@@ -226,7 +140,7 @@ User's problem: $userText
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getGreeting(),
+                    'Good morning!',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
@@ -236,7 +150,7 @@ User's problem: $userText
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    DateFormat('EEEE, MMMM d, y').format(DateTime.now()),
+                    'Saturday, December 13, 2025',
                     style: TextStyle(
                       fontSize: 18,
                       color: _textSecondary,
@@ -258,9 +172,9 @@ User's problem: $userText
 
             const SizedBox(height: 32),
 
-            // Gemini AI Assistant
+            // Gemini Comment Box
             Text(
-              'Ask Our AI Assistant',
+              'Tell us your problem, we will try to help',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -273,10 +187,7 @@ User's problem: $userText
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: _softBlue.withOpacity(0.3),
-                  width: 1.5,
-                ),
+                border: Border.all(color: _softBlue.withOpacity(0.3), width: 1.5),
                 boxShadow: [
                   BoxShadow(
                     color: _softBlue.withOpacity(0.1),
@@ -290,89 +201,34 @@ User's problem: $userText
                 maxLines: 4,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Describe your health concern...",
+                  hintText: "Describe your problem here...",
                 ),
               ),
             ),
             const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _isLoading
-                    ? null
-                    : () => sendToGemini(_problemController.text),
-                icon: _isLoading
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(Icons.psychology),
-                label: Text(
-                  _isLoading ? "Getting response..." : "Ask AI Assistant",
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _softBlue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 14,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+            ElevatedButton.icon(
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      sendToGemini(_problemController.text);
+                    },
+              icon: const Icon(Icons.send),
+              label: Text(_isLoading ? "Sending..." : "Send to the database"),
             ),
-            if (_geminiResponse.isNotEmpty) ...[
-              const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            if (_geminiResponse.isNotEmpty)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: _hasError ? Colors.red[50] : Colors.blue[50],
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _hasError ? Colors.red[200]! : Colors.blue[200]!,
-                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          _hasError
-                              ? Icons.error_outline
-                              : Icons.lightbulb_outline,
-                          color: _hasError ? Colors.red[700] : Colors.blue[700],
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _hasError ? 'Error' : 'AI Response',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: _hasError
-                                ? Colors.red[700]
-                                : Colors.blue[700],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _geminiResponse,
-                      style: const TextStyle(fontSize: 15, height: 1.5),
-                    ),
-                  ],
+                child: Text(
+                  _geminiResponse,
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ),
-            ],
 
             const SizedBox(height: 32),
 
@@ -381,16 +237,13 @@ User's problem: $userText
               width: double.infinity,
               height: 72,
               child: ElevatedButton.icon(
-                onPressed: () async {
-                  final result = await Navigator.push(
+                onPressed: () {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const PrescriptionUploadPage(),
                     ),
                   );
-                  if (result == true) {
-                    _loadPrescriptions(); // Refresh prescriptions
-                  }
                 },
                 icon: const Icon(Icons.add_circle_rounded, size: 32),
                 label: const Text(
@@ -412,7 +265,7 @@ User's problem: $userText
 
             const SizedBox(height: 32),
 
-            // Recent Prescriptions
+            // Recent Prescriptions Title
             Text(
               'Your Recent Prescriptions',
               style: TextStyle(
@@ -424,57 +277,22 @@ User's problem: $userText
 
             const SizedBox(height: 16),
 
-            _isLoadingPrescriptions
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(32.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : _recentPrescriptions.isEmpty
-                ? Container(
-                    padding: const EdgeInsets.all(32),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.medication_outlined,
-                          size: 64,
-                          color: Colors.grey[400],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No prescriptions yet',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Upload your first prescription to get started',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Column(
-                    children: _recentPrescriptions.map((prescription) {
-                      return _PrescriptionHistoryCard(
-                        date: prescription['date'] ?? 'Unknown date',
-                        medicines: prescription['medicines'] ?? 'No medicines',
-                        status: prescription['status'] ?? 'Pending',
-                      );
-                    }).toList(),
-                  ),
-
+            // Prescription Cards
+            _PrescriptionHistoryCard(
+              date: '12 Sep 2025',
+              medicines: 'Paracetamol, Amoxicillin',
+              status: 'Reviewed',
+            ),
+            _PrescriptionHistoryCard(
+              date: '05 Sep 2025',
+              medicines: 'Napa Extra, Seclo 20',
+              status: 'Reviewed',
+            ),
+            _PrescriptionHistoryCard(
+              date: '28 Aug 2025',
+              medicines: 'Azithromycin, Oral Saline',
+              status: 'Reviewed',
+            ),
             const SizedBox(height: 30),
 
             // Reminders Button
@@ -493,7 +311,10 @@ User's problem: $userText
                 icon: const Icon(Icons.alarm, size: 28),
                 label: const Text(
                   'Medicine Reminders',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: _softBlue,
@@ -524,7 +345,10 @@ User's problem: $userText
                 icon: const Icon(Icons.library_books_rounded, size: 28),
                 label: const Text(
                   'Medicine Database',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -544,12 +368,6 @@ User's problem: $userText
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _problemController.dispose();
-    super.dispose();
-  }
 }
 
 class _PrescriptionHistoryCard extends StatelessWidget {
@@ -562,19 +380,6 @@ class _PrescriptionHistoryCard extends StatelessWidget {
     required this.medicines,
     required this.status,
   });
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'reviewed':
-        return _emerald;
-      case 'pending':
-        return Colors.orange;
-      case 'expired':
-        return Colors.red;
-      default:
-        return _emerald;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -620,8 +425,6 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: _textPrimary,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 6),
                 Row(
@@ -636,19 +439,17 @@ class _PrescriptionHistoryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(status).withOpacity(0.15),
+                        color: _emerald.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         status,
                         style: TextStyle(
                           fontSize: 12,
-                          color: _getStatusColor(status),
+                          color: _emerald,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -658,11 +459,7 @@ class _PrescriptionHistoryCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: _textSecondary,
-            size: 18,
-          ),
+          Icon(Icons.arrow_forward_ios_rounded, color: _textSecondary, size: 18),
         ],
       ),
     );

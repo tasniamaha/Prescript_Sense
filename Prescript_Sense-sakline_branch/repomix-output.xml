@@ -49,9 +49,11 @@ assests/image/Prescript_Sense.png
 lib/audio_reader_page.dart
 lib/auth_service.dart
 lib/dashboard_page.dart
+lib/database_helper.dart
 lib/handwritten_to_text_page.dart
 lib/landing_page.dart
 lib/main.dart
+lib/medicine_list_page.dart
 lib/ocr_service.dart
 lib/prescription_result_page.dart
 lib/prescription_scanner_page.dart
@@ -438,6 +440,8 @@ import 'auth_service.dart';
 import 'landing_page.dart';
 import 'reminder_list_page.dart'; // Add this import
 import 'profile_page.dart';
+import 'medicine_list_page.dart';
+
 // Calming & Welcoming Palette – matching the Landing Page's futuristic yet soothing vibe
 // Deep indigo to soft blue with emerald accents, light backgrounds for calm readability
 const Color _deepIndigo = Color(0xFF1E3A8A);
@@ -670,9 +674,40 @@ class DashboardPage extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(
-                    height: 40,
-                  ), // Spacing before the "Recent" list
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MedicineListPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.library_books_rounded, size: 28),
+                      label: const Text(
+                        'Medicine Database',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(
+                          0xFF1E3A8A,
+                        ), // Your app's primary indigo
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
                   // Section title
                   // Text('Your Recent Prescriptions'),
                   // ...
@@ -799,6 +834,187 @@ class _PrescriptionHistoryCard extends StatelessWidget {
 }
 </file>
 
+<file path="lib/database_helper.dart">
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  static Database? _database;
+
+  factory DatabaseHelper() => _instance;
+
+  DatabaseHelper._internal();
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
+    final databasesPath = await getDatabasesPath();
+    final path = join(databasesPath, "prescript_sense_medicines.db");
+
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  }
+
+  Future<void> _onCreate(Database db, int version) async {
+    // 1. Create table with NEW 'indications' column
+    await db.execute('''
+      CREATE TABLE medicines (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        generic_name TEXT NOT NULL,
+        brand_names_bd TEXT,
+        indications TEXT,  -- NEW COLUMN
+        dosage_adult TEXT,
+        dosage_child TEXT,
+        cautions TEXT,
+        side_effects TEXT
+      )
+    ''');
+
+    final batch = db.batch();
+
+    // 2. Insert data with Disease Keywords
+
+    // Paracetamol
+    batch.insert('medicines', {
+      'generic_name': 'Paracetamol',
+      'brand_names_bd': 'Napa (Beximco), Ace (Square), Renova',
+      'indications':
+          'Fever, Mild to moderate pain, Headache, Toothache', // Added Keywords
+      'dosage_adult': '500mg - 1g every 4-6 hours (Max 4g/day)',
+      'dosage_child': '10-15 mg/kg per dose',
+      'cautions': 'Caution in liver disease.',
+      'side_effects': 'Liver damage in high doses.',
+    });
+
+    // Omeprazole
+    batch.insert('medicines', {
+      'generic_name': 'Omeprazole',
+      'brand_names_bd': 'Seclo (Square), Losectil',
+      'indications': 'Gastric, Acidity, Heartburn, Acid Reflux, Ulcer',
+      'dosage_adult': '20mg - 40mg once daily',
+      'dosage_child': '10mg - 20mg if prescribed',
+      'cautions': 'Long-term use affects magnesium.',
+      'side_effects': 'Headache, diarrhea.',
+    });
+
+    // Azithromycin
+    batch.insert('medicines', {
+      'generic_name': 'Azithromycin',
+      'brand_names_bd': 'Zimax (Square), Azithrocin',
+      'indications':
+          'Bacterial Infections, Typhoid, Respiratory infection, Sore throat',
+      'dosage_adult': '500mg daily for 3 days',
+      'dosage_child': '10mg/kg daily',
+      'cautions': 'Heart conditions (QT prolongation).',
+      'side_effects': 'Nausea, abdominal pain.',
+    });
+
+    // Pantoprazole
+    batch.insert('medicines', {
+      'generic_name': 'Pantoprazole',
+      'brand_names_bd': 'Pantonix, Pantodac',
+      'indications': 'Gastric, Ulcer, Erosive Esophagitis, Acidity',
+      'dosage_adult': '20mg - 40mg once daily',
+      'dosage_child': 'Not recommended',
+      'cautions': 'Monitor magnesium levels.',
+      'side_effects': 'Headache, dizziness.',
+    });
+
+    // Fexofenadine
+    batch.insert('medicines', {
+      'generic_name': 'Fexofenadine',
+      'brand_names_bd': 'Fexo, Fenofex, Axodin',
+      'indications': 'Allergy, Runny nose, Sneezing, Hives, Itching',
+      'dosage_adult': '120mg or 180mg once daily',
+      'dosage_child': '30mg twice daily',
+      'cautions': 'Kidney disease caution.',
+      'side_effects': 'Drowsiness, dry mouth.',
+    });
+
+    // Montelukast
+    batch.insert('medicines', {
+      'generic_name': 'Montelukast',
+      'brand_names_bd': 'Monas, Montair',
+      'indications':
+          'Asthma prevention, Seasonal allergies, Breathing difficulty',
+      'dosage_adult': '10mg once daily',
+      'dosage_child': '4mg - 5mg daily',
+      'cautions': 'Mood changes/agitation.',
+      'side_effects': 'Respiratory infection.',
+    });
+
+    // Ciprofloxacin
+    batch.insert('medicines', {
+      'generic_name': 'Ciprofloxacin',
+      'brand_names_bd': 'Ciprocin, Neofloxin',
+      'indications':
+          'Severe Bacterial Infections, UTI, Urinary Tract Infection',
+      'dosage_adult': '500mg - 750mg twice daily',
+      'dosage_child': 'Avoid unless necessary',
+      'cautions': 'Tendon rupture risk.',
+      'side_effects': 'Nausea, photosensitivity.',
+    });
+
+    // Amoxicillin
+    batch.insert('medicines', {
+      'generic_name': 'Amoxicillin',
+      'brand_names_bd': 'Moxacil, Tycil',
+      'indications':
+          'Bacterial Infections, Ear infection, Throat infection, Pneumonia',
+      'dosage_adult': '500mg every 8 hours',
+      'dosage_child': '20-40mg/kg/day',
+      'cautions': 'Penicillin allergy.',
+      'side_effects': 'Rash, diarrhea.',
+    });
+
+    // Metronidazole
+    batch.insert('medicines', {
+      'generic_name': 'Metronidazole',
+      'brand_names_bd': 'Amodis, Filmet',
+      'indications': 'Dysentery, Diarrhea, Dental infection, Stomach infection',
+      'dosage_adult': '400mg every 8 hours',
+      'dosage_child': '7.5mg/kg every 8 hours',
+      'cautions': 'NO ALCOHOL.',
+      'side_effects': 'Metallic taste, dark urine.',
+    });
+
+    // Losartan
+    batch.insert('medicines', {
+      'generic_name': 'Losartan',
+      'brand_names_bd': 'Losart, Osart',
+      'indications': 'High Blood Pressure, Hypertension, Heart failure',
+      'dosage_adult': '50mg - 100mg once daily',
+      'dosage_child': 'Only if prescribed',
+      'cautions': 'Do not use in pregnancy.',
+      'side_effects': 'Dizziness, fatigue.',
+    });
+
+    await batch.commit();
+  }
+
+  // 3. UPDATED SEARCH QUERY
+  Future<List<Map<String, dynamic>>> searchMedicines(String query) async {
+    final db = await database;
+    return await db.query(
+      'medicines',
+      // We now search in generic_name, brand_names, AND indications
+      where:
+          'generic_name LIKE ? OR brand_names_bd LIKE ? OR indications LIKE ?',
+      whereArgs: ['%$query%', '%$query%', '%$query%'],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getAllMedicines() async {
+    final db = await database;
+    return await db.query('medicines');
+  }
+}
+</file>
+
 <file path="lib/handwritten_to_text_page.dart">
 import 'package:flutter/material.dart';
 
@@ -908,6 +1124,371 @@ class HandwrittenToTextPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+</file>
+
+<file path="lib/medicine_list_page.dart">
+import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart'
+    as stt; // Import the package
+import 'database_helper.dart';
+
+class MedicineListPage extends StatefulWidget {
+  const MedicineListPage({super.key});
+
+  @override
+  State<MedicineListPage> createState() => _MedicineListPageState();
+}
+
+class _MedicineListPageState extends State<MedicineListPage> {
+  // Database State
+  List<Map<String, dynamic>> _medicines = [];
+  bool _isLoading = true;
+  final TextEditingController _searchController = TextEditingController();
+
+  // Voice Search State
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  bool _speechEnabled = false;
+
+  // Theme Colors
+  final Color _primaryColor = const Color(0xFF1E3A8A);
+  final Color _accentColor = const Color(0xFF3B82F6);
+  final Color _warningColor = const Color(0xFFD97706);
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshMedicineList();
+    _initSpeech(); // Initialize speech engine
+  }
+
+  // 1. Initialize Speech Engine
+  void _initSpeech() async {
+    _speech = stt.SpeechToText();
+    _speechEnabled = await _speech.initialize(
+      onStatus: (status) => print('Speech Status: $status'),
+      onError: (errorNotification) => print('Speech Error: $errorNotification'),
+    );
+    setState(() {});
+  }
+
+  // 2. Start Listening
+  void _startListening() async {
+    if (!_speechEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Speech recognition not available")),
+      );
+      return;
+    }
+
+    await _speech.listen(
+      onResult: (result) {
+        setState(() {
+          // Update the text field with spoken words
+          _searchController.text = result.recognizedWords;
+
+          // Trigger the existing search logic immediately
+          _searchMedicines(result.recognizedWords);
+        });
+      },
+    );
+
+    setState(() {
+      _isListening = true;
+    });
+  }
+
+  // 3. Stop Listening
+  void _stopListening() async {
+    await _speech.stop();
+    setState(() {
+      _isListening = false;
+    });
+  }
+
+  // Fetch all medicines
+  void _refreshMedicineList() async {
+    final data = await DatabaseHelper().getAllMedicines();
+    setState(() {
+      _medicines = data;
+      _isLoading = false;
+    });
+  }
+
+  // Filter medicines via search query
+  void _searchMedicines(String query) async {
+    final data = await DatabaseHelper().searchMedicines(query);
+    setState(() {
+      _medicines = data;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFF),
+      appBar: AppBar(
+        title: const Text('Medicine Database'),
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // --- Search Bar Section ---
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: _primaryColor,
+            child: TextField(
+              controller: _searchController,
+              onChanged: _searchMedicines,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: _isListening
+                    ? 'Listening...'
+                    : 'Search (Say "Fever")...',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                prefixIcon: const Icon(Icons.search, color: Colors.white),
+
+                // --- VOICE SEARCH BUTTON ---
+                suffixIcon: IconButton(
+                  onPressed: _isListening ? _stopListening : _startListening,
+                  icon: Icon(
+                    _isListening ? Icons.mic : Icons.mic_none,
+                    color: _isListening ? Colors.redAccent : Colors.white,
+                    size: 28, // Make it slightly larger
+                  ),
+                ),
+
+                // ---------------------------
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              ),
+            ),
+          ),
+
+          // --- List of Medicines ---
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _medicines.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.medication_outlined,
+                          size: 60,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "No medicines found",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _medicines.length,
+                    itemBuilder: (context, index) {
+                      final medicine = _medicines[index];
+                      return _buildMedicineCard(medicine);
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMedicineCard(Map<String, dynamic> medicine) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shadowColor: _accentColor.withOpacity(0.2),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.medical_services_rounded,
+                    color: _primaryColor,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        medicine['generic_name'],
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: _primaryColor,
+                        ),
+                      ),
+
+                      // Indications Section
+                      if (medicine['indications'] != null) ...[
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            "Used for: ${medicine['indications']}",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green[800],
+                            ),
+                          ),
+                        ),
+                      ],
+
+                      const SizedBox(height: 4),
+                      Text(
+                        "Common Brands: ${medicine['brand_names_bd']}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const Divider(height: 30, thickness: 1),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildInfoBlock(
+                    icon: Icons.person,
+                    title: "Adult Dosage",
+                    content: medicine['dosage_adult'],
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildInfoBlock(
+                    icon: Icons.child_care,
+                    title: "Child Dosage",
+                    content: medicine['dosage_child'],
+                    color: Colors.teal,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _warningColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: _warningColor.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.warning_amber_rounded, color: _warningColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      medicine['cautions'],
+                      style: TextStyle(
+                        color: Colors.brown[900],
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                const Icon(Icons.sick_outlined, size: 18, color: Colors.grey),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Side Effects: ${medicine['side_effects']}",
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoBlock({
+    required IconData icon,
+    required String title,
+    required String content,
+    required Color color,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: color,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(content, style: const TextStyle(fontSize: 14, height: 1.4)),
+      ],
     );
   }
 }
@@ -1526,7 +2107,6 @@ class _ReminderListPageState extends State<ReminderListPage> {
 
 <file path="lib/reminder_service.dart">
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 1. The Data Model
@@ -2755,9 +3335,12 @@ class _LandingPageState extends State<LandingPage>
 
 <file path="lib/main.dart">
 import 'package:flutter/material.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'auth_service.dart';
 import 'landing_page.dart';
 import 'dashboard_page.dart';
+
+
 
 void main() async {
   // Ensure Flutter binding is initialized before calling async code
@@ -2766,6 +3349,30 @@ void main() async {
   // Check auth status before app starts
   final authService = AuthService();
   final bool isLoggedIn = await authService.isLoggedIn();
+  await AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'medication_channel', // We will use this key later
+        channelName: 'Medication Reminders',
+        channelDescription: 'Daily reminders for medication',
+        defaultColor: const Color(0xFF1E3A8A),
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+        playSound: true,
+      )
+    ],
+    // Debug mode helps you see logs if something fails
+    debug: true,
+  );
+
+  // 2. Request Permission immediately (for simplicity)
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
 
   runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
 }
@@ -3161,7 +3768,7 @@ name: prescript_sense
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -3196,6 +3803,12 @@ dependencies:
   image_picker: ^1.2.1
   shared_preferences: ^2.5.4
   google_mlkit_text_recognition: ^0.15.0
+  sqflite: ^2.4.2
+  speech_to_text: ^7.3.0
+  awesome_notifications: ^0.10.1
+  # timezone: ^0.10.1
+  # flutter_local_notifications: ^19.5.0
+  # awesome_notifications: ^0.10.1
 
 dev_dependencies:
   flutter_test:
@@ -3217,6 +3830,7 @@ flutter:
 
   assets:
     - assests/image/Prescript_Sense.png
+    # - assests/database/medicines.db
     # If you plan to add more images in the future, you can also include the whole folder:
 
   # To add assets to your application, add an assets section, like this:

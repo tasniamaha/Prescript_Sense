@@ -1,15 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'auth_service.dart';
 import 'landing_page.dart';
 import 'dashboard_page.dart';
+import 'notification_service.dart';
+import 'package:flutter/foundation.dart';
+
 
 void main() async {
   // Ensure Flutter binding is initialized before calling async code
   WidgetsFlutterBinding.ensureInitialized();
-  
   // Check auth status before app starts
   final authService = AuthService();
   final bool isLoggedIn = await authService.isLoggedIn();
+  // Initialize the medicine notification service
+  if(!kIsWeb) {
+    final notificationService = NotificationService();
+  await notificationService.initialize();
+  
+  // Request notification permissions
+  await notificationService.requestPermissions();
+  
+  // Cleanup expired medicines and reschedule active ones
+  await notificationService.checkExpiredMedicines();
+  
+  
+  await AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'medication_channel', // We will use this key later
+        channelName: 'Medication Reminders',
+        channelDescription: 'Daily reminders for medication',
+        defaultColor: const Color(0xFF1E3A8A),
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+        playSound: true,
+      )
+    ],
+    // Debug mode helps you see logs if something fails
+    debug: true,
+  );
+  // 2. Request Permission immediately (for simplicity)
+  bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+  }
+
+  
 
   runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
 }
@@ -52,3 +93,4 @@ class PrescriptSenseApp extends StatelessWidget {
     );
   }
 }
+

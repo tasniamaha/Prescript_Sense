@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:speech_to_text/speech_to_text.dart'
+    as stt; // Import the package
 import 'database_helper.dart';
 
 class MedicineListPage extends StatefulWidget {
@@ -10,14 +11,17 @@ class MedicineListPage extends StatefulWidget {
 }
 
 class _MedicineListPageState extends State<MedicineListPage> {
+  // Database State
   List<Map<String, dynamic>> _medicines = [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
 
+  // Voice Search State
   late stt.SpeechToText _speech;
   bool _isListening = false;
   bool _speechEnabled = false;
 
+  // Theme Colors
   final Color _primaryColor = const Color(0xFF1E3A8A);
   final Color _accentColor = const Color(0xFF3B82F6);
   final Color _warningColor = const Color(0xFFD97706);
@@ -26,34 +30,54 @@ class _MedicineListPageState extends State<MedicineListPage> {
   void initState() {
     super.initState();
     _refreshMedicineList();
-    _initSpeech();
+    _initSpeech(); // Initialize speech engine
   }
 
+  // 1. Initialize Speech Engine
   void _initSpeech() async {
     _speech = stt.SpeechToText();
     _speechEnabled = await _speech.initialize(
       onStatus: (status) => print('Speech Status: $status'),
-      onError: (error) => print('Speech Error: $error'),
+      onError: (errorNotification) => print('Speech Error: $errorNotification'),
     );
     setState(() {});
   }
 
+  // 2. Start Listening
   void _startListening() async {
-    if (!_speechEnabled) return;
-    await _speech.listen(onResult: (result) {
-      setState(() {
-        _searchController.text = result.recognizedWords;
-        _searchMedicines(result.recognizedWords);
-      });
+    if (!_speechEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Speech recognition not available")),
+      );
+      return;
+    }
+
+    await _speech.listen(
+      onResult: (result) {
+        setState(() {
+          // Update the text field with spoken words
+          _searchController.text = result.recognizedWords;
+
+          // Trigger the existing search logic immediately
+          _searchMedicines(result.recognizedWords);
+        });
+      },
+    );
+
+    setState(() {
+      _isListening = true;
     });
-    setState(() => _isListening = true);
   }
 
+  // 3. Stop Listening
   void _stopListening() async {
     await _speech.stop();
-    setState(() => _isListening = false);
+    setState(() {
+      _isListening = false;
+    });
   }
 
+  // Fetch all medicines
   void _refreshMedicineList() async {
     final data = await DatabaseHelper().getAllMedicines();
     setState(() {
@@ -62,9 +86,12 @@ class _MedicineListPageState extends State<MedicineListPage> {
     });
   }
 
+  // Filter medicines via search query
   void _searchMedicines(String query) async {
     final data = await DatabaseHelper().searchMedicines(query);
-    setState(() => _medicines = data);
+    setState(() {
+      _medicines = data;
+    });
   }
 
   @override
@@ -79,7 +106,7 @@ class _MedicineListPageState extends State<MedicineListPage> {
       ),
       body: Column(
         children: [
-          // Search bar
+          // --- Search Bar Section ---
           Container(
             padding: const EdgeInsets.all(16),
             color: _primaryColor,
@@ -88,17 +115,23 @@ class _MedicineListPageState extends State<MedicineListPage> {
               onChanged: _searchMedicines,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: _isListening ? 'Listening...' : 'Search medicines...',
+                hintText: _isListening
+                    ? 'Listening...'
+                    : 'Search (Say "Fever")...',
                 hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                 prefixIcon: const Icon(Icons.search, color: Colors.white),
+
+                // --- VOICE SEARCH BUTTON ---
                 suffixIcon: IconButton(
                   onPressed: _isListening ? _stopListening : _startListening,
                   icon: Icon(
                     _isListening ? Icons.mic : Icons.mic_none,
                     color: _isListening ? Colors.redAccent : Colors.white,
-                    size: 28,
+                    size: 28, // Make it slightly larger
                   ),
                 ),
+
+                // ---------------------------
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.15),
                 border: OutlineInputBorder(
@@ -110,30 +143,39 @@ class _MedicineListPageState extends State<MedicineListPage> {
             ),
           ),
 
-          // Medicine List
+          // --- List of Medicines ---
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _medicines.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.medication_outlined,
-                                size: 60, color: Colors.grey[400]),
-                            const SizedBox(height: 10),
-                            Text("No medicines found",
-                                style: TextStyle(
-                                    color: Colors.grey[600], fontSize: 16)),
-                          ],
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.medication_outlined,
+                          size: 60,
+                          color: Colors.grey[400],
                         ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: _medicines.length,
-                        itemBuilder: (context, index) =>
-                            _buildMedicineCard(_medicines[index]),
-                      ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "No medicines found",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _medicines.length,
+                    itemBuilder: (context, index) {
+                      final medicine = _medicines[index];
+                      return _buildMedicineCard(medicine);
+                    },
+                  ),
           ),
         ],
       ),
@@ -147,39 +189,140 @@ class _MedicineListPageState extends State<MedicineListPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       shadowColor: _accentColor.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Name
-            Text(
-              medicine['generic_name'] ?? "Unnamed",
-              style: TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold, color: _primaryColor),
-            ),
-            const SizedBox(height: 12),
-
-            // Instant info
-            Wrap(
-              spacing: 16,
-              runSpacing: 8,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _infoChip("Adult Dosage", medicine['dosage_adult'] ?? "N/A", Colors.blue),
-                _infoChip("Child Dosage", medicine['dosage_child'] ?? "N/A", Colors.teal),
-                _infoChip("Cautions", medicine['cautions'] ?? "N/A", _warningColor),
-                _infoChip("Price", medicine['price'] ?? "N/A", Colors.green),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.medical_services_rounded,
+                    color: _primaryColor,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        medicine['generic_name'],
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: _primaryColor,
+                        ),
+                      ),
+
+                      // Indications Section
+                      if (medicine['indications'] != null) ...[
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            "Used for: ${medicine['indications']}",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green[800],
+                            ),
+                          ),
+                        ),
+                      ],
+
+                      const SizedBox(height: 4),
+                      Text(
+                        "Common Brands: ${medicine['brand_names_bd']}",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
 
+            const Divider(height: 30, thickness: 1),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildInfoBlock(
+                    icon: Icons.person,
+                    title: "Adult Dosage",
+                    content: medicine['dosage_adult'],
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildInfoBlock(
+                    icon: Icons.child_care,
+                    title: "Child Dosage",
+                    content: medicine['dosage_child'],
+                    color: Colors.teal,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _warningColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: _warningColor.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.warning_amber_rounded, color: _warningColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      medicine['cautions'],
+                      style: TextStyle(
+                        color: Colors.brown[900],
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             const SizedBox(height: 12),
 
-            // Expandable extra info
-            ExpansionTile(
-              title: const Text("More Info", style: TextStyle(fontWeight: FontWeight.bold)),
+            Row(
               children: [
-                _extraInfoRow("Common Brands", medicine['brand_names_bd'] ?? "N/A", _accentColor),
-                _extraInfoRow("Side Effects", medicine['side_effects'] ?? "N/A", Colors.orange),
-                _extraInfoRow("Pregnancy Risk", medicine['pregnancy_risk'] ?? "N/A", Colors.pink),
+                const Icon(Icons.sick_outlined, size: 18, color: Colors.grey),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "Side Effects: ${medicine['side_effects']}",
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ),
               ],
             ),
           ],
@@ -188,38 +331,32 @@ class _MedicineListPageState extends State<MedicineListPage> {
     );
   }
 
-  Widget _infoChip(String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: RichText(
-        text: TextSpan(
-          text: "$label: ",
-          style: TextStyle(fontWeight: FontWeight.bold, color: color),
+  Widget _buildInfoBlock({
+    required IconData icon,
+    required String title,
+    required String content,
+    required Color color,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            TextSpan(
-              text: value,
-              style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: color,
+                fontSize: 12,
+              ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _extraInfoRow(String label, String value, Color color) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text("$label: $value", style: TextStyle(fontSize: 14, color: Colors.black87)),
+        const SizedBox(height: 4),
+        Text(content, style: const TextStyle(fontSize: 14, height: 1.4)),
+      ],
     );
   }
 }
