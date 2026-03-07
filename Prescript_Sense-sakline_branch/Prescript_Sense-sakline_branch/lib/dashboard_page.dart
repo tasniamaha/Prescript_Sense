@@ -14,6 +14,7 @@ import 'medicine_list_page.dart';
 import 'text_to_speech.dart';
 import 'prescription_result_page.dart';
 import 'medicine_checker_page.dart';
+import 'sos_button.dart';
 
 const Color _deepIndigo = Color(0xFF1E3A8A);
 const Color _softBlue = Color(0xFF3B82F6);
@@ -465,6 +466,7 @@ void dispose() {
             ),
           ),
         ),
+        floatingActionButton: const SosFab(),
       ),
     );
   }
