@@ -114,25 +114,22 @@ class _SosFabState extends State<SosFab> {
             onPressed: () async {
               final trimmed = controller.text.trim();
 
-              // Only save if the field is non-empty.
-              if (trimmed.isNotEmpty) {
-                await _service.saveNumber(trimmed);
+              // If the field is empty, close silently — nothing to save.
+              if (trimmed.isEmpty) {
+                if (dialogCtx.mounted) Navigator.pop(dialogCtx);
+                return;
               }
 
-              // Close the dialog first, then show the confirmation SnackBar.
+              await _service.saveNumber(trimmed);
+
+              // Close the dialog first, then confirm with a SnackBar.
               if (dialogCtx.mounted) Navigator.pop(dialogCtx);
 
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(
-                      trimmed.isEmpty
-                          ? 'No number entered — keeping previous value.'
-                          : 'Emergency number saved: $trimmed',
-                    ),
-                    backgroundColor: trimmed.isEmpty
-                        ? Colors.orange.shade700
-                        : const Color(0xFF10B981),
+                    content: Text('Emergency number saved: $trimmed'),
+                    backgroundColor: const Color(0xFF10B981),
                     duration: const Duration(seconds: 3),
                   ),
                 );
