@@ -1,8 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'ocr_service.dart'; // Import the service
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'app_colors.dart'; // Your minimal color palette
+
+// Ensure you use your actual API key or environment variable here
+const String GEMINI_API_KEY = 'AIzaSyCEthUPyxgV5btJ_yV-ue0XV62ldrWfobE';
 
 class PrescriptionResultPage extends StatefulWidget {
-  final String imagePath; // Receive the image path
+  final String imagePath;
 
   const PrescriptionResultPage({super.key, required this.imagePath});
 
@@ -11,190 +18,313 @@ class PrescriptionResultPage extends StatefulWidget {
 }
 
 class _PrescriptionResultPageState extends State<PrescriptionResultPage> {
-  final OcrService _ocrService = OcrService();
-  final TextEditingController _textController = TextEditingController();
   bool _isLoading = true;
+  String _extractedText = "";
+  String _geminiAnalysis = "";
+  bool _hasError = false;
+
+  late GenerativeModel _model;
+  late FlutterTts _tts;
+  bool _isSpeaking = false;
 
   @override
   void initState() {
     super.initState();
-    _analyzeImage();
+    _model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: GEMINI_API_KEY);
+    _tts = FlutterTts();
+    _tts.setCompletionHandler(() {
+      if (mounted) setState(() => _isSpeaking = false);
+    });
+    _processImage();
   }
 
   @override
   void dispose() {
-    _ocrService.dispose(); // Clean up ML Kit resources
-    _textController.dispose();
+    _tts.stop();
     super.dispose();
   }
 
-  Future<void> _analyzeImage() async {
-    // Run the OCR
-    final text = await _ocrService.processImage(widget.imagePath);
+  Future<void> _processImage() async {
+    try {
+      // 1. OCR Extraction
+      final inputImage = InputImage.fromFilePath(widget.imagePath);
+      final textRecognizer = TextRecognizer(
+        script: TextRecognitionScript.latin,
+      );
+      final RecognizedText recognizedText = await textRecognizer.processImage(
+        inputImage,
+      );
+      await textRecognizer.close();
 
-    if (mounted) {
-      setState(() {
-        _textController.text = text;
-        _isLoading = false;
-      });
+      _extractedText = recognizedText.text;
+
+      if (_extractedText.trim().isEmpty) {
+        throw Exception("No text could be read from the image.");
+      }
+
+      // 2. Gemini Analysis
+      final prompt =
+          '''
+You are a medical assistant analyzing a raw OCR scan of a prescription.
+Extract the medicines, dosages, and instructions clearly.
+Format the output nicely with bullet points.
+If it doesn't look like a prescription, say so politely.
+
+Raw OCR Text:
+$_extractedText
+''';
+
+      final response = await _model.generateContent([Content.text(prompt)]);
+
+      if (mounted) {
+        setState(() {
+          _geminiAnalysis =
+              response.text ?? "Could not analyze the prescription.";
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _hasError = true;
+          _geminiAnalysis = "Error processing prescription: ${e.toString()}";
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _toggleSpeech() async {
+    if (_isSpeaking) {
+      await _tts.stop();
+      setState(() => _isSpeaking = false);
+    } else {
+      if (_geminiAnalysis.isNotEmpty) {
+        setState(() => _isSpeaking = true);
+        await _tts.speak(_geminiAnalysis);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.cloud, // Minimal background
       appBar: AppBar(
-        title: const Text('Prescription Result'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: Colors.white,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF4A90E2), Colors.transparent],
+        foregroundColor: AppColors.deepTeal,
+        title: const Text(
+          'Analysis Result',
+          style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: -0.5),
+        ),
+        centerTitle: true,
+        actions: [
+          if (!_isLoading && _geminiAnalysis.isNotEmpty)
+            IconButton(
+              icon: Icon(
+                _isSpeaking
+                    ? Icons.stop_circle_rounded
+                    : Icons.volume_up_rounded,
+                color: _isSpeaking ? AppColors.alertRed : AppColors.teal,
+                size: 28,
+              ),
+              onPressed: _toggleSpeech,
+              tooltip: _isSpeaking ? "Stop Reading" : "Read Aloud",
+            ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: _isLoading ? _buildLoadingState() : _buildResultContent(),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppColors.softLavender,
+              shape: BoxShape.circle,
+            ),
+            child: const CircularProgressIndicator(
+              color: AppColors.lavenderBlue,
+              strokeWidth: 3,
             ),
           ),
-        ),
-      ),
-      body: Container(
-        height: double.infinity, // Ensure background covers full height
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFF5F7FA), Color(0xFFE8EEF5)],
+          const SizedBox(height: 24),
+          const Text(
+            "Scanning & Analyzing...",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.lavenderBlue,
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: _isLoading
-              ? const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text("Analyzing Prescription..."),
-                    ],
+          const SizedBox(height: 8),
+          const Text(
+            "Reading handwriting and extracting medicines",
+            style: TextStyle(color: AppColors.slate, fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResultContent() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // --- IMAGE PREVIEW ---
+          const Text(
+            "Original Scan",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.slate,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            height: 180,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.mist, width: 2),
+              image: DecorationImage(
+                image: FileImage(File(widget.imagePath)),
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          // --- AI ANALYSIS RESULTS (Using Accent Colors) ---
+          Row(
+            children: [
+              const Icon(
+                Icons.auto_awesome,
+                color: AppColors.lavenderBlue,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                "Prescription Details",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.ink,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: _hasError ? AppColors.softRed : AppColors.softLavender,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: _hasError
+                    ? AppColors.alertRed
+                    : AppColors.lavenderBlue.withOpacity(0.5),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.ink.withOpacity(0.03),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!_hasError)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: AppColors.white.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      "AI Verified Text",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lavenderBlue,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
                   ),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // ---------------- Editable Text Section ----------------
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            'Extracted Text',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF4A90E2),
-                            ),
-                          ),
-                          Icon(Icons.edit_note, color: Color(0xFF4A90E2)),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-
-                      // The Editable Text Box
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: Colors.blue.withOpacity(0.3),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          controller: _textController,
-                          maxLines: null, // Allows infinite vertical expansion
-                          keyboardType: TextInputType.multiline,
-                          style: const TextStyle(fontSize: 16, height: 1.5),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "No text detected. Try scanning again.",
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 32),
-
-                      // ---------------- Action Buttons ----------------
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                // Logic to Copy to Clipboard can go here
-                                // Clipboard.setData(ClipboardData(text: _textController.text));
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Copied to Clipboard!'),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(Icons.copy),
-                              label: const Text("Copy Text"),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                // Save logic placeholder
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Changes Saved!'),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(Icons.check),
-                              label: const Text("Save Edits"),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                backgroundColor: const Color(0xFF4A90E2),
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 32),
-                    ],
+                Text(
+                  _geminiAnalysis,
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.6,
+                    color: _hasError ? AppColors.alertRed : AppColors.ink,
                   ),
                 ),
-        ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          // --- RAW OCR TEXT (Collapsible/Secondary) ---
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              title: const Text(
+                "View Raw Extracted Text",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.slate,
+                ),
+              ),
+              iconColor: AppColors.teal,
+              collapsedIconColor: AppColors.slate,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.mist),
+                  ),
+                  child: Text(
+                    _extractedText,
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 13,
+                      color: AppColors.slate,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 40),
+        ],
       ),
     );
   }
