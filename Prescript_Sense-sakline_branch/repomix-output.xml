@@ -1,0 +1,5132 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: android/**, ios/**, macos/**, linux/**, web/**, windows/**, test/**, **/*.g.dart, **/*.freezed.dart, assets/**, pubspec.lock
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+audio_reader_page.dart
+auth_service.dart
+dashboard_page.dart
+database_helper.dart
+FindNearbyClinicPage.dart
+handwritten_to_text_page.dart
+history_screen.dart
+history_service.dart
+landing_page.dart
+main.dart
+medicine_checker_page.dart
+medicine_list_page.dart
+medicine.sql
+ocr_service.dart
+prescription_result_page.dart
+prescription_scanner_page.dart
+prescription_upload_page.dart
+profile_page.dart
+reminder_list_page.dart
+reminder_service.dart
+reminder_setup_page.dart
+settings_page.dart
+SIgnup_Login.dart
+sos_button.dart
+sos_service.dart
+text_to_speech.dart
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="audio_reader_page.dart">
+import 'package:flutter/material.dart';
+
+class AudioReaderPage extends StatelessWidget {
+  const AudioReaderPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Prescription Audio Reader'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Upload Section
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surface
+                      .withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.upload_file,
+                      size: 80,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Upload Prescription',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Upload or select a prescription image to convert it into audio.',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Camera upload placeholder
+                      },
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text('Take Photo'),
+                    ),
+                    const SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Gallery upload placeholder
+                      },
+                      icon: const Icon(Icons.photo_library),
+                      label: const Text('Choose from Gallery'),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Audio Section
+              Icon(
+                Icons.volume_up,
+                size: 120,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+
+              const SizedBox(height: 24),
+
+              const Text(
+                'Listen to your prescription',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              const Text(
+                'Convert your scanned prescription or extracted text into clear audio output using AI-powered text-to-speech.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 32),
+
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Play audio placeholder
+                },
+                icon: const Icon(Icons.play_arrow),
+                label: const Text('Play Prescription Audio'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Stop audio placeholder
+                },
+                icon: const Icon(Icons.stop),
+                label: const Text('Stop Audio'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  backgroundColor: Colors.redAccent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="auth_service.dart">
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AuthService {
+  // Keys
+  static const String _isLoggedInKey = 'isLoggedIn';
+  static const String _storedEmailKey = 'storedEmail';
+  static const String _storedPasswordKey = 'storedPassword';
+  static const String _storedNameKey = 'storedName';
+  static const String _storedImageKey = 'storedImage'; // NEW: For Profile Picture
+
+  // --- Getters ---
+  Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isLoggedInKey) ?? false;
+  }
+
+  Future<String?> getUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedEmailKey);
+  }
+
+  Future<String?> getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedNameKey);
+  }
+
+  // NEW: Get Profile Picture Path
+  Future<String?> getProfileImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_storedImageKey);
+  }
+
+  // --- Actions ---
+
+  // LOGIN
+  Future<bool> login(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final prefs = await SharedPreferences.getInstance();
+    
+    final String? registeredEmail = prefs.getString(_storedEmailKey);
+    final String? registeredPassword = prefs.getString(_storedPasswordKey);
+
+    if (registeredEmail == null || registeredPassword == null) return false;
+
+    if (email.trim() == registeredEmail && password.trim() == registeredPassword) {
+      await prefs.setBool(_isLoggedInKey, true);
+      return true;
+    }
+    return false;
+  }
+
+  // SIGNUP
+  Future<bool> signup(String name, String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(_storedNameKey, name.trim());
+    await prefs.setString(_storedEmailKey, email.trim());
+    await prefs.setString(_storedPasswordKey, password.trim());
+    await prefs.setBool(_isLoggedInKey, true);
+    
+    return true;
+  }
+
+  // LOGOUT
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isLoggedInKey, false);
+  }
+
+  // NEW: Update Profile Data
+  Future<void> updateProfile({String? name, String? email, String? imagePath}) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (name != null) await prefs.setString(_storedNameKey, name);
+    if (email != null) await prefs.setString(_storedEmailKey, email);
+    if (imagePath != null) await prefs.setString(_storedImageKey, imagePath);
+  }
+}
+</file>
+
+<file path="dashboard_page.dart">
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:prescript_sense/FindNearbyClinicPage.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart';
+
+import 'prescription_upload_page.dart';
+import 'auth_service.dart';
+import 'landing_page.dart';
+import 'reminder_list_page.dart';
+import 'profile_page.dart';
+import 'medicine_list_page.dart';
+import 'text_to_speech.dart';
+import 'prescription_result_page.dart';
+import 'medicine_checker_page.dart';
+import 'sos_button.dart';
+
+const Color _deepIndigo = Color(0xFF1E3A8A);
+const Color _softBlue = Color(0xFF3B82F6);
+const Color _emerald = Color(0xFF10B981);
+const Color _lightBackground = Color(0xFFF8FAFF);
+const Color _textPrimary = Color(0xFF1E293B);
+const Color _textSecondary = Color(0xFF64748B);
+
+const String GEMINI_API_KEY = 'AIzaSyCEthUPyxgV5btJ_yV-ue0XV62ldrWfobE';
+
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  final TextEditingController _problemController = TextEditingController(
+    text: "I am 26 years old with severe headache",
+  );
+
+  late GenerativeModel _model;
+  late stt.SpeechToText _speech;
+  late FlutterTts _tts;
+
+  bool _isListening = false;
+  bool _isLoading = false;
+  bool _hasError = false;
+
+  String _geminiResponse = "";
+
+  // =========================
+  // Disclaimer banner state
+  // =========================
+  bool _showDisclaimer = true;
+  double _disclaimerOpacity = 1.0;
+  Timer? _disclaimerTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: GEMINI_API_KEY);
+    _speech = stt.SpeechToText();
+    _tts = FlutterTts();
+
+    // Safe timer for 20s disclaimer fade
+    _disclaimerTimer = Timer(const Duration(seconds: 20), () {
+      if (!mounted) return;
+      setState(() {
+        _disclaimerOpacity = 0.0;
+      });
+      Timer(const Duration(milliseconds: 500), () {
+        if (!mounted) return;
+        setState(() {
+          _showDisclaimer = false;
+        });
+      });
+    });
+  }
+
+  /// =========================
+  /// VOICE INPUT
+  /// =========================
+  Future<void> _startVoiceInput() async {
+    final available = await _speech.initialize();
+    if (!available) return;
+
+    setState(() => _isListening = true);
+
+    _speech.listen(
+      onResult: (result) {
+        if (!mounted) return;
+        setState(() {
+          _problemController.text = result.recognizedWords;
+        });
+      },
+    );
+  }
+
+  void _stopVoiceInput() {
+    _speech.stop();
+    if (!mounted) return;
+    setState(() => _isListening = false);
+  }
+
+  /// =========================
+  /// GEMINI API CALL
+  /// =========================
+  Future<void> sendToGemini(String userText) async {
+    if (userText.trim().isEmpty) return;
+
+    if (!mounted) return;
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _geminiResponse = "";
+    });
+
+    try {
+      final prompt =
+          '''
+You are a medical assistant.
+Provide general medical information only.
+Do NOT diagnose.
+Always advise consulting a qualified doctor.
+
+User problem:
+$userText
+''';
+
+      final response = await _model.generateContent([Content.text(prompt)]);
+
+      if (!mounted) return;
+      setState(() {
+        _geminiResponse = response.text ?? "No response received from AI.";
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _hasError = true;
+        _geminiResponse = "Unable to get response. Please try again later.";
+      });
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  /// =========================
+  /// TEXT TO SPEECH
+  /// =========================
+  Future<void> _speakResponse() async {
+    if (_geminiResponse.isEmpty) return;
+    await _tts.stop();
+    await _tts.speak(_geminiResponse);
+  }
+
+ @override
+void dispose() {
+  _problemController.dispose();
+  _tts.stop(); // DO NOT call dispose() on Windows
+  _speech.stop();
+  _disclaimerTimer?.cancel();
+  super.dispose();
+}
+
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 64, 129, 225),
+          elevation: 0,
+          title: const Text(
+            'PrescriptSense',
+            style: TextStyle(
+              color: Color.fromARGB(255, 247, 249, 255),
+              fontWeight: FontWeight.w800,
+              fontSize: 26,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.notifications_none,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('No new notifications'),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()),
+                );
+              },
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(103, 184, 246, 1),
+                Color(0xFFDDF2FF),
+                Color.fromARGB(255, 166, 214, 240),
+                Color(0xFFF8FCFF),
+              ],
+              stops: [0.0, 0.3, 0.6, 1.0],
+            ),
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// =========================
+                /// SAFETY DISCLAIMER BANNER
+                /// =========================
+                if (_showDisclaimer)
+                  AnimatedOpacity(
+                    opacity: _disclaimerOpacity,
+                    duration: const Duration(milliseconds: 500),
+                    child: Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[50],
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.orange),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.warning_amber_rounded, color: Colors.orange),
+                          const SizedBox(width: 10),
+                          const Expanded(
+                            child: Text(
+                              "PrescriptSense provides general health information only based on available dataset and internet's source. "
+                              "It does NOT replace a doctor. Always consult a qualified medical professional.",
+                              style: TextStyle(fontSize: 14, height: 1.4),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.orange),
+                            onPressed: () {
+                              if (!mounted) return;
+                              setState(() {
+                                _showDisclaimer = false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 20),
+
+                /// =========================
+                /// CHAT INPUT
+                /// =========================
+                Text(
+                  'Tell us your problem',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: _textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                TextField(
+                  controller: _problemController,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: "Describe your problem here...",
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isListening ? Icons.mic : Icons.mic_none,
+                        color: _softBlue,
+                      ),
+                      onPressed: _isListening
+                          ? _stopVoiceInput
+                          : _startVoiceInput,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                ElevatedButton.icon(
+                  onPressed: _isLoading
+                      ? null
+                      : () => sendToGemini(_problemController.text),
+                  icon: const Icon(Icons.send),
+                  label: Text(_isLoading ? "Sending..." : "Send"),
+                ),
+
+                /// =========================
+                /// AI RESPONSE
+                /// =========================
+                if (_isLoading) ...[
+                  const SizedBox(height: 16),
+                  const Center(child: CircularProgressIndicator()),
+                ],
+
+                if (_geminiResponse.isNotEmpty && !_isLoading) ...[
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: _hasError ? Colors.red[50] : Colors.blue[50],
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: _hasError ? Colors.red : _softBlue,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "PrescriptSense Response",
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.volume_up_rounded),
+                              onPressed: _speakResponse,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _geminiResponse,
+                          style: const TextStyle(fontSize: 15, height: 1.6),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+
+                const SizedBox(height: 30),
+
+                /// =========================
+                /// QUICK ACTIONS
+                /// =========================
+                Text(
+                  'Quick Actions',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: _textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  children: [
+                    _DashboardTile(
+                      icon: Icons.upload_file,
+                      label: 'Upload Prescription',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PrescriptionUploadPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.library_books,
+                      label: 'Medicine Database',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => MedicineListPage()),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.medical_services,
+                      label: 'Medicine Checker',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const MedicineCheckerPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.record_voice_over,
+                      label: 'Text to Speech',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => HandwrittenToTextPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.alarm,
+                      label: 'Medicine Reminder',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => ReminderListPage()),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.local_hospital,
+                      label: 'Nearby Clinics Around You',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const FindNearbyClinicPage()),
+                        );
+                      },
+                    ),
+                    _DashboardTile(
+                      icon: Icons.history,
+                      label: 'Prescription History',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PrescriptionResultPage(
+                              imagePath: 'assets/sample_prescription.png',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: const SosFab(),
+      ),
+    );
+  }
+}
+
+class _DashboardTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _DashboardTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 2, 147, 160).withOpacity(0.06),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 42, color: _softBlue),
+            const SizedBox(height: 12),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="database_helper.dart">
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
+
+  DatabaseHelper._internal();
+
+  static Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
+    final path = join(await getDatabasesPath(), 'medicines.db');
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE medicines(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            generic_name TEXT,
+            brand_names_bd TEXT,
+            dosage_adult TEXT,
+            dosage_child TEXT,
+            cautions TEXT,
+            price TEXT,
+            side_effects TEXT,
+            pregnancy_risk TEXT,
+            indications TEXT
+          )
+        ''');
+
+        // Sample data
+        await db.insert('medicines', {
+          'generic_name': 'Paracetamol',
+          'brand_names_bd': 'Crocin, Calpol',
+          'dosage_adult': '500mg every 6h',
+          'dosage_child': '250mg every 6h',
+          'cautions': 'Liver disease caution',
+          'price': '50 BDT',
+          'side_effects': 'Nausea, dizziness',
+          'pregnancy_risk': 'Category B',
+          'indications': 'Fever, pain'
+        });
+      },
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getAllMedicines() async {
+    final db = await database;
+    return await db.query('medicines');
+  }
+
+  Future<List<Map<String, dynamic>>> searchMedicines(String query) async {
+    final db = await database;
+    return await db.query(
+      'medicines',
+      where: 'generic_name LIKE ?',
+      whereArgs: ['%$query%'],
+    );
+  }
+}
+</file>
+
+<file path="FindNearbyClinicPage.dart">
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class FindNearbyClinicPage extends StatefulWidget {
+  const FindNearbyClinicPage({super.key});
+
+  @override
+  State<FindNearbyClinicPage> createState() => _FindNearbyClinicPageState();
+}
+
+class _FindNearbyClinicPageState extends State<FindNearbyClinicPage> {
+  final TextEditingController _searchController = TextEditingController();
+  late GoogleMapController _mapController;
+
+  // Sample initial location (can be updated with Geolocator)
+  final LatLng _initialPosition = const LatLng(23.8103, 90.4125); // Dhaka
+
+  final Set<Marker> _markers = {
+    Marker(
+      markerId: MarkerId('clinic1'),
+      position: LatLng(23.8110, 90.4120),
+      infoWindow: InfoWindow(title: 'City Health Clinic'),
+    ),
+    Marker(
+      markerId: MarkerId('clinic2'),
+      position: LatLng(23.8090, 90.4140),
+      infoWindow: InfoWindow(title: 'Downtown Medical Center'),
+    ),
+  };
+
+  // Launch a phone call to ambulance
+  Future<void> _callAmbulance() async {
+    const tel = 'tel:999'; // Replace with local ambulance number
+    if (await canLaunchUrl(Uri.parse(tel))) {
+      await launchUrl(Uri.parse(tel));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cannot make a call')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _mapController.dispose();
+    super.dispose();
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+  }
+
+  void _searchClinic() {
+    // Mock search: just show snackbar
+    final query = _searchController.text.trim();
+    if (query.isEmpty) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Searching for "$query"...')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Find Nearby Clinic'),
+        backgroundColor: const Color(0xFF1E3A8A),
+      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search clinics or specialties',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _searchClinic,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3B82F6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  ),
+                  child: const Icon(Icons.search, color: Colors.white),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                const Icon(Icons.location_on, color: Colors.red),
+                const SizedBox(width: 8),
+                const Text(
+                  'Your current location',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                ElevatedButton.icon(
+                  onPressed: _callAmbulance,
+                  icon: const Icon(Icons.local_hospital),
+                  label: const Text('Call Ambulance'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 200, 238, 225),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: 15,
+              ),
+              markers: _markers,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="handwritten_to_text_page.dart">
+import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+class HandwrittenToTextPage extends StatefulWidget {
+  const HandwrittenToTextPage({super.key});
+
+  @override
+  State<HandwrittenToTextPage> createState() => _HandwrittenToTextPageState();
+}
+
+class _HandwrittenToTextPageState extends State<HandwrittenToTextPage> {
+  final FlutterTts _flutterTts = FlutterTts();
+  final ImagePicker _picker = ImagePicker();
+  bool _isSpeaking = false;
+  String _extractedText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeTts();
+  }
+
+  /// Initialize Text-to-Speech
+  Future<void> _initializeTts() async {
+    await _flutterTts.setLanguage("en-US");
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setVolume(1.0);
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.awaitSpeakCompletion(true);
+
+    _flutterTts.setCompletionHandler(() {
+      if (!mounted) return;
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
+  }
+
+  /// Speak or stop speaking the text
+  Future<void> _speakText(String text) async {
+    if (text.trim().isEmpty) return;
+
+    if (_isSpeaking) {
+      await _flutterTts.stop();
+      if (!mounted) return;
+      setState(() => _isSpeaking = false);
+    } else {
+      if (!mounted) return;
+      setState(() => _isSpeaking = true);
+      await _flutterTts.speak(text);
+    }
+  }
+
+  /// Pick image from camera or gallery and extract text
+  Future<void> _pickAndExtractText(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image == null) return;
+
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+    final recognizedText = await textRecognizer.processImage(inputImage);
+    textRecognizer.close();
+
+    setState(() {
+      _extractedText = recognizedText.text.isEmpty
+          ? "No text detected."
+          : recognizedText.text;
+    });
+
+    _showOcrResult(context);
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Handwritten to Text (OCR)'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // OCR Icon
+              Icon(
+                Icons.text_snippet_outlined,
+                size: 120,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 30),
+
+              // Title
+              const Text(
+                'Convert Handwritten Prescription',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Description
+              const Text(
+                'Our AI will read handwritten or printed prescriptions and convert them into clear digital text with audio support.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 40),
+
+              // Scan from camera
+              ElevatedButton.icon(
+                onPressed: () => _pickAndExtractText(ImageSource.camera),
+                icon: const Icon(Icons.document_scanner),
+                label: const Text('Scan Prescription'),
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 36, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Upload from gallery
+              OutlinedButton.icon(
+                onPressed: () => _pickAndExtractText(ImageSource.gallery),
+                icon: const Icon(Icons.photo_library_outlined),
+                label: const Text('Upload from Gallery'),
+                style: OutlinedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Show dialog with extracted text and TTS option
+  void _showOcrResult(BuildContext context) {
+    final TextEditingController textController =
+        TextEditingController(text: _extractedText);
+
+    showDialog(
+      context: context,
+      builder: (_) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                const Text('Extracted Text'),
+                const Spacer(),
+                IconButton(
+                  icon: Icon(
+                    _isSpeaking ? Icons.stop_circle : Icons.volume_up,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  tooltip: _isSpeaking ? 'Stop Reading' : 'Read Aloud',
+                  onPressed: () async {
+                    await _speakText(textController.text);
+                    setDialogState(() {});
+                  },
+                ),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: TextField(
+                controller: textController,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Edit text before reading',
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  _flutterTts.stop();
+                  if (mounted) setState(() => _isSpeaking = false);
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+</file>
+
+<file path="history_screen.dart">
+import 'package:flutter/material.dart';
+import 'history_service.dart';
+
+/// Displays the local "Recent Checks" history.
+///
+/// Records are loaded from [HistoryService]; any entry older than 30 days is
+/// discarded automatically before the list is rendered.
+class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({super.key});
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  final HistoryService _service = HistoryService();
+
+  List<HistoryRecord> _records = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  // ── Data loading ───────────────────────────────────────────────────────────
+
+  Future<void> _loadHistory() async {
+    final records = await _service.getHistory();
+    if (mounted) {
+      setState(() {
+        _records = records;
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _confirmClearHistory() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Clear History'),
+        content: const Text(
+          'Are you sure you want to delete all recent checks? '
+          'This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Clear'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await _service.clearHistory();
+      await _loadHistory();
+    }
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  /// Returns the accent colour for a given status string.
+  Color _statusColor(String status) {
+    return status.toUpperCase() == 'SAFE'
+        ? const Color(0xFF10B981) // emerald-green
+        : const Color(0xFFEF4444); // vivid-red
+  }
+
+  /// Returns the background chip colour (lighter tint).
+  Color _statusBackground(String status) {
+    return status.toUpperCase() == 'SAFE'
+        ? const Color(0xFFD1FAE5) // light green
+        : const Color(0xFFFEE2E2); // light red
+  }
+
+  /// Formats the timestamp for display, e.g. "Mar 07, 2026 · 14:32".
+  String _formatDate(DateTime dt) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    final h = dt.hour.toString().padLeft(2, '0');
+    final m = dt.minute.toString().padLeft(2, '0');
+    return '${months[dt.month - 1]} ${dt.day.toString().padLeft(2, '0')}, ${dt.year} · $h:$m';
+  }
+
+  // ── Build ──────────────────────────────────────────────────────────────────
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ── App bar ────────────────────────────────────────────────────────────
+      appBar: AppBar(
+        title: const Text('Recent Checks'),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
+        actions: [
+          if (_records.isNotEmpty)
+            IconButton(
+              tooltip: 'Clear all history',
+              icon: const Icon(Icons.delete_sweep_outlined),
+              onPressed: _confirmClearHistory,
+            ),
+        ],
+      ),
+
+      // ── Background gradient matching dashboard style ────────────────────
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color(0xFFF8FCFF),
+            ],
+            stops: [0.0, 0.35, 1.0],
+          ),
+        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _records.isEmpty
+                ? _buildEmptyState()
+                : _buildHistoryList(),
+      ),
+    );
+  }
+
+  // ── Empty state ────────────────────────────────────────────────────────────
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.history_rounded,
+            size: 72,
+            color: Colors.blueGrey.shade300,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No recent checks yet',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.blueGrey.shade600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your medicine dose checks will appear here.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.blueGrey.shade400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── History list ───────────────────────────────────────────────────────────
+
+  Widget _buildHistoryList() {
+    return RefreshIndicator(
+      // Pull-to-refresh re-runs the cleanup + reload.
+      onRefresh: _loadHistory,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        itemCount: _records.length,
+        itemBuilder: (context, index) => _HistoryTile(
+          record: _records[index],
+          statusColor: _statusColor(_records[index].status),
+          statusBackground: _statusBackground(_records[index].status),
+          formattedDate: _formatDate(_records[index].timestamp),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PRIVATE TILE WIDGET
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A single card in the history list. Extracted as a private widget to keep
+/// [_HistoryScreenState.build] lean and to avoid unnecessary rebuilds.
+class _HistoryTile extends StatelessWidget {
+  final HistoryRecord record;
+  final Color statusColor;
+  final Color statusBackground;
+  final String formattedDate;
+
+  const _HistoryTile({
+    required this.record,
+    required this.statusColor,
+    required this.statusBackground,
+    required this.formattedDate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
+
+        // ── Left accent bar ────────────────────────────────────────────────
+        leading: Container(
+          width: 5,
+          height: 52,
+          decoration: BoxDecoration(
+            color: statusColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+
+        // ── Medicine name + dose ───────────────────────────────────────────
+        title: Text(
+          record.medicineName,
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 15,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 3),
+            Text(
+              'Dose: ${record.dose}',
+              style: const TextStyle(fontSize: 13),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              formattedDate,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ],
+        ),
+
+        // ── Status badge ───────────────────────────────────────────────────
+        trailing: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: statusBackground,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: statusColor.withOpacity(0.4)),
+          ),
+          child: Text(
+            record.status.toUpperCase(),
+            style: TextStyle(
+              color: statusColor,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="history_service.dart">
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA MODEL
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Represents a single medicine dosage check saved to local history.
+class HistoryRecord {
+  final String medicineName;
+  final String dose;
+  final String status; // "SAFE" | "UNSAFE"
+  final DateTime timestamp;
+
+  const HistoryRecord({
+    required this.medicineName,
+    required this.dose,
+    required this.status,
+    required this.timestamp,
+  });
+
+  // ── Serialisation ──────────────────────────────────────────────────────────
+
+  /// Converts this record to a JSON-encodable map.
+  Map<String, dynamic> toJson() => {
+        'medicine_name': medicineName,
+        'dose': dose,
+        'status': status,
+        'timestamp': timestamp.toIso8601String(),
+      };
+
+  /// Reconstructs a [HistoryRecord] from a JSON map.
+  factory HistoryRecord.fromJson(Map<String, dynamic> json) => HistoryRecord(
+        medicineName: json['medicine_name'] as String,
+        dose: json['dose'] as String,
+        status: json['status'] as String,
+        timestamp: DateTime.parse(json['timestamp'] as String),
+      );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SERVICE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Manages the "Recent Checks" history using [SharedPreferences].
+///
+/// All records older than [_expirationDays] days are automatically purged
+/// every time history is read or written.
+class HistoryService {
+  // The SharedPreferences key under which the list is stored.
+  static const String _storageKey = 'medicine_check_history';
+
+  // Maximum age (in days) a record is kept before being discarded.
+  static const int _expirationDays = 30;
+
+  // ── Public API ─────────────────────────────────────────────────────────────
+
+  /// Saves a new dosage-check result to local history.
+  ///
+  /// Call this from your result screen after a check completes:
+  /// ```dart
+  /// await HistoryService().saveCheckToHistory(
+  ///   name:   'Paracetamol 500mg',
+  ///   dose:   '2 tablets',
+  ///   status: 'SAFE',
+  /// );
+  /// ```
+  Future<void> saveCheckToHistory({
+    required String name,
+    required String dose,
+    required String status,
+  }) async {
+    final record = HistoryRecord(
+      medicineName: name,
+      dose: dose,
+      status: status,
+      timestamp: DateTime.now(),
+    );
+
+    final history = await _loadRaw();
+    history.insert(0, record); // newest first
+    await _persist(_removeExpired(history));
+  }
+
+  /// Loads history from storage, automatically removing any expired records.
+  ///
+  /// Returns records sorted newest-first.
+  Future<List<HistoryRecord>> getHistory() async {
+    final history = _removeExpired(await _loadRaw());
+    // Persist the cleaned-up list so expired entries don't linger on disk.
+    await _persist(history);
+    return history;
+  }
+
+  /// Permanently deletes all saved history records.
+  Future<void> clearHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_storageKey);
+  }
+
+  // ── Private helpers ────────────────────────────────────────────────────────
+
+  /// Reads the raw JSON string list from SharedPreferences and deserialises it.
+  Future<List<HistoryRecord>> _loadRaw() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = prefs.getStringList(_storageKey) ?? [];
+
+    // Silently skip any malformed entries to avoid crashes.
+    return jsonList.fold<List<HistoryRecord>>([], (acc, jsonStr) {
+      try {
+        acc.add(HistoryRecord.fromJson(
+          jsonDecode(jsonStr) as Map<String, dynamic>,
+        ));
+      } catch (_) {
+        // Corrupted entry — discard it.
+      }
+      return acc;
+    });
+  }
+
+  /// Serialises [records] and writes them back to SharedPreferences.
+  Future<void> _persist(List<HistoryRecord> records) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = records.map((r) => jsonEncode(r.toJson())).toList();
+    await prefs.setStringList(_storageKey, jsonList);
+  }
+
+  /// Returns a new list containing only records that are ≤ [_expirationDays] old.
+  List<HistoryRecord> _removeExpired(List<HistoryRecord> records) {
+    final cutoff = DateTime.now().subtract(
+      const Duration(days: _expirationDays),
+    );
+    return records.where((r) => r.timestamp.isAfter(cutoff)).toList();
+  }
+}
+</file>
+
+<file path="landing_page.dart">
+// ignore_for_file: deprecated_member_use
+
+import 'package:flutter/material.dart';
+import 'SIgnup_Login.dart';       // Make sure path is correct
+import 'dashboard_page.dart';     // Make sure path is correct
+
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1600),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isNarrow = size.width < 420;
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color.fromARGB(255, 166, 214, 240),
+              Color(0xFFF8FCFF),
+            ],
+            stops: [0.0, 0.3, 0.6, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Positioned(
+                top: -60,
+                left: 0,
+                right: 0,
+                height: 340,
+                child: Opacity(
+                  opacity: 0.08,
+                  child: CustomPaint(painter: SoftWavePainter()),
+                ),
+              ),
+
+              CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(child: SizedBox(height: 90)),
+
+                  SliverToBoxAdapter(
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: _buildHeroImage(context, isNarrow),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(child: SizedBox(height: 48)),
+
+                  SliverToBoxAdapter(
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: _buildHeroContent(context, isNarrow),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(child: SizedBox(height: 80)),
+
+                  SliverToBoxAdapter(
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: _buildFeaturesSection(context, isNarrow),
+                    ),
+                  ),
+                  SliverToBoxAdapter(child: SizedBox(height: 90)),
+                  SliverToBoxAdapter(
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: _buildGetStartedSection(context, isNarrow),
+                    ),
+                  ),
+                  SliverToBoxAdapter(child: SizedBox(height: 120)),
+                  SliverToBoxAdapter(child: _buildFooter(context)),
+                ],
+              ),
+
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: _buildTopBar(context, isNarrow),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopBar(BuildContext context, bool isNarrow) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 98, 165, 242).withOpacity(0.82),
+        border: Border(
+          bottom: BorderSide(color:const Color.fromARGB(255, 98, 165, 242), width: 1),
+        ),
+      ),
+      padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'PrescriptSense',
+            style: TextStyle(
+              fontSize: isNarrow ? 28 : 34,
+              fontWeight: FontWeight.w700,
+              color: const Color.fromARGB(255, 247, 249, 255),
+              letterSpacing: 0.3,
+            ),
+          ),
+          OutlinedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginPage(
+                    isDark: false,
+                    onToggleTheme: () {},
+                  ),
+                ),
+              );
+            },
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 245, 246, 249),
+              side: const BorderSide(color: Color.fromARGB(255, 235, 236, 238), width: 2),
+              padding: EdgeInsets.symmetric(
+                horizontal: isNarrow ? 24 : 32,
+                vertical: 14,
+              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              minimumSize: const Size(160, 54),
+            ),
+            child: Text(
+              'Sign In / Join',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroImage(BuildContext context, bool isNarrow) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final desiredMaxHeight = screenHeight * 0.46;
+    final safeMinHeight = (isNarrow ? 260 : 320).toDouble();
+    final effectiveMinHeight = safeMinHeight.clamp(0.0, desiredMaxHeight);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: desiredMaxHeight,
+            minHeight: effectiveMinHeight,
+          ),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF93C5FD).withOpacity(0.16),
+                blurRadius: 22,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Image.asset(
+            'assets/image/stethoscope_blue.jpg',
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Icon(
+                  Icons.medical_services_rounded,
+                  size: 110,
+                  color: const Color(0xFF93C5FD),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroContent(BuildContext context, bool isNarrow) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28),
+      child: Column(
+        children: [
+          Text(
+            'Peace of Mind with Every Medicine',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: isNarrow ? 28:32,
+              fontWeight: FontWeight.w800,
+              color: const Color.fromARGB(255, 97, 149, 227),
+              height: 1.14,
+              letterSpacing: -0.4,
+            ),
+          ),
+          const SizedBox(height: 28),
+          Text(
+            'We turn hard-to-read handwritten prescriptions into clear text.\n'
+            'Listen to your plan. Get gentle reminders.\n'
+            'Feel safer and more confident every day.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: isNarrow ? 14:17,
+              height: 1.60,
+              color: const Color(0xFF475569),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 56),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.arrow_downward_rounded, size: 24),
+            label: const Text('See How It Helps You'),
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF3B82F6),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 2,
+              minimumSize: const Size(260, 64),
+              textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeaturesSection(BuildContext context, bool isNarrow) {
+    final features = [
+      {
+        'icon': Icons.document_scanner_outlined,
+        'title': 'Easy Prescription Scan',
+        'desc': 'Take a photo — we read the handwriting carefully and show you clear text.',
+        'color': const Color(0xFF2563EB),
+      },
+      {
+        'icon': Icons.record_voice_over_outlined,
+        'title': 'Voice That Reads Aloud',
+        'desc': 'Clear voice readout of medicine times and instructions — very helpful.',
+        'color': const Color(0xFF7C3AED),
+      },
+      {
+        'icon': Icons.notifications_none_rounded,
+        'title': 'Gentle Reminders',
+        'desc': 'Friendly, calm notifications so you never miss a dose.',
+        'color': const Color(0xFF0EA5E9),
+      },
+      {
+        'icon': Icons.verified_user_outlined,
+        'title': 'Safety Support',
+        'desc': 'Gentle warnings if we detect possible medicine concerns.',
+        'color': const Color(0xFF059669),
+      },
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          Text(
+            'Features Made for You',
+            style: TextStyle(
+              fontSize: isNarrow ? 26:36,
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFF0F172A),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Simple • Clear • Caring',
+            style: TextStyle(
+              fontSize: 21,
+              color: const Color(0xFF64748B),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 48),
+          ...features.map((f) => Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: _buildFeatureCard(
+                  icon: f['icon'] as IconData,
+                  title: f['title'] as String,
+                  description: f['desc'] as String,
+                  accentColor: f['color'] as Color,
+                  isNarrow: isNarrow,
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color accentColor,
+    required bool isNarrow,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: accentColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(icon, size: 38, color: accentColor),
+          ),
+          const SizedBox(width: 24),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: isNarrow ? 18 : 20,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF1E293B),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: isNarrow ? 18 : 20,
+                    height: 1.55,
+                    color: const Color(0xFF475569),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGetStartedSection(BuildContext context, bool isNarrow) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28),
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DashboardPage()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2563EB),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 22),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 3,
+              minimumSize: const Size(300, 70),
+              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+            child: const Text('Start Today – It’s Free'),
+          ),
+          const SizedBox(height: 28),
+          Text(
+            'No payment • Very easy to start • Always here to help',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: const Color(0xFF64748B),
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(32, 56, 32, 56),
+      color: const Color(0xFF0F172A),
+      child: Column(
+        children: [
+          Text(
+            '© A Software Development Project by IUT',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.92),
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Helping you take your medicines calmly and safely every day',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.80),
+              fontSize: 16,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Made with care by Team 404',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.65),
+              fontSize: 15,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SoftWavePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFFBFDBFE)
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    path.moveTo(0, size.height * 0.50);
+    path.quadraticBezierTo(
+      size.width * 0.25,
+      size.height * 0.25,
+      size.width * 0.50,
+      size.height * 0.48,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.75,
+      size.height * 0.70,
+      size.width,
+      size.height * 0.40,
+    );
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+</file>
+
+<file path="main.dart">
+import 'package:flutter/material.dart';
+import 'auth_service.dart';
+import 'landing_page.dart';
+import 'dashboard_page.dart';
+
+void main() async {
+  // Ensure Flutter binding is initialized before calling async code
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Check auth status before app starts
+  final authService = AuthService();
+  final bool isLoggedIn = await authService.isLoggedIn();
+
+  runApp(PrescriptSenseApp(initialRoute: isLoggedIn));
+}
+
+class PrescriptSenseApp extends StatelessWidget {
+  final bool initialRoute;
+
+  const PrescriptSenseApp({super.key, required this.initialRoute});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PrescriptSense',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // ... (Keep your existing Light Theme) ...
+        primaryColor: const Color(0xFF4A90E2),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4A90E2),
+          primary: const Color(0xFF4A90E2),
+          secondary: const Color(0xFFA17CF5),
+          tertiary: const Color(0xFF4FF1D0),
+          background: const Color(0xFFF7F9FC),
+          surface: const Color(0xFFE5E7EB),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF4A90E2),
+          foregroundColor: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
+      // ... (Keep your existing Dark Theme) ...
+      
+      themeMode: ThemeMode.light,
+      
+      // ROUTING LOGIC:
+      // If logged in, go to Dashboard. If not, go to Landing Page.
+      home: initialRoute ? const DashboardPage() : const LandingPage(),
+    );
+  }
+}
+</file>
+
+<file path="medicine_checker_page.dart">
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+class MedicineCheckerPage extends StatefulWidget {
+  const MedicineCheckerPage({super.key});
+
+  @override
+  State<MedicineCheckerPage> createState() => _MedicineCheckerPageState();
+}
+
+class _MedicineCheckerPageState extends State<MedicineCheckerPage> {
+  final ImagePicker _picker = ImagePicker();
+  String _extractedText = "";
+
+  Future<void> _pickImage() async {
+    final source = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Select Image Source"),
+        content: const Text(
+          "Choose Camera or Gallery to upload medicine image",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            child: const Text("Camera"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            child: const Text("Gallery"),
+          ),
+        ],
+      ),
+    );
+
+    if (source == null) return;
+
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image == null) return;
+
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+    final recognizedText = await textRecognizer.processImage(inputImage);
+    await textRecognizer.close();
+
+    setState(() {
+      _extractedText = recognizedText.text.isEmpty
+          ? "No text detected."
+          : recognizedText.text;
+    });
+
+    _showTextDialog(_extractedText);
+  }
+
+  void _showTextDialog(String text) {
+    final TextEditingController textController = TextEditingController(
+      text: text,
+    );
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Extracted Medicine Text"),
+        content: SingleChildScrollView(
+          child: TextField(
+            controller: textController,
+            maxLines: null,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Edit or review text",
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Close"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Medicine Checker"), centerTitle: true),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color(0xFFF8FCFF),
+              Color.fromARGB(255, 166, 214, 240),
+            ],
+            stops: [0.0, 0.3, 0.6, 1.0],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// 🔹 IMAGE INSTEAD OF ICON
+                Container(
+                  height: 250,
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/image/medicine_checker.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                ElevatedButton.icon(
+                  onPressed: _pickImage,
+                  icon: const Icon(Icons.camera_alt),
+                  label: const Text("Scan Medicine"),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 36,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                OutlinedButton.icon(
+                  onPressed: _pickImage,
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text("Upload from Gallery"),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="medicine_list_page.dart">
+import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'database_helper.dart';
+
+class MedicineListPage extends StatefulWidget {
+  const MedicineListPage({super.key});
+
+  @override
+  State<MedicineListPage> createState() => _MedicineListPageState();
+}
+
+class _MedicineListPageState extends State<MedicineListPage> {
+  List<Map<String, dynamic>> _medicines = [];
+  bool _isLoading = true;
+  final TextEditingController _searchController = TextEditingController();
+
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  bool _speechEnabled = false;
+
+  final Color _primaryColor = const Color(0xFF1E3A8A);
+  final Color _accentColor = const Color(0xFF3B82F6);
+  final Color _warningColor = const Color(0xFFD97706);
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshMedicineList();
+    _initSpeech();
+  }
+
+  void _initSpeech() async {
+    _speech = stt.SpeechToText();
+    _speechEnabled = await _speech.initialize(
+      onStatus: (status) => print('Speech Status: $status'),
+      onError: (error) => print('Speech Error: $error'),
+    );
+    setState(() {});
+  }
+
+  void _startListening() async {
+    if (!_speechEnabled) return;
+    await _speech.listen(onResult: (result) {
+      setState(() {
+        _searchController.text = result.recognizedWords;
+        _searchMedicines(result.recognizedWords);
+      });
+    });
+    setState(() => _isListening = true);
+  }
+
+  void _stopListening() async {
+    await _speech.stop();
+    setState(() => _isListening = false);
+  }
+
+  void _refreshMedicineList() async {
+    final data = await DatabaseHelper().getAllMedicines();
+    setState(() {
+      _medicines = data;
+      _isLoading = false;
+    });
+  }
+
+  void _searchMedicines(String query) async {
+    final data = await DatabaseHelper().searchMedicines(query);
+    setState(() => _medicines = data);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFF),
+      appBar: AppBar(
+        title: const Text('Medicine Database'),
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // Search bar
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: _primaryColor,
+            child: TextField(
+              controller: _searchController,
+              onChanged: _searchMedicines,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: _isListening ? 'Listening...' : 'Search medicines...',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                prefixIcon: const Icon(Icons.search, color: Colors.white),
+                suffixIcon: IconButton(
+                  onPressed: _isListening ? _stopListening : _startListening,
+                  icon: Icon(
+                    _isListening ? Icons.mic : Icons.mic_none,
+                    color: _isListening ? Colors.redAccent : Colors.white,
+                    size: 28,
+                  ),
+                ),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              ),
+            ),
+          ),
+
+          // Medicine List
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _medicines.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.medication_outlined,
+                                size: 60, color: Colors.grey[400]),
+                            const SizedBox(height: 10),
+                            Text("No medicines found",
+                                style: TextStyle(
+                                    color: Colors.grey[600], fontSize: 16)),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: _medicines.length,
+                        itemBuilder: (context, index) =>
+                            _buildMedicineCard(_medicines[index]),
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMedicineCard(Map<String, dynamic> medicine) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shadowColor: _accentColor.withOpacity(0.2),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Generic Name
+            Text(
+              medicine['generic_name'] ?? "Unnamed",
+              style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold, color: _primaryColor),
+            ),
+            const SizedBox(height: 12),
+
+            // Always visible info boxes
+            Wrap(
+              spacing: 16,
+              runSpacing: 8,
+              children: [
+                _infoChip("Adult Dosage", medicine['dosage_adult'] ?? "N/A", Colors.blue),
+                _infoChip("Child Dosage", medicine['dosage_child'] ?? "N/A", Colors.teal),
+                _infoChip("Cautions", medicine['cautions'] ?? "N/A", _warningColor),
+                _infoChip("Price", medicine['price'] ?? "N/A", Colors.green),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // ExpansionTile for extra info
+            ExpansionTile(
+              title: const Text(
+                "More Info",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              children: [
+                _extraInfoRow(
+                    icon: Icons.medical_services_outlined,
+                    label: "Common Brands",
+                    value: medicine['brand_names_bd'] ?? "N/A",
+                    color: _accentColor),
+                _extraInfoRow(
+                    icon: Icons.warning_amber_outlined,
+                    label: "Side Effects",
+                    value: medicine['side_effects'] ?? "N/A",
+                    color: Colors.orange),
+                _extraInfoRow(
+                    icon: Icons.pregnant_woman_outlined,
+                    label: "Pregnancy Risk",
+                    value: medicine['pregnancy_risk'] ?? "N/A",
+                    color: Colors.pink),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _infoChip(String label, String value, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: RichText(
+        text: TextSpan(
+          text: "$label: ",
+          style: TextStyle(fontWeight: FontWeight.bold, color: color),
+          children: [
+            TextSpan(
+              text: value,
+              style: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _extraInfoRow(
+      {required IconData icon,
+      required String label,
+      required String value,
+      required Color color}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text("$label: $value",
+                style: const TextStyle(fontSize: 14, color: Colors.black87)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="medicine.sql">
+-- Table for storing medicine data
+CREATE TABLE medicines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    generic_name VARCHAR(255),
+    dosage_form VARCHAR(255),
+    strength VARCHAR(255),
+    manufacturer VARCHAR(255),
+    unit_price DECIMAL(10,2),
+    strip_price DECIMAL(10,2),
+    indications TEXT,
+    pharmacology TEXT,
+    dosage_administration TEXT,
+    contraindications TEXT,
+    side_effects TEXT,
+    precautions_warnings TEXT,
+    therapeutic_class VARCHAR(255),
+    storage_conditions TEXT
+);
+
+-- Sample data insertion
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('Napa Tablet', 'Paracetamol', 'Tablet', NULL, 'Beximco Pharmaceuticals Ltd.', 1.20, 12.00,
+'Used as antipyretic (fever reducer) and analgesic (pain reliever)',
+'Paracetamol works by inhibiting prostaglandin synthesis, reducing fever and pain.',
+'Adult: 1-2 tablets every 4-6 hours up to 4g daily. Children: 1/2 to 1 tablet 3-4 times daily. See full dosage for syrup, suppository, IV infusion.',
+NULL,
+NULL,
+NULL,
+'Analgesic, Antipyretic',
+'Store below 30°C, away from light and moisture.');
+
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('Ace Tablet', 'Paracetamol', 'Tablet', NULL, 'Square Pharmaceuticals PLC', 1.20, 12.00,
+'Used as antipyretic and analgesic',
+'Paracetamol reduces pain and fever by inhibiting prostaglandins.',
+'Adult: 1-2 tablets every 4-6 hours up to 4g daily. Children: 1/2 to 1 tablet 3-4 times daily. See full dosage for syrup, suppository, IV infusion.',
+NULL,
+NULL,
+NULL,
+'Analgesic, Antipyretic',
+'Store below 30°C, away from light and moisture.');
+
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('Brexpa Tablet', 'Brexpiprazole', 'Tablet', '1 mg', 'Renata PLC', 15.00, 150.00,
+'Adjunctive treatment of major depressive disorder and schizophrenia',
+'Acts as partial agonist at 5-HT1A and D2 receptors and antagonist at 5-HT2A receptors.',
+'Start with 0.5-1 mg once daily for depression, titrate to 2 mg. For schizophrenia start 1 mg, titrate to 2-4 mg daily.',
+'Hypersensitivity to brexpiprazole',
+'Extrapyramidal symptoms, akathisia, suicidality, QT prolongation, weight gain, nausea',
+'Caution in elderly, hepatic/renal impairment, pregnancy, metabolic changes, compulsive behaviors',
+'Benzodiazepine antagonist',
+'Do not store above 30°C, keep away from light and moisture.');
+
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('Mirakof Syrup', 'Butamirate Citrate', 'Syrup', '7.5 mg/5 ml', 'Square Pharmaceuticals PLC', 80.24, NULL,
+'Relieves dry (non-productive) cough',
+'Acts on brain cough center to suppress cough, non-sedating',
+'Adults: 15 ml 4 times daily. Children: 5-15 ml depending on age. See full dosage for tablet/drops.',
+'Hypersensitivity to active ingredient',
+'Rash, nausea, diarrhoea, vertigo',
+'Avoid concomitant use with expectorants, caution in pregnancy and breastfeeding',
+'Cough suppressant',
+'Store below 30°C, keep away from light and moisture.');
+
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('Askorel SR Tablet', 'Butamirate Citrate', 'SR Tablet', '50 mg', 'Incepta Pharmaceuticals Ltd.', 10.00, 100.00,
+'Relieves dry (non-productive) cough',
+'Acts on brain cough center to suppress cough, non-sedating',
+'Adults: 2-3 tablets daily. Children: 0.5-15 ml syrup depending on age. See full dosage for pediatric drops.',
+'Hypersensitivity to active ingredient',
+'Rash, nausea, diarrhoea, vertigo',
+'Avoid concomitant use with expectorants, caution in pregnancy and breastfeeding',
+'Cough suppressant',
+'Store below 30°C, keep away from light and moisture.');
+
+INSERT INTO medicines 
+(name, generic_name, dosage_form, strength, manufacturer, unit_price, strip_price, indications, pharmacology, dosage_administration, contraindications, side_effects, precautions_warnings, therapeutic_class, storage_conditions)
+VALUES
+('G-Omeprazole Capsule', 'Omeprazole', 'Capsule (Enteric Coated)', '20 mg', 'Gonoshasthaya Pharma Ltd.', 3.45, 34.50,
+'Treatment of gastric and duodenal ulcers, GERD, acid-related dyspepsia, Zollinger-Ellison syndrome, H. pylori eradication',
+'Inhibits gastric acid secretion by blocking H+/K+ ATPase in parietal cells',
+'Oral: 10-60 mg daily depending on condition. IV: 40-60 mg for prophylaxis or treatment. See full instructions for IV infusion.',
+'Hypersensitivity to Omeprazole',
+'Mild rash, urticaria, pruritus, constipation, nausea/vomiting, headache',
+'Avoid concomitant use with clopidogrel, caution in pregnancy, osteoporosis risk, methotrexate toxicity',
+'Proton Pump Inhibitor',
+'Store in dry place, away from light and heat.');
+</file>
+
+<file path="ocr_service.dart">
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+class OcrService {
+  // 1. Create the recognizer instance (Latin script for English)
+  final _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+
+  /// Processes an image path and returns the extracted text as a String.
+  Future<String> processImage(String imagePath) async {
+    try {
+      final inputImage = InputImage.fromFilePath(imagePath);
+      final RecognizedText recognizedText = await _textRecognizer.processImage(
+        inputImage,
+      );
+      return recognizedText.text;
+    } catch (e) {
+      return "Error processing image: $e";
+    }
+  }
+
+  /// MUST call this when the app is closing or the service is no longer needed
+  /// to free up native resources.
+  void dispose() {
+    _textRecognizer.close();
+  }
+}
+</file>
+
+<file path="prescription_result_page.dart">
+import 'package:flutter/material.dart';
+import 'ocr_service.dart'; // Import the service
+
+class PrescriptionResultPage extends StatefulWidget {
+  final String imagePath; // Receive the image path
+
+  const PrescriptionResultPage({super.key, required this.imagePath});
+
+  @override
+  State<PrescriptionResultPage> createState() => _PrescriptionResultPageState();
+}
+
+class _PrescriptionResultPageState extends State<PrescriptionResultPage> {
+  final OcrService _ocrService = OcrService();
+  final TextEditingController _textController = TextEditingController();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _analyzeImage();
+  }
+
+  @override
+  void dispose() {
+    _ocrService.dispose(); // Clean up ML Kit resources
+    _textController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _analyzeImage() async {
+    // Run the OCR
+    final text = await _ocrService.processImage(widget.imagePath);
+
+    if (mounted) {
+      setState(() {
+        _textController.text = text;
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('Prescription Result'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF4A90E2), Colors.transparent],
+            ),
+          ),
+        ),
+      ),
+      body: Container(
+        height: double.infinity, // Ensure background covers full height
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFF5F7FA), Color(0xFFE8EEF5)],
+          ),
+        ),
+        child: SafeArea(
+          child: _isLoading
+              ? const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      Text("Analyzing Prescription..."),
+                    ],
+                  ),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ---------------- Editable Text Section ----------------
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            'Extracted Text',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4A90E2),
+                            ),
+                          ),
+                          Icon(Icons.edit_note, color: Color(0xFF4A90E2)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // The Editable Text Box
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.blue.withOpacity(0.3),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _textController,
+                          maxLines: null, // Allows infinite vertical expansion
+                          keyboardType: TextInputType.multiline,
+                          style: const TextStyle(fontSize: 16, height: 1.5),
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "No text detected. Try scanning again.",
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // ---------------- Action Buttons ----------------
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                // Logic to Copy to Clipboard can go here
+                                // Clipboard.setData(ClipboardData(text: _textController.text));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Copied to Clipboard!'),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.copy),
+                              label: const Text("Copy Text"),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                // Save logic placeholder
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Changes Saved!'),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.check),
+                              label: const Text("Save Edits"),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                backgroundColor: const Color(0xFF4A90E2),
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="prescription_scanner_page.dart">
+import 'package:flutter/material.dart';
+
+class PrescriptionScannerPage extends StatelessWidget {
+  const PrescriptionScannerPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan Prescription'),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              Theme.of(context).scaffoldBackgroundColor,
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Scanner Frame
+            Container(
+              height: 320,
+              width: 260,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Corner accents
+                  _scannerCorner(Alignment.topLeft),
+                  _scannerCorner(Alignment.topRight),
+                  _scannerCorner(Alignment.bottomLeft),
+                  _scannerCorner(Alignment.bottomRight),
+
+                  // Scan icon
+                  const Center(
+                    child: Icon(
+                      Icons.document_scanner_outlined,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Instruction
+            const Text(
+              'Align prescription inside the frame',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Make sure the text is clear and well-lit for accurate AI analysis.',
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 40),
+
+            // Scan button
+            ElevatedButton.icon(
+              onPressed: () {
+                // Camera scan placeholder
+              },
+              icon: const Icon(Icons.camera_alt),
+              label: const Text('Scan Now'),
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Gallery button
+            TextButton.icon(
+              onPressed: () {
+                // Gallery placeholder
+              },
+              icon: const Icon(Icons.photo_library),
+              label: const Text('Upload from Gallery'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _scannerCorner(Alignment alignment) {
+    return Align(
+      alignment: alignment,
+      child: Container(
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          border: Border(
+            top: alignment == Alignment.topLeft ||
+                    alignment == Alignment.topRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            bottom: alignment == Alignment.bottomLeft ||
+                    alignment == Alignment.bottomRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            left: alignment == Alignment.topLeft ||
+                    alignment == Alignment.bottomLeft
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+            right: alignment == Alignment.topRight ||
+                    alignment == Alignment.bottomRight
+                ? const BorderSide(color: Colors.blue, width: 3)
+                : BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="prescription_upload_page.dart">
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'prescription_result_page.dart';
+import 'dashboard_page.dart';
+
+class PrescriptionUploadPage extends StatefulWidget {
+  const PrescriptionUploadPage({super.key});
+
+  @override
+  State<PrescriptionUploadPage> createState() => _PrescriptionUploadPageState();
+}
+
+class _PrescriptionUploadPageState extends State<PrescriptionUploadPage> {
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to pick image: $e')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Upload Prescription'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const DashboardPage()),
+            );
+          },
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color(0xFFF8FCFF),
+              Color.fromARGB(255, 166, 214, 240),
+            ],
+            stops: [0.0, 0.3, 0.6, 1.0],
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _selectedImage != null
+                    ? Container(
+                        height: 300,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blueAccent),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(_selectedImage!, fit: BoxFit.cover),
+                        ),
+                      )
+                    : Container(
+    height: MediaQuery.of(context).size.height * 0.25,
+    width: MediaQuery.of(context).size.width * 0.6,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: Image.asset(
+      'assets/image/upload_prescription.png',
+      fit: BoxFit.contain,
+    ),
+  ),
+
+
+                const SizedBox(height: 20),
+
+                Text(
+                  _selectedImage != null
+                      ? 'Prescription Selected'
+                      : 'Upload your prescription image',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 10),
+
+                if (_selectedImage == null)
+                  const Text(
+                    'Our app will read, analyze, and check safety issues.',
+                    textAlign: TextAlign.center,
+                  ),
+
+                const SizedBox(height: 40),
+
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.camera_alt),
+                  label: const Text('Take Photo'),
+                  onPressed: () => _pickImage(ImageSource.camera),
+                ),
+
+                const SizedBox(height: 15),
+
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text('Choose from Gallery'),
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                ),
+
+                const SizedBox(height: 30),
+
+                ElevatedButton(
+                  onPressed: _selectedImage == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrescriptionResultPage(
+                                imagePath: _selectedImage!.path,
+                              ),
+                            ),
+                          );
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _selectedImage == null ? Colors.grey : null,
+                  ),
+                  child: const Text('Analyze Prescription'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="profile_page.dart">
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'auth_service.dart';
+import 'landing_page.dart'; // Needed for Logout navigation
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final AuthService _authService = AuthService();
+
+  // State Variables
+  String _name = "Loading...";
+  String _email = "Loading...";
+  String? _imagePath;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  // 1. Load Data from Storage
+  Future<void> _loadUserData() async {
+    final name = await _authService.getUserName();
+    final email = await _authService.getUserEmail();
+    final imagePath = await _authService.getProfileImagePath();
+
+    if (mounted) {
+      setState(() {
+        _name = name ?? "User";
+        _email = email ?? "No Email";
+        _imagePath = imagePath;
+        _isLoading = false;
+      });
+    }
+  }
+
+  // 2. Pick and Save Image
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    // Show modal to ask Camera or Gallery
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Photo Library'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final XFile? image = await picker.pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (image != null) _saveImage(image.path);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: const Text('Camera'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final XFile? image = await picker.pickImage(
+                  source: ImageSource.camera,
+                );
+                if (image != null) _saveImage(image.path);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveImage(String path) async {
+    await _authService.updateProfile(imagePath: path);
+    setState(() {
+      _imagePath = path;
+    });
+  }
+
+  // 3. Edit Profile Dialog
+  void _showEditDialog() {
+    final nameController = TextEditingController(text: _name);
+    final emailController = TextEditingController(text: _email);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Profile'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Full Name",
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+                prefixIcon: Icon(Icons.email),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // Save changes
+              await _authService.updateProfile(
+                name: nameController.text,
+                email: emailController.text,
+              );
+              // Update UI
+              setState(() {
+                _name = nameController.text;
+                _email = emailController.text;
+              });
+              if (mounted) Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 4. Logout Logic
+  void _handleLogout() async {
+    await _authService.logout();
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LandingPage()),
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        backgroundColor: Colors.transparent, // Clean look
+        elevation: 0,
+        foregroundColor: Theme.of(context).primaryColor,
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+
+                  // --- Profile Picture Section ---
+                  Center(
+                    child: Stack(
+                      children: [
+                        // The Image Avatar
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.blue.shade100,
+                              width: 4,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 70,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: _imagePath != null
+                                ? FileImage(File(_imagePath!))
+                                : null,
+                            child: _imagePath == null
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 80,
+                                    color: Colors.grey,
+                                  )
+                                : null,
+                          ),
+                        ),
+                        // The Edit Icon Badge
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: _pickImage,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // --- User Details ---
+                  Text(
+                    _name,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _email,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // --- Action Buttons ---
+
+                  // Edit Profile
+                  ListTile(
+                    onTap: _showEditDialog,
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.edit, color: Colors.blue),
+                    ),
+                    title: const Text(
+                      "Edit Profile Details",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Settings (Placeholder navigation)
+                  ListTile(
+                    onTap: () {
+                      // Navigate to Settings Page if you have one
+                    },
+                    tileColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.settings, color: Colors.purple),
+                    ),
+                    title: const Text(
+                      "App Settings",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Logout Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _handleLogout,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red[50],
+                        foregroundColor: Colors.red,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      icon: const Icon(Icons.logout),
+                      label: const Text("Log Out"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
+  }
+}
+</file>
+
+<file path="reminder_list_page.dart">
+import 'package:flutter/material.dart';
+import 'reminder_service.dart';
+import 'reminder_setup_page.dart';
+
+class ReminderListPage extends StatefulWidget {
+  const ReminderListPage({super.key});
+
+  @override
+  State<ReminderListPage> createState() => _ReminderListPageState();
+}
+
+class _ReminderListPageState extends State<ReminderListPage> {
+  final ReminderService _reminderService = ReminderService();
+  List<Reminder> _reminders = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReminders();
+  }
+
+  Future<void> _loadReminders() async {
+    final list = await _reminderService.getReminders();
+    setState(() {
+      _reminders = list;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _deleteReminder(String id) async {
+    await _reminderService.deleteReminder(id);
+    _loadReminders(); // Refresh list
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Reminders')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ReminderSetupPage()),
+          );
+          if (result == true) _loadReminders();
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color(0xFFF8FCFF),
+              Color.fromARGB(255, 166, 214, 240),
+            ],
+          ),
+        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _reminders.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/image/reminder.png",
+                          width: 250,
+                          height: 250,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.error, size: 50, color: Colors.red);
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'No reminders set yet',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _reminders.length,
+                    itemBuilder: (context, index) {
+                      final reminder = _reminders[index];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 2,
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.blue.withOpacity(0.1),
+                            radius: 28,
+                            child: const Icon(Icons.alarm, color: Colors.blue, size: 28),
+                          ),
+                          title: Text(
+                            reminder.medicineName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 4),
+                              Text(
+                                "${reminder.formattedTime} • ${reminder.formattedDays}",
+                                style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontSize: 14,
+                                ),
+                              ),
+                              if (reminder.formattedPeriod != 'No date limit') ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  reminder.formattedPeriod,
+                                  style: TextStyle(
+                                    color: Colors.blueGrey[700],
+                                    fontSize: 13,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                              size: 26,
+                            ),
+                            onPressed: () => _deleteReminder(reminder.id),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="reminder_service.dart">
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// 1. The Data Model
+class Reminder {
+  final String id;
+  final String medicineName;
+  final int hour;
+  final int minute;
+  final List<int> repeatDays; // 1 = Monday, 2 = Tuesday, ..., 7 = Sunday. Empty = one-time only
+  final int? startDate;       // millisecondsSinceEpoch (optional)
+  final int? endDate;         // millisecondsSinceEpoch (optional)
+
+  Reminder({
+    required this.id,
+    required this.medicineName,
+    required this.hour,
+    required this.minute,
+    this.repeatDays = const [],
+    this.startDate,
+    this.endDate,
+  });
+
+  // Convert object to JSON map for storage
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'medicineName': medicineName,
+        'hour': hour,
+        'minute': minute,
+        'repeatDays': repeatDays,
+        if (startDate != null) 'startDate': startDate,
+        if (endDate != null) 'endDate': endDate,
+      };
+
+  // Create object from JSON map
+  factory Reminder.fromJson(Map<String, dynamic> json) => Reminder(
+        id: json['id'] as String,
+        medicineName: json['medicineName'] as String,
+        hour: json['hour'] as int,
+        minute: json['minute'] as int,
+        repeatDays: (json['repeatDays'] as List<dynamic>?)?.cast<int>() ?? [],
+        startDate: json['startDate'] as int?,
+        endDate: json['endDate'] as int?,
+      );
+
+  // Helper to format time nicely (e.g., "8:05 AM")
+  String get formattedTime {
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final h = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+    final m = minute.toString().padLeft(2, '0');
+    return '$h:$m $period';
+  }
+
+  // Nice formatting for repeat days
+  String get formattedDays {
+    if (repeatDays.isEmpty) return 'Once only';
+    if (repeatDays.length == 7) return 'Every day';
+
+    const dayNames = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final names = repeatDays.map((d) => dayNames[d]).where((n) => n.isNotEmpty).toList();
+
+    return names.isEmpty ? 'Once only' : names.join(', ');
+  }
+
+  // New: Formatting for the active date period
+  String get formattedPeriod {
+    if (startDate == null && endDate == null) {
+      return 'No date limit';
+    }
+
+    String result = '';
+
+    if (startDate != null) {
+      final start = DateTime.fromMillisecondsSinceEpoch(startDate!);
+      result += 'From ${start.day} ${_shortMonth(start.month)} ${start.year}';
+    }
+
+    if (endDate != null) {
+      final end = DateTime.fromMillisecondsSinceEpoch(endDate!);
+      if (result.isNotEmpty) {
+        result += '  •  ';
+      }
+      result += 'Until ${end.day} ${_shortMonth(end.month)} ${end.year}';
+    }
+
+    return result.isEmpty ? 'No date limit' : result;
+  }
+
+  String _shortMonth(int m) {
+    const months = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return months[m];
+  }
+}
+
+// 2. The Service (The Vault)
+class ReminderService {
+  static const String _storageKey = 'saved_reminders';
+
+  // Get all reminders
+  Future<List<Reminder>> getReminders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? data = prefs.getString(_storageKey);
+    if (data == null) return [];
+
+    final List<dynamic> decoded = jsonDecode(data);
+    return decoded.map((item) => Reminder.fromJson(item as Map<String, dynamic>)).toList();
+  }
+
+  // Add a new reminder
+  Future<void> addReminder(Reminder reminder) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Reminder> currentList = await getReminders();
+
+    currentList.add(reminder);
+
+    final String encoded = jsonEncode(
+      currentList.map((e) => e.toJson()).toList(),
+    );
+    await prefs.setString(_storageKey, encoded);
+  }
+
+  // Delete a reminder
+  Future<void> deleteReminder(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Reminder> currentList = await getReminders();
+
+    currentList.removeWhere((item) => item.id == id);
+
+    final String encoded = jsonEncode(
+      currentList.map((e) => e.toJson()).toList(),
+    );
+    await prefs.setString(_storageKey, encoded);
+  }
+}
+</file>
+
+<file path="reminder_setup_page.dart">
+import 'package:flutter/material.dart';
+import 'reminder_service.dart';
+
+class ReminderSetupPage extends StatefulWidget {
+  const ReminderSetupPage({super.key});
+
+  @override
+  State<ReminderSetupPage> createState() => _ReminderSetupPageState();
+}
+
+class _ReminderSetupPageState extends State<ReminderSetupPage> {
+  final TextEditingController _medicineController = TextEditingController();
+  TimeOfDay _selectedTime = TimeOfDay.now();
+  final ReminderService _reminderService = ReminderService();
+  bool _isLoading = false;
+
+  // Weekday selection (1 = Monday ... 7 = Sunday)
+  final List<int> _selectedDays = [];
+
+  // Date range
+  DateTime? _startDate;
+  DateTime? _endDate;
+
+  @override
+  void dispose() {
+    _medicineController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickTime() async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
+  Future<void> _pickDateRange() async {
+    final DateTime now = DateTime.now();
+    final DateTime firstDate = DateTime(now.year - 1);
+    final DateTime lastDate = DateTime(now.year + 10);
+
+    final DateTimeRange? range = await showDateRangePicker(
+      context: context,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      initialDateRange: _startDate != null && _endDate != null
+          ? DateTimeRange(start: _startDate!, end: _endDate!)
+          : null,
+      currentDate: now,
+      helpText: 'Select reminder active period',
+      confirmText: 'Confirm',
+      cancelText: 'Clear',
+      fieldStartHintText: 'Start date',
+      fieldEndHintText: 'End date',
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).primaryColor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black87,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (range != null) {
+      setState(() {
+        _startDate = range.start;
+        _endDate = range.end;
+      });
+    } else {
+      setState(() {
+        _startDate = null;
+        _endDate = null;
+      });
+    }
+  }
+
+  Future<void> _saveReminder() async {
+    if (_medicineController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a medicine name')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      print("[SAVE] Starting save process...");
+
+      // ────────────────────────────────────────────────
+      // Fixed: sort BEFORE making the list unmodifiable
+      final sortedDays = [..._selectedDays]..sort();
+      // ────────────────────────────────────────────────
+
+      final newReminder = Reminder(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        medicineName: _medicineController.text.trim(),
+        hour: _selectedTime.hour,
+        minute: _selectedTime.minute,
+        repeatDays: List.unmodifiable(sortedDays),
+        startDate: _startDate?.millisecondsSinceEpoch,
+        endDate: _endDate?.millisecondsSinceEpoch,
+      );
+
+      print("[SAVE] Reminder object created → ID: ${newReminder.id}");
+
+      print("[SAVE] Calling addReminder...");
+      await _reminderService.addReminder(newReminder);
+      print("[SAVE] addReminder completed successfully");
+
+      setState(() => _isLoading = false);
+
+      if (mounted) {
+        print("[SAVE] Navigating back with success");
+        Navigator.pop(context, true);
+      }
+    } catch (e, stack) {
+      print("[SAVE ERROR] Failed to save reminder");
+      print("Error: $e");
+      print("Stack trace:\n$stack");
+
+      setState(() => _isLoading = false);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to save: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add Reminder')),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Medicine Name
+              const Text(
+                'Medicine Name',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _medicineController,
+                decoration: InputDecoration(
+                  hintText: 'Ex: Paracetamol',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  prefixIcon: const Icon(Icons.medication),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Time
+              const Text(
+                'Time',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: _pickTime,
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.access_time, color: Colors.blue),
+                      const SizedBox(width: 12),
+                      Text(
+                        _selectedTime.format(context),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      const Spacer(),
+                      const Text('Change', style: TextStyle(color: Colors.blue)),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Repeat on
+              const Text(
+                'Repeat on',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: List.generate(7, (index) {
+                  final dayNumber = index + 1;
+                  final dayLabel = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index];
+                  final isSelected = _selectedDays.contains(dayNumber);
+
+                  return ChoiceChip(
+                    label: Text(dayLabel),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      setState(() {
+                        if (selected) {
+                          _selectedDays.add(dayNumber);
+                        } else {
+                          _selectedDays.remove(dayNumber);
+                        }
+                      });
+                    },
+                    selectedColor: Colors.blue.shade100,
+                    backgroundColor: Colors.grey.shade200,
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.blue.shade900 : Colors.black87,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  );
+                }),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Active Period
+              const Text(
+                'Active Period (optional)',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              InkWell(
+                onTap: _pickDateRange,
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_today, color: Colors.blue),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          _startDate == null || _endDate == null
+                              ? 'No date limit set (tap to select period)'
+                              : '${_startDate!.day}/${_startDate!.month}/${_startDate!.year}  –  ${_endDate!.day}/${_endDate!.month}/${_endDate!.year}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: _startDate == null ? Colors.grey[700] : Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const Icon(Icons.arrow_drop_down, color: Colors.blue),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _saveReminder,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Set Reminder', style: TextStyle(fontSize: 18)),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="settings_page.dart">
+import 'package:flutter/material.dart';
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ListTile(
+            leading: const Icon(Icons.color_lens),
+            title: const Text('Theme'),
+            subtitle: const Text('Light / Dark Mode'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: const Text('Language'),
+            subtitle: const Text('English / Bangla'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notification Settings'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+}
+</file>
+
+<file path="SIgnup_Login.dart">
+import 'package:flutter/material.dart';
+import 'auth_service.dart'; // Import your new auth service
+import 'dashboard_page.dart'; // Import dashboard for navigation
+
+// ---------------- LOGIN PAGE ----------------
+class LoginPage extends StatefulWidget {
+  final bool isDark;
+  final VoidCallback onToggleTheme;
+
+  const LoginPage({
+    super.key,
+    required this.isDark,
+    required this.onToggleTheme,
+  });
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleLogin() async {
+    setState(() => _isLoading = true);
+
+    // Call the mock auth service
+    bool success = await _authService.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (success) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Login failed. Please enter any email and password."),
+          backgroundColor: Colors.redAccent,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthScaffold(
+      title: "Welcome Back",
+      subtitle: "Login to your account",
+      buttonText: "Login",
+      isLoading: _isLoading,
+      isDark: widget.isDark,
+      onToggleTheme: widget.onToggleTheme,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      onButtonPressed: _handleLogin,
+      onSwitch: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SignupPage(
+              isDark: widget.isDark,
+              onToggleTheme: widget.onToggleTheme,
+            ),
+          ),
+        );
+      },
+      switchText: "Don't have an account? Sign Up",
+    );
+  }
+}
+
+// ---------------- SIGNUP PAGE ----------------
+class SignupPage extends StatefulWidget {
+  final bool isDark;
+  final VoidCallback onToggleTheme;
+
+  const SignupPage({
+    super.key,
+    required this.isDark,
+    required this.onToggleTheme,
+  });
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleSignup() async {
+    setState(() => _isLoading = true);
+
+    bool success = await _authService.signup(
+      _nameController.text.trim(),
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (success) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Signup failed. Please try again.")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthScaffold(
+      title: "Create Account",
+      subtitle: "Sign up to get started",
+      buttonText: "Sign Up",
+      isLoading: _isLoading,
+      isDark: widget.isDark,
+      onToggleTheme: widget.onToggleTheme,
+      nameController: _nameController,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      onButtonPressed: _handleSignup,
+      onSwitch: () => Navigator.pop(context),
+      switchText: "Already have an account? Login",
+      showExtraField: true,
+    );
+  }
+}
+
+// ---------------- SHARED AUTH UI ----------------
+class AuthScaffold extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String buttonText;
+  final bool isDark;
+  final bool isLoading;
+  final VoidCallback onToggleTheme;
+  final VoidCallback onSwitch;
+  final VoidCallback onButtonPressed;
+  final String switchText;
+  final bool showExtraField;
+
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController? nameController;
+
+  const AuthScaffold({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.buttonText,
+    required this.isDark,
+    this.isLoading = false,
+    required this.onToggleTheme,
+    required this.onSwitch,
+    required this.onButtonPressed,
+    required this.switchText,
+    required this.emailController,
+    required this.passwordController,
+    this.nameController,
+    this.showExtraField = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Custom 4-color gradient
+    final gradient = [
+      const Color.fromRGBO(103, 184, 246, 1),
+      const Color(0xFFDDF2FF),
+      const Color.fromARGB(255, 166, 214, 240),
+      const Color(0xFFF8FCFF),
+    ];
+
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                margin: const EdgeInsets.symmetric(horizontal: 22),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey[900] : Colors.white.withOpacity(0.95),
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 15,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                          color: isDark ? Colors.white70 : Colors.blue[700],
+                          onPressed: () {
+                            if (Navigator.canPop(context)) Navigator.pop(context);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                          color: isDark ? Colors.white70 : Colors.blue[700],
+                          onPressed: onToggleTheme,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      subtitle,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                    ),
+                    const SizedBox(height: 22),
+                    if (showExtraField && nameController != null)
+                      _inputField(Icons.person_outline, "Full Name", isDark, nameController!),
+                    if (showExtraField) const SizedBox(height: 14),
+                    _inputField(Icons.email_outlined, "Email", isDark, emailController),
+                    const SizedBox(height: 14),
+                    _inputField(Icons.lock_outline, "Password", isDark, passwordController, obscure: true),
+                    const SizedBox(height: 22),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: isLoading ? null : onButtonPressed,
+                        child: isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                buttonText,
+                                style: const TextStyle(fontSize: 18, color: Colors.white),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: isLoading ? null : onSwitch,
+                      child: Text(
+                        switchText,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inputField(IconData icon, String hint, bool isDark, TextEditingController controller,
+      {bool obscure = false}) {
+    return TextField(
+      controller: controller,
+      obscureText: obscure,
+      style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: isDark ? Colors.grey[850] : Colors.grey[100],
+        prefixIcon: Icon(icon, color: Colors.blue),
+        hintText: hint,
+        hintStyle: TextStyle(color: isDark ? Colors.grey[500] : Colors.grey[600]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Colors.blue, width: 2),
+        ),
+      ),
+    );
+  }
+}
+</file>
+
+<file path="sos_button.dart">
+import 'package:flutter/material.dart';
+import 'sos_service.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PUBLIC WIDGET
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A compound FAB widget for the SOS / Emergency-Call feature.
+///
+/// Renders two buttons stacked vertically:
+///   • A small **settings** FAB — opens the "Change Emergency Number" dialog.
+///   • A prominent red **SOS** FAB — immediately dials the saved number.
+///
+/// Drop this directly into a [Scaffold]'s `floatingActionButton:` property:
+/// ```dart
+/// floatingActionButton: const SosFab(),
+/// ```
+class SosFab extends StatefulWidget {
+  const SosFab({super.key});
+
+  @override
+  State<SosFab> createState() => _SosFabState();
+}
+
+class _SosFabState extends State<SosFab> {
+  final SosService _service = SosService();
+
+  // ── Actions ────────────────────────────────────────────────────────────────
+
+  /// Triggers a phone call via [SosService].
+  void _onCallPressed() => _service.call(context);
+
+  /// Opens the settings dialog to view / change the emergency contact number.
+  Future<void> _onSettingsPressed() async {
+    // Load the current number before showing the dialog.
+    final current = await _service.loadNumber();
+
+    // Guard: do not attempt to use context after the widget was disposed.
+    if (!mounted) return;
+
+    await _showSettingsDialog(current);
+  }
+
+  Future<void> _showSettingsDialog(String currentNumber) async {
+    final controller = TextEditingController(text: currentNumber);
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+
+        // ── Title ───────────────────────────────────────────────────────────
+        title: const Row(
+          children: [
+            Icon(Icons.settings_phone_rounded, color: Color(0xFFDC2626)),
+            SizedBox(width: 10),
+            Text(
+              'Emergency Number',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+
+        // ── Body ────────────────────────────────────────────────────────────
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter a custom emergency contact (e.g. your doctor or a '
+              'family member). Leave as "${SosService.defaultNumber}" for '
+              'the default emergency service.',
+              style: TextStyle(fontSize: 13, color: Colors.black54, height: 1.4),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.phone,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: 'Emergency Number',
+                prefixIcon: const Icon(Icons.phone),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFDC2626),
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        // ── Actions ─────────────────────────────────────────────────────────
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.save_rounded, size: 18),
+            label: const Text('Save'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () async {
+              final trimmed = controller.text.trim();
+
+              // Only save if the field is non-empty.
+              if (trimmed.isNotEmpty) {
+                await _service.saveNumber(trimmed);
+              }
+
+              // Close the dialog first, then show the confirmation SnackBar.
+              if (dialogCtx.mounted) Navigator.pop(dialogCtx);
+
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      trimmed.isEmpty
+                          ? 'No number entered — keeping previous value.'
+                          : 'Emergency number saved: $trimmed',
+                    ),
+                    backgroundColor: trimmed.isEmpty
+                        ? Colors.orange.shade700
+                        : const Color(0xFF10B981),
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+
+    // Dispose the controller after the dialog is fully closed.
+    controller.dispose();
+  }
+
+  // ── Build ──────────────────────────────────────────────────────────────────
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // Stack the two FABs; take only the space they need.
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // ── Small settings FAB ─────────────────────────────────────────────
+        Tooltip(
+          message: 'Change emergency number',
+          child: FloatingActionButton.small(
+            heroTag: 'sos_settings_fab',
+            onPressed: _onSettingsPressed,
+            backgroundColor: Colors.grey.shade700,
+            foregroundColor: Colors.white,
+            elevation: 3,
+            child: const Icon(Icons.settings_phone_rounded, size: 20),
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // ── Primary SOS FAB ────────────────────────────────────────────────
+        Tooltip(
+          message: 'Call emergency contact',
+          child: FloatingActionButton.extended(
+            heroTag: 'sos_call_fab',
+            onPressed: _onCallPressed,
+            backgroundColor: const Color(0xFFDC2626), // vivid red
+            foregroundColor: Colors.white,
+            elevation: 6,
+            icon: const Icon(Icons.emergency_rounded),
+            label: const Text(
+              'SOS',
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+</file>
+
+<file path="sos_service.dart">
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+/// Handles all business logic for the SOS / Emergency Call feature.
+///
+/// All data is stored locally in [SharedPreferences] — no backend calls.
+class SosService {
+  /// SharedPreferences key for the stored emergency number.
+  static const String _prefsKey = 'sos_emergency_number';
+
+  /// Shown to the user when no custom number has been saved yet.
+  static const String defaultNumber = '911';
+
+  // ── Number persistence ─────────────────────────────────────────────────────
+
+  /// Returns the saved emergency number, or [defaultNumber] if none is stored.
+  Future<String> loadNumber() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_prefsKey) ?? defaultNumber;
+  }
+
+  /// Saves [number] to [SharedPreferences].
+  ///
+  /// Trims whitespace before saving to avoid invalid URIs.
+  Future<void> saveNumber(String number) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefsKey, number.trim());
+  }
+
+  // ── Dialling ───────────────────────────────────────────────────────────────
+
+  /// Loads the saved number and opens the device's native phone dialler.
+  ///
+  /// If the device cannot handle `tel:` URIs (e.g. some tablets / emulators),
+  /// a [SnackBar] with a descriptive error is shown instead.
+  ///
+  /// [context] must come from within a [Scaffold] so [ScaffoldMessenger] works.
+  Future<void> call(BuildContext context) async {
+    final number = await loadNumber();
+    final uri = Uri(scheme: 'tel', path: number);
+
+    // Guard: check that the platform supports phone calls before launching.
+    bool canCall = false;
+    try {
+      canCall = await canLaunchUrl(uri);
+    } catch (_) {
+      canCall = false;
+    }
+
+    if (!canCall) {
+      // Show an informational SnackBar; do NOT crash.
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Phone calls are not supported on this device.\n'
+              'Emergency number: $number',
+            ),
+            backgroundColor: Colors.red.shade700,
+            duration: const Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+      return;
+    }
+
+    // Launch the dialler; catch any unexpected platform error.
+    try {
+      await launchUrl(uri);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not dial $number. Please call manually.'),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
+      }
+    }
+  }
+}
+</file>
+
+<file path="text_to_speech.dart">
+import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+class HandwrittenToTextPage extends StatefulWidget {
+  const HandwrittenToTextPage({super.key});
+
+  @override
+  State<HandwrittenToTextPage> createState() => _HandwrittenToTextPageState();
+}
+
+class _HandwrittenToTextPageState extends State<HandwrittenToTextPage> {
+  final FlutterTts _flutterTts = FlutterTts();
+  final ImagePicker _picker = ImagePicker();
+  bool _isSpeaking = false;
+  String _extractedText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeTts();
+  }
+
+  Future<void> _initializeTts() async {
+    await _flutterTts.setLanguage("en-US");
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setVolume(1.0);
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.awaitSpeakCompletion(true);
+
+    _flutterTts.setCompletionHandler(() {
+      if (!mounted) return;
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
+  }
+
+  Future<void> _speakText(String text) async {
+    if (text.trim().isEmpty) return;
+
+    if (_isSpeaking) {
+      await _flutterTts.stop();
+      if (!mounted) return;
+      setState(() => _isSpeaking = false);
+    } else {
+      if (!mounted) return;
+      setState(() => _isSpeaking = true);
+      await _flutterTts.speak(text);
+    }
+  }
+
+  Future<void> _pickAndExtractText(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image == null) return;
+
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+    final RecognizedText recognizedText =
+        await textRecognizer.processImage(inputImage);
+
+    setState(() {
+      _extractedText = recognizedText.text;
+    });
+    textRecognizer.close();
+
+    _showOcrResult(context);
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Text to Speech'),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color.fromARGB(255, 166, 214, 240),
+              Color(0xFFF8FCFF),
+            ],
+            stops: [0.0, 0.3, 0.6, 1.0],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// 🔹 IMAGE INSTEAD OF ICON
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/image/text_to_speech.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                ElevatedButton.icon(
+                  onPressed: () =>
+                      _pickAndExtractText(ImageSource.camera),
+                  icon: const Icon(Icons.camera_alt),
+                  label: const Text('Scan Prescription'),
+                ),
+
+                const SizedBox(height: 20),
+
+                OutlinedButton.icon(
+                  onPressed: () =>
+                      _pickAndExtractText(ImageSource.gallery),
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text('Upload from Gallery'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showOcrResult(BuildContext context) {
+    final TextEditingController textController =
+        TextEditingController(text: _extractedText);
+
+    showDialog(
+      context: context,
+      builder: (_) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                const Text('Extracted Text'),
+                const Spacer(),
+                IconButton(
+                  icon: Icon(
+                    _isSpeaking
+                        ? Icons.stop_circle
+                        : Icons.volume_up,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  tooltip:
+                      _isSpeaking ? 'Stop Reading' : 'Read Aloud',
+                  onPressed: () async {
+                    await _speakText(textController.text);
+                    setDialogState(() {});
+                  },
+                ),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: TextField(
+                controller: textController,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Edit text before reading',
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  _flutterTts.stop();
+                  if (mounted) {
+                    setState(() => _isSpeaking = false);
+                  }
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+</file>
+
+</files>

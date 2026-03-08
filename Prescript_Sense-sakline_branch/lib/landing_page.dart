@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'SIgnup_Login.dart';       // Make sure path is correct
-import 'dashboard_page.dart';     // Make sure path is correct
+import 'SIgnup_Login.dart'; // Make sure path is correct
+import 'dashboard_page.dart'; // Make sure path is correct
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -127,42 +127,64 @@ class _LandingPageState extends State<LandingPage>
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 98, 165, 242).withOpacity(0.82),
         border: Border(
-          bottom: BorderSide(color:const Color.fromARGB(255, 98, 165, 242), width: 1),
+          bottom: BorderSide(
+            color: const Color.fromARGB(255, 98, 165, 242),
+            width: 1,
+          ),
         ),
       ),
       padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'PrescriptSense',
-            style: TextStyle(
-              fontSize: isNarrow ? 28 : 34,
-              fontWeight: FontWeight.w700,
-              color: const Color.fromARGB(255, 247, 249, 255),
-              letterSpacing: 0.3,
+          // Text(
+          //   'PrescriptSense',
+          //   style: TextStyle(
+          //     fontSize: isNarrow ? 28 : 34,
+          //     fontWeight: FontWeight.w700,
+          //     color: const Color.fromARGB(255, 247, 249, 255),
+          //     letterSpacing: 0.3,
+          //   ),
+          // ),
+          Expanded(
+            child: Text(
+              'PrescriptSense',
+              style: TextStyle(
+                fontSize: isNarrow
+                    ? 24
+                    : 34, // Slightly reduced max size for narrow screens
+                fontWeight: FontWeight.w700,
+                color: const Color.fromARGB(255, 247, 249, 255),
+                letterSpacing: 0.3,
+              ),
+              overflow: TextOverflow
+                  .ellipsis, // 2. Add ellipsis so it fades gracefully instead of overflowing
             ),
           ),
+          const SizedBox(width: 12),
           OutlinedButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => LoginPage(
-                    isDark: false,
-                    onToggleTheme: () {},
-                  ),
+                  builder: (_) =>
+                      LoginPage(isDark: false, onToggleTheme: () {}),
                 ),
               );
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color.fromARGB(255, 245, 246, 249),
-              side: const BorderSide(color: Color.fromARGB(255, 235, 236, 238), width: 2),
+              side: const BorderSide(
+                color: Color.fromARGB(255, 235, 236, 238),
+                width: 2,
+              ),
               padding: EdgeInsets.symmetric(
                 horizontal: isNarrow ? 24 : 32,
                 vertical: 14,
               ),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               minimumSize: const Size(160, 54),
             ),
             child: Text(
@@ -228,7 +250,7 @@ class _LandingPageState extends State<LandingPage>
             'Peace of Mind with Every Medicine',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: isNarrow ? 28:32,
+              fontSize: isNarrow ? 28 : 32,
               fontWeight: FontWeight.w800,
               color: const Color.fromARGB(255, 97, 149, 227),
               height: 1.14,
@@ -242,7 +264,7 @@ class _LandingPageState extends State<LandingPage>
             'Feel safer and more confident every day.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: isNarrow ? 14:17,
+              fontSize: isNarrow ? 14 : 17,
               height: 1.60,
               color: const Color(0xFF475569),
               fontWeight: FontWeight.w400,
@@ -257,10 +279,15 @@ class _LandingPageState extends State<LandingPage>
               backgroundColor: const Color(0xFF3B82F6),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               elevation: 2,
               minimumSize: const Size(260, 64),
-              textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+              textStyle: const TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -273,13 +300,15 @@ class _LandingPageState extends State<LandingPage>
       {
         'icon': Icons.document_scanner_outlined,
         'title': 'Easy Prescription Scan',
-        'desc': 'Take a photo — we read the handwriting carefully and show you clear text.',
+        'desc':
+            'Take a photo — we read the handwriting carefully and show you clear text.',
         'color': const Color(0xFF2563EB),
       },
       {
         'icon': Icons.record_voice_over_outlined,
         'title': 'Voice That Reads Aloud',
-        'desc': 'Clear voice readout of medicine times and instructions — very helpful.',
+        'desc':
+            'Clear voice readout of medicine times and instructions — very helpful.',
         'color': const Color(0xFF7C3AED),
       },
       {
@@ -303,7 +332,7 @@ class _LandingPageState extends State<LandingPage>
           Text(
             'Features Made for You',
             style: TextStyle(
-              fontSize: isNarrow ? 26:36,
+              fontSize: isNarrow ? 26 : 36,
               fontWeight: FontWeight.w800,
               color: const Color(0xFF0F172A),
             ),
@@ -318,16 +347,18 @@ class _LandingPageState extends State<LandingPage>
             ),
           ),
           const SizedBox(height: 48),
-          ...features.map((f) => Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: _buildFeatureCard(
-                  icon: f['icon'] as IconData,
-                  title: f['title'] as String,
-                  description: f['desc'] as String,
-                  accentColor: f['color'] as Color,
-                  isNarrow: isNarrow,
-                ),
-              )),
+          ...features.map(
+            (f) => Padding(
+              padding: const EdgeInsets.only(bottom: 32),
+              child: _buildFeatureCard(
+                icon: f['icon'] as IconData,
+                title: f['title'] as String,
+                description: f['desc'] as String,
+                accentColor: f['color'] as Color,
+                isNarrow: isNarrow,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -410,10 +441,15 @@ class _LandingPageState extends State<LandingPage>
               backgroundColor: const Color(0xFF2563EB),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 22),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               elevation: 3,
               minimumSize: const Size(300, 70),
-              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              textStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             child: const Text('Start Today – It’s Free'),
           ),

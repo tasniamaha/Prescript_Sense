@@ -1,0 +1,301 @@
+import 'package:flutter/material.dart';
+import 'auth_service.dart';
+import 'dashboard_page.dart';
+
+class MedicalProfileSetupPage extends StatefulWidget {
+  const MedicalProfileSetupPage({super.key});
+
+  @override
+  State<MedicalProfileSetupPage> createState() => _MedicalProfileSetupPageState();
+}
+
+class _MedicalProfileSetupPageState extends State<MedicalProfileSetupPage> {
+  final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  // Form Controllers
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _medicationsController = TextEditingController();
+
+  String? _selectedGender;
+  String? _selectedAllergy;
+
+  final List<String> _genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say'];
+
+  final List<String> _allergyOptions = [
+    'None (No known allergies)',
+    'Peanuts',
+    'Tree Nuts',
+    'Milk / Dairy',
+    'Eggs',
+    'Wheat',
+    'Soy',
+    'Fish',
+    'Shellfish',
+    'Penicillin',
+    'Sulfa Drugs',
+    'Aspirin',
+    'Ibuprofen',
+    'Latex',
+    'Pollen',
+    'Dust Mites',
+  ];
+
+  @override
+  void dispose() {
+    _ageController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+    _medicationsController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveProfile() async {
+    if (_formKey.currentState!.validate() && _selectedGender != null && _selectedAllergy != null) {
+      setState(() => _isLoading = true);
+
+      await _authService.saveMedicalProfile(
+        age: _ageController.text,
+        gender: _selectedGender!,
+        height: _heightController.text,
+        weight: _weightController.text,
+        allergies: _selectedAllergy!,
+        medications: _medicationsController.text.isEmpty ? 'None' : _medicationsController.text,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill all required fields'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(103, 184, 246, 1),
+              Color(0xFFDDF2FF),
+              Color.fromARGB(255, 166, 214, 240),
+              Color(0xFFF8FCFF),
+            ],
+            stops: [0.0, 0.3, 0.6, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.95),
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 15,
+                    ),
+                  ],
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Center(
+                        child: Text(
+                          "Medical Profile",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1E3A8A),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Center(
+                        child: Text(
+                          "Help us personalize your health insights.",
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Row for Age and Gender
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: _buildTextField(
+                              controller: _ageController,
+                              label: "Age",
+                              icon: Icons.cake,
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            flex: 1,
+                            child: _buildDropdown(
+                              value: _selectedGender,
+                              items: _genderOptions,
+                              label: "Gender",
+                              icon: Icons.person,
+                              onChanged: (val) => setState(() => _selectedGender = val),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Row for Height and Weight
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildTextField(
+                              controller: _heightController,
+                              label: "Height (cm)",
+                              icon: Icons.height,
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildTextField(
+                              controller: _weightController,
+                              label: "Weight (kg)",
+                              icon: Icons.monitor_weight,
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Allergies Dropdown
+                      _buildDropdown(
+                        value: _selectedAllergy,
+                        items: _allergyOptions,
+                        label: "Primary Allergy",
+                        icon: Icons.warning_amber_rounded,
+                        onChanged: (val) => setState(() => _selectedAllergy = val),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Current Medications
+                      _buildTextField(
+                        controller: _medicationsController,
+                        label: "Current Medications (Optional)",
+                        icon: Icons.medication,
+                        keyboardType: TextInputType.text,
+                        hint: "E.g. Napa, Seclo, etc.",
+                        isRequired: false,
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Submit Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _saveProfile,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3B82F6),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(color: Colors.white)
+                              : const Text(
+                                  "Complete Setup",
+                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required TextInputType keyboardType,
+    String? hint,
+    bool isRequired = true,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: isRequired ? (value) => value!.isEmpty ? 'Required' : null : null,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon, color: Colors.blueGrey),
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdown({
+    required String? value,
+    required List<String> items,
+    required String label,
+    required IconData icon,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.blueGrey),
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      items: items.map((item) {
+        return DropdownMenuItem(value: item, child: Text(item, overflow: TextOverflow.ellipsis));
+      }).toList(),
+      onChanged: onChanged,
+      validator: (val) => val == null ? 'Required' : null,
+    );
+  }
+}

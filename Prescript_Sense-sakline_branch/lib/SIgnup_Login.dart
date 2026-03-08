@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth_service.dart'; // Import your new auth service
 import 'dashboard_page.dart'; // Import dashboard for navigation
+import 'medical_profile_setup.dart';
 
 // ---------------- LOGIN PAGE ----------------
 class LoginPage extends StatefulWidget {
@@ -52,10 +53,14 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text("Login failed. Please enter any email and password."),
+          content: const Text(
+            "Login failed. Please enter any email and password.",
+          ),
           backgroundColor: Colors.redAccent,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
     }
@@ -119,6 +124,32 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
+  // void _handleSignup() async {
+  //   setState(() => _isLoading = true);
+
+  //   bool success = await _authService.signup(
+  //     _nameController.text.trim(),
+  //     _emailController.text.trim(),
+  //     _passwordController.text.trim(),
+  //   );
+
+  //   if (!mounted) return;
+
+  //   setState(() => _isLoading = false);
+
+  //   if (success) {
+  //     Navigator.pushAndRemoveUntil(
+  //       context,
+  //       MaterialPageRoute(builder: (_) => const DashboardPage()),
+  //       (route) => false,
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Signup failed. Please try again.")),
+  //     );
+  //   }
+  // }
+
   void _handleSignup() async {
     setState(() => _isLoading = true);
 
@@ -133,9 +164,10 @@ class _SignupPageState extends State<SignupPage> {
     setState(() => _isLoading = false);
 
     if (success) {
+      // ---> CHANGED HERE: Navigate to MedicalProfileSetupPage instead of DashboardPage
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        MaterialPageRoute(builder: (_) => const MedicalProfileSetupPage()),
         (route) => false,
       );
     } else {
@@ -225,7 +257,9 @@ class AuthScaffold extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.symmetric(horizontal: 22),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey[900] : Colors.white.withOpacity(0.95),
+                  color: isDark
+                      ? Colors.grey[900]
+                      : Colors.white.withOpacity(0.95),
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
@@ -244,11 +278,14 @@ class AuthScaffold extends StatelessWidget {
                           icon: const Icon(Icons.arrow_back_ios_new_rounded),
                           color: isDark ? Colors.white70 : Colors.blue[700],
                           onPressed: () {
-                            if (Navigator.canPop(context)) Navigator.pop(context);
+                            if (Navigator.canPop(context))
+                              Navigator.pop(context);
                           },
                         ),
                         IconButton(
-                          icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                          icon: Icon(
+                            isDark ? Icons.light_mode : Icons.dark_mode,
+                          ),
                           color: isDark ? Colors.white70 : Colors.blue[700],
                           onPressed: onToggleTheme,
                         ),
@@ -270,11 +307,27 @@ class AuthScaffold extends StatelessWidget {
                     ),
                     const SizedBox(height: 22),
                     if (showExtraField && nameController != null)
-                      _inputField(Icons.person_outline, "Full Name", isDark, nameController!),
+                      _inputField(
+                        Icons.person_outline,
+                        "Full Name",
+                        isDark,
+                        nameController!,
+                      ),
                     if (showExtraField) const SizedBox(height: 14),
-                    _inputField(Icons.email_outlined, "Email", isDark, emailController),
+                    _inputField(
+                      Icons.email_outlined,
+                      "Email",
+                      isDark,
+                      emailController,
+                    ),
                     const SizedBox(height: 14),
-                    _inputField(Icons.lock_outline, "Password", isDark, passwordController, obscure: true),
+                    _inputField(
+                      Icons.lock_outline,
+                      "Password",
+                      isDark,
+                      passwordController,
+                      obscure: true,
+                    ),
                     const SizedBox(height: 22),
                     SizedBox(
                       width: double.infinity,
@@ -298,7 +351,10 @@ class AuthScaffold extends StatelessWidget {
                               )
                             : Text(
                                 buttonText,
-                                style: const TextStyle(fontSize: 18, color: Colors.white),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
                               ),
                       ),
                     ),
@@ -323,8 +379,13 @@ class AuthScaffold extends StatelessWidget {
     );
   }
 
-  Widget _inputField(IconData icon, String hint, bool isDark, TextEditingController controller,
-      {bool obscure = false}) {
+  Widget _inputField(
+    IconData icon,
+    String hint,
+    bool isDark,
+    TextEditingController controller, {
+    bool obscure = false,
+  }) {
     return TextField(
       controller: controller,
       obscureText: obscure,
@@ -334,7 +395,9 @@ class AuthScaffold extends StatelessWidget {
         fillColor: isDark ? Colors.grey[850] : Colors.grey[100],
         prefixIcon: Icon(icon, color: Colors.blue),
         hintText: hint,
-        hintStyle: TextStyle(color: isDark ? Colors.grey[500] : Colors.grey[600]),
+        hintStyle: TextStyle(
+          color: isDark ? Colors.grey[500] : Colors.grey[600],
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
