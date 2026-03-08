@@ -17,6 +17,18 @@ class AuthService {
   static const String _isProfileCompleteKey = 'isProfileComplete';
 
   // --- Getters ---
+  Future<Map<String, String>> getMedicalProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'age': prefs.getString(_storedAgeKey) ?? 'N/A',
+      'gender': prefs.getString(_storedGenderKey) ?? 'N/A',
+      'height': prefs.getString(_storedHeightKey) ?? 'N/A',
+      'weight': prefs.getString(_storedWeightKey) ?? 'N/A',
+      'allergies': prefs.getString(_storedAllergiesKey) ?? 'None',
+      'medications': prefs.getString(_storedMedicationsKey) ?? 'None',
+    };
+  }
+
   Future<void> saveMedicalProfile({
     required String age,
     required String gender,
