@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart'; // Your custom palette
 import 'auth_service.dart';
 import 'landing_page.dart';
 import 'dashboard_page.dart';
 
+// --- GLOBAL THEME STATE ---
+// This allows any page to flip the theme without passing callbacks down the tree.
+// final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
+
 void main() async {
-  // Ensure Flutter binding is initialized before calling async code
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Check auth status before app starts
   final authService = AuthService();
   final bool isLoggedIn = await authService.isLoggedIn();
 
@@ -21,34 +23,44 @@ class PrescriptSenseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PrescriptSense',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // ... (Keep your existing Light Theme) ...
-        primaryColor: const Color(0xFF4A90E2),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF4A90E2),
-          primary: const Color(0xFF4A90E2),
-          secondary: const Color(0xFFA17CF5),
-          tertiary: const Color(0xFF4FF1D0),
-          background: const Color(0xFFF7F9FC),
-          surface: const Color(0xFFE5E7EB),
-        ),
-        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF4A90E2),
-          foregroundColor: Colors.white,
-        ),
-        useMaterial3: true,
-      ),
-      // ... (Keep your existing Dark Theme) ...
-      
-      themeMode: ThemeMode.light,
-      
-      // ROUTING LOGIC:
-      // If logged in, go to Dashboard. If not, go to Landing Page.
-      home: initialRoute ? const DashboardPage() : const LandingPage(),
+    // Listen to the global themeNotifier
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (_, ThemeMode currentMode, __) {
+        return MaterialApp(
+          title: 'PrescriptSense',
+          debugShowCheckedModeBanner: false,
+          themeMode: currentMode,
+          
+          // --- LIGHT THEME ---
+          theme: ThemeData(
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: AppColors.cloud,
+            primaryColor: AppColors.deepTeal,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.deepTeal,
+              foregroundColor: AppColors.white,
+              elevation: 0,
+            ),
+            useMaterial3: true,
+          ),
+          
+          // --- DARK THEME ---
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: AppColors.ink,
+            primaryColor: AppColors.teal,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.ink,
+              foregroundColor: AppColors.teal,
+              elevation: 0,
+            ),
+            useMaterial3: true,
+          ),
+          
+          home: initialRoute ? const DashboardPage() : const LandingPage(),
+        );
+      },
     );
   }
 }

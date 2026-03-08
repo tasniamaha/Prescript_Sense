@@ -10,7 +10,6 @@ import 'reminder_list_page.dart';
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
 import 'handwritten_to_text_page.dart'; // Fixed import for Text to Speech
-import 'prescription_result_page.dart';
 import 'medicine_checker_page.dart';
 import 'sos_button.dart';
 import 'app_colors.dart'; // MUST IMPORT YOUR NEW COLORS
@@ -36,7 +35,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   bool _isListening = false;
   bool _isLoading = false;
-  bool _hasError = false;
 
   String _geminiResponse = "";
 
@@ -97,7 +95,6 @@ class _DashboardPageState extends State<DashboardPage> {
     if (!mounted) return;
     setState(() {
       _isLoading = true;
-      _hasError = false;
       _geminiResponse = "";
     });
 
@@ -122,7 +119,6 @@ $userText
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _hasError = true;
         _geminiResponse = "Unable to get response. Please try again later.";
       });
     } finally {
@@ -151,41 +147,39 @@ $userText
 
   @override
   Widget build(BuildContext context) {
+    // Determine dynamic colors based on the current global theme
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.ink : AppColors.cloud;
+    final cardBg = isDark ? AppColors.slate : AppColors.white;
+    final textMain = isDark ? AppColors.white : AppColors.ink;
+    final textMuted = isDark ? AppColors.mist : AppColors.slate;
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.cloud, // Minimal background
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.deepTeal,
-          elevation: 0,
           title: const Text(
             'PrescriptSense',
-            style: TextStyle(
-              color: AppColors.white,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.5,
-              fontSize: 24,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.5),
           ),
           actions: [
+            // --- GLOBAL THEME TOGGLE BUTTON ---
             IconButton(
-              icon: const Icon(
-                Icons.notifications_none,
-                color: AppColors.white,
-              ),
+              icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No new notifications')),
-                );
+                themeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
               },
             ),
             IconButton(
-              icon: const Icon(Icons.person, color: AppColors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ProfilePage()),
-                );
-              },
+              icon: const Icon(Icons.notifications_none),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              ),
             ),
           ],
         ),
@@ -194,15 +188,15 @@ $userText
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// SAFETY DISCLAIMER BANNER (Using Semantic Caution)
+              /// SAFETY DISCLAIMER
               if (_showDisclaimer)
                 AnimatedOpacity(
                   opacity: _disclaimerOpacity,
                   duration: const Duration(milliseconds: 500),
                   child: Container(
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.softAmber,
+                      color: isDark ? AppColors.slate : AppColors.softAmber,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: AppColors.cautionAmber.withOpacity(0.5),
@@ -214,15 +208,14 @@ $userText
                           Icons.warning_amber_rounded,
                           color: AppColors.cautionAmber,
                         ),
-                        const SizedBox(width: 10),
-                        const Expanded(
+                        const SizedBox(width: 12),
+                        Expanded(
                           child: Text(
-                            "PrescriptSense provides general health information only based on available dataset and internet's source. "
-                            "It does NOT replace a doctor. Always consult a qualified medical professional.",
+                            "PrescriptSense provides general health information only. It does NOT replace a doctor.",
                             style: TextStyle(
+                              color: textMain,
                               fontSize: 13,
                               height: 1.4,
-                              color: AppColors.ink,
                             ),
                           ),
                         ),
@@ -232,12 +225,8 @@ $userText
                             color: AppColors.cautionAmber,
                             size: 20,
                           ),
-                          onPressed: () {
-                            if (!mounted) return;
-                            setState(() {
-                              _showDisclaimer = false;
-                            });
-                          },
+                          onPressed: () =>
+                              setState(() => _showDisclaimer = false),
                         ),
                       ],
                     ),
@@ -247,35 +236,40 @@ $userText
               const SizedBox(height: 24),
 
               /// CHAT INPUT
-              const Text(
-                'Tell us your problem',
+              Text(
+                'How can we help today?',
                 style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.ink,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: textMain,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
 
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(14),
+                  color: cardBg,
+                  borderRadius: BorderRadius.circular(16),
+                  border: isDark
+                      ? Border.all(color: AppColors.ash.withOpacity(0.2))
+                      : null,
                   boxShadow: [
-                    BoxShadow(
-                      color: AppColors.ink.withOpacity(0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
+                    if (!isDark)
+                      BoxShadow(
+                        color: AppColors.ink.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
                   ],
                 ),
                 child: TextField(
                   controller: _problemController,
-                  maxLines: 4,
-                  style: const TextStyle(color: AppColors.ink),
+                  maxLines: 3,
+                  style: TextStyle(color: textMain),
                   decoration: InputDecoration(
-                    hintText: "Describe your problem here...",
-                    hintStyle: const TextStyle(color: AppColors.ash),
+                    hintText:
+                        "Describe your symptoms or ask a medical question...",
+                    hintStyle: TextStyle(color: textMuted),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(16),
                     suffixIcon: IconButton(
@@ -293,21 +287,19 @@ $userText
                 ),
               ),
 
-              const SizedBox(height: 12),
-
+              const SizedBox(height: 16),
               Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton.icon(
                   onPressed: _isLoading
                       ? null
                       : () => sendToGemini(_problemController.text),
-                  icon: const Icon(Icons.send),
-                  label: Text(_isLoading ? "Sending..." : "Send"),
+                  icon: const Icon(Icons.send_rounded, size: 18),
+                  label: Text(_isLoading ? "Analyzing..." : "Ask Assistant"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.deepTeal,
-                    foregroundColor: AppColors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
                     ),
                   ),
                 ),
@@ -315,7 +307,7 @@ $userText
 
               /// AI RESPONSE
               if (_isLoading) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
                 const Center(
                   child: CircularProgressIndicator(
                     color: AppColors.lavenderBlue,
@@ -324,69 +316,53 @@ $userText
               ],
 
               if (_geminiResponse.isNotEmpty && !_isLoading) ...[
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: _hasError
-                        ? AppColors.softRed
-                        : AppColors.softLavender,
-                    borderRadius: BorderRadius.circular(14),
+                    color: isDark ? AppColors.slate : AppColors.softLavender,
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: _hasError
-                          ? AppColors.alertRed
-                          : AppColors.lavenderBlue,
+                      color: AppColors.lavenderBlue.withOpacity(0.3),
                     ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                _hasError
-                                    ? Icons.error_outline
-                                    : Icons.auto_awesome,
-                                color: _hasError
-                                    ? AppColors.alertRed
-                                    : AppColors.lavenderBlue,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "PrescriptSense Response",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: _hasError
-                                      ? AppColors.alertRed
-                                      : AppColors.lavenderBlue,
-                                ),
-                              ),
-                            ],
+                          const Icon(
+                            Icons.auto_awesome,
+                            color: AppColors.lavenderBlue,
+                            size: 20,
                           ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            "AI Analysis",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.lavenderBlue,
+                            ),
+                          ),
+                          const Spacer(),
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.volume_up_rounded,
-                              color: _hasError
-                                  ? AppColors.alertRed
-                                  : AppColors.lavenderBlue,
+                              color: AppColors.lavenderBlue,
                             ),
                             onPressed: _speakResponse,
-                            padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
+                            padding: EdgeInsets.zero,
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
                       Text(
                         _geminiResponse,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           height: 1.6,
-                          color: AppColors.slate,
+                          color: textMain,
                         ),
                       ),
                     ],
@@ -397,12 +373,12 @@ $userText
               const SizedBox(height: 32),
 
               /// QUICK ACTIONS
-              const Text(
+              Text(
                 'Quick Actions',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.ink,
+                  color: textMain,
                 ),
               ),
               const SizedBox(height: 16),
@@ -477,14 +453,10 @@ $userText
                   _DashboardTile(
                     icon: Icons.history,
                     label: 'Prescription History',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const HistoryScreen(), // <-- Fixed!
-                        ),
-                      );
-                    },
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                    ),
                   ),
                 ],
               ),
@@ -502,28 +474,25 @@ class _DashboardTile extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _DashboardTile({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
+  const _DashboardTile({required this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBg = isDark ? AppColors.slate : AppColors.white;
+    final borderColor = isDark ? AppColors.ash.withOpacity(0.3) : AppColors.mist;
+    final textMain = isDark ? AppColors.white : AppColors.slate;
+
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.mist, width: 1.5),
+          border: Border.all(color: borderColor, width: 1.5),
           boxShadow: [
-            BoxShadow(
-              color: AppColors.ink.withOpacity(0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
+            if (!isDark) BoxShadow(color: AppColors.ink.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4)),
           ],
         ),
         child: Column(
@@ -531,8 +500,8 @@ class _DashboardTile extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: AppColors.mist,
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.ink : AppColors.mist,
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, size: 32, color: AppColors.teal),
@@ -543,11 +512,7 @@ class _DashboardTile extends StatelessWidget {
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.slate,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: textMain),
               ),
             ),
           ],

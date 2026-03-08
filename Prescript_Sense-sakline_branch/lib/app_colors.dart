@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 class AppColors {
   // Primary
   static const Color deepTeal = Color(0xFF0D6E6E);
