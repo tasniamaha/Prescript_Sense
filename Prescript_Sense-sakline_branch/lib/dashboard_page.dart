@@ -526,8 +526,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 import 'FindNearbyClinicPage.dart';
 import 'prescription_upload_page.dart';
-import 'auth_service.dart';
-import 'landing_page.dart';
+// import 'auth_service.dart';
+// import 'landing_page.dart';
 import 'reminder_list_page.dart';
 import 'profile_page.dart';
 import 'medicine_list_page.dart';
