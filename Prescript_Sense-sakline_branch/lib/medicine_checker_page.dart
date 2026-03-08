@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'app_colors.dart';
+import 'history_service.dart';
 
 class MedicineCheckerPage extends StatefulWidget {
   const MedicineCheckerPage({super.key});
