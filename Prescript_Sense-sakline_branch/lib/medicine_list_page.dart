@@ -1,7 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'database_helper.dart';
-import 'app_colors.dart'; // Ensure you import the new color palette
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:fast_csv/fast_csv.dart' as fast_csv;
+import 'app_colors.dart';
+
+class Medication {
+  final String name;
+  final String drugClass;
+  final String pediatricUse;
+  final String pediatricNote;
+  final String adultNote;
+  final String route;
+  final String rxOrOtc;
+
+  Medication({
+    required this.name,
+    required this.drugClass,
+    required this.pediatricUse,
+    required this.pediatricNote,
+    required this.adultNote,
+    required this.route,
+    required this.rxOrOtc,
+  });
+
+  // Updated to accept List<String> since fast_csv strictly returns strings
+  factory Medication.fromCsv(List<String> row) {
+    return Medication(
+      name: row[0],
+      drugClass: row[1],
+      pediatricUse: row[2],
+      pediatricNote: row[3],
+      adultNote: row[4],
+      route: row[5],
+      rxOrOtc: row[6],
+    );
+  }
+}
 
 class MedicineListPage extends StatefulWidget {
   const MedicineListPage({super.key});
@@ -11,273 +44,258 @@ class MedicineListPage extends StatefulWidget {
 }
 
 class _MedicineListPageState extends State<MedicineListPage> {
-  List<Map<String, dynamic>> _medicines = [];
+  List<Medication> _allMedications = [];
+  List<Medication> _filteredMedications = [];
   bool _isLoading = true;
   final TextEditingController _searchController = TextEditingController();
-
-  late stt.SpeechToText _speech;
-  bool _isListening = false;
-  bool _speechEnabled = false;
 
   @override
   void initState() {
     super.initState();
-    _refreshMedicineList();
-    _initSpeech();
+    _loadCsvData();
+    _searchController.addListener(_onSearchChanged);
   }
 
-  void _initSpeech() async {
-    _speech = stt.SpeechToText();
-    _speechEnabled = await _speech.initialize(
-      onStatus: (status) => print('Speech Status: $status'),
-      onError: (error) => print('Speech Error: $error'),
-    );
-    if (mounted) setState(() {});
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
-  void _startListening() async {
-    if (!_speechEnabled) return;
-    await _speech.listen(onResult: (result) {
-      setState(() {
-        _searchController.text = result.recognizedWords;
-        _searchMedicines(result.recognizedWords);
-      });
-    });
-    setState(() => _isListening = true);
-  }
+  // --- 2. Load and Parse CSV using fast_csv ---
+  Future<void> _loadCsvData() async {
+    try {
+      String rawData = await rootBundle.loadString('assets/data/medications.csv');
 
-  void _stopListening() async {
-    await _speech.stop();
-    setState(() => _isListening = false);
-  }
+      // Sanitize line endings
+      rawData = rawData.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
 
-  void _refreshMedicineList() async {
-    final data = await DatabaseHelper().getAllMedicines();
-    if (mounted) {
-      setState(() {
-        _medicines = data;
-        _isLoading = false;
-      });
+      // Parse the CSV directly to List<List<String>>
+      final List<List<String>> listData = fast_csv.parse(rawData);
+
+      if (listData.isNotEmpty) {
+        listData.removeAt(0); // Remove header row
+      }
+
+      final meds = listData
+          .where((row) => row.length >= 7)
+          .map((row) => Medication.fromCsv(row))
+          .toList();
+
+      if (mounted) {
+        setState(() {
+          _allMedications = meds;
+          _allMedications.sort((a, b) => a.name.compareTo(b.name));
+          _filteredMedications = _allMedications;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error loading CSV: $e");
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load medications database: $e'),
+            backgroundColor: AppColors.alertRed,
+          ),
+        );
+      }
     }
   }
 
-  void _searchMedicines(String query) async {
-    final data = await DatabaseHelper().searchMedicines(query);
-    if (mounted) setState(() => _medicines = data);
+  // --- 3. Search Logic ---
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredMedications = _allMedications.where((med) {
+        return med.name.toLowerCase().contains(query) ||
+            med.drugClass.toLowerCase().contains(query);
+      }).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.ink : AppColors.cloud;
+    final cardBg = isDark ? AppColors.slate : AppColors.white;
+    final textMain = isDark ? AppColors.white : AppColors.ink;
+
     return Scaffold(
-      backgroundColor: AppColors.cloud, // Minimal background
+      backgroundColor: bgColor,
       appBar: AppBar(
         title: const Text('Medicine Database'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: AppColors.deepTeal,
+        foregroundColor: isDark ? AppColors.teal : AppColors.deepTeal,
         centerTitle: true,
-        titleTextStyle: const TextStyle(
-          fontSize: 20, 
-          fontWeight: FontWeight.w700, 
-          color: AppColors.deepTeal,
+        titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: isDark ? AppColors.teal : AppColors.deepTeal,
           letterSpacing: -0.5,
         ),
       ),
       body: Column(
         children: [
-          // --- CLEAN SEARCH BAR ---
+          // --- SEARCH BAR ---
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.mist, width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.ink.withOpacity(0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _searchMedicines,
-                style: const TextStyle(color: AppColors.ink, fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: _isListening ? 'Listening...' : 'Search medicines...',
-                  hintStyle: const TextStyle(color: AppColors.ash),
-                  prefixIcon: const Icon(Icons.search, color: AppColors.teal),
-                  suffixIcon: IconButton(
-                    onPressed: _isListening ? _stopListening : _startListening,
-                    icon: Icon(
-                      _isListening ? Icons.mic : Icons.mic_none,
-                      color: _isListening ? AppColors.alertRed : AppColors.slate,
-                    ),
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: TextField(
+              controller: _searchController,
+              style: TextStyle(color: textMain),
+              decoration: InputDecoration(
+                hintText:
+                    'Search by name or class (e.g., Lisinopril, Statin)...',
+                hintStyle: const TextStyle(color: AppColors.ash),
+                prefixIcon: const Icon(Icons.search, color: AppColors.teal),
+                filled: true,
+                fillColor: cardBg,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
                 ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: AppColors.ash),
+                        onPressed: () {
+                          _searchController.clear();
+                          FocusScope.of(context).unfocus();
+                        },
+                      )
+                    : null,
               ),
             ),
           ),
 
-          // --- MEDICINE LIST ---
+          // --- LIST VIEW ---
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: AppColors.deepTeal))
-                : _medicines.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(24),
-                              decoration: const BoxDecoration(
-                                color: AppColors.mist,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.medical_information_outlined,
-                                size: 48, 
-                                color: AppColors.teal,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              "No medicines found",
-                              style: TextStyle(
-                                color: AppColors.ink, 
-                                fontSize: 18, 
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Try adjusting your search terms.",
-                              style: TextStyle(color: AppColors.slate),
-                            ),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                        itemCount: _medicines.length,
-                        itemBuilder: (context, index) =>
-                            _buildMedicineCard(_medicines[index]),
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColors.deepTeal),
+                  )
+                : _filteredMedications.isEmpty
+                ? Center(
+                    child: Text(
+                      'No medications found.',
+                      style: TextStyle(
+                        color: isDark ? AppColors.ash : AppColors.slate,
                       ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: _filteredMedications.length,
+                    itemBuilder: (context, index) {
+                      final med = _filteredMedications[index];
+                      return _buildMedicineCard(med, cardBg, textMain);
+                    },
+                  ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildMedicineCard(Map<String, dynamic> medicine) {
+  // --- 4. Beautiful Card UI ---
+  Widget _buildMedicineCard(Medication med, Color cardBg, Color textMain) {
+    // Determine pill tag color based on Rx/OTC
+    final isRx = med.rxOrOtc.toUpperCase().contains('RX');
+    final tagColor = isRx ? AppColors.softRed : AppColors.softGreen;
+    final tagTextColor = isRx ? AppColors.alertRed : AppColors.deepTeal;
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.mist, width: 1.5),
+        color: cardBg,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.mist.withOpacity(0.5)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.ink.withOpacity(0.02),
-            blurRadius: 12,
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          iconColor: AppColors.teal,
+          collapsedIconColor: AppColors.ash,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          title: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      med.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: textMain,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      med.drugClass,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: AppColors.slate,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: tagColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  med.rxOrOtc,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: tagTextColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
           children: [
-            // Generic Name
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    medicine['generic_name'] ?? "Unnamed",
-                    style: const TextStyle(
-                      fontSize: 20, 
-                      fontWeight: FontWeight.bold, 
-                      color: AppColors.ink,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.softGreen,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    medicine['price'] ?? "N/A",
-                    style: const TextStyle(
-                      color: AppColors.safeGreen, 
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Always visible info boxes (Using Palette Semantic Colors)
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                _infoChip("Adult Dose", medicine['dosage_adult'] ?? "N/A", AppColors.deepTeal, AppColors.mist),
-                _infoChip("Child Dose", medicine['dosage_child'] ?? "N/A", AppColors.teal, AppColors.mist),
-                _infoChip("Cautions", medicine['cautions'] ?? "N/A", AppColors.cautionAmber, AppColors.softAmber),
-              ],
-            ),
-            
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Divider(color: AppColors.mist, height: 24),
-            ),
-
-            // ExpansionTile for extra info
-            Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                tilePadding: EdgeInsets.zero,
-                iconColor: AppColors.teal,
-                collapsedIconColor: AppColors.slate,
-                title: const Text(
-                  "More Information",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppColors.slate),
-                ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _extraInfoRow(
-                    icon: Icons.local_pharmacy_outlined,
-                    label: "Common Brands",
-                    value: medicine['brand_names_bd'] ?? "N/A",
-                    iconColor: AppColors.teal,
-                    bgColor: AppColors.mist,
-                  ),
-                  _extraInfoRow(
-                    icon: Icons.warning_amber_rounded,
-                    label: "Side Effects",
-                    value: medicine['side_effects'] ?? "N/A",
-                    iconColor: AppColors.alertRed,
-                    bgColor: AppColors.softRed,
-                  ),
-                  _extraInfoRow(
-                    icon: Icons.pregnant_woman_outlined,
-                    label: "Pregnancy Risk",
-                    value: medicine['pregnancy_risk'] ?? "N/A",
-                    iconColor: AppColors.cautionAmber,
-                    bgColor: AppColors.softAmber,
-                  ),
+                  const Divider(color: AppColors.mist),
                   const SizedBox(height: 8),
+                  _buildDetailRow(Icons.route_outlined, "Route", med.route),
+                  _buildDetailRow(
+                    Icons.person_outline,
+                    "Adult Dosing",
+                    med.adultNote,
+                  ),
+                  _buildDetailRow(
+                    Icons.child_care,
+                    "Pediatric Use",
+                    med.pediatricUse,
+                  ),
+                  _buildDetailRow(
+                    Icons.info_outline,
+                    "Pediatric Note",
+                    med.pediatricNote,
+                  ),
                 ],
               ),
             ),
@@ -287,83 +305,30 @@ class _MedicineListPageState extends State<MedicineListPage> {
     );
   }
 
-  Widget _infoChip(String label, String value, Color textColor, Color bgColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: textColor.withOpacity(0.2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              color: textColor,
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.ink,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _extraInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-    required Color iconColor,
-    required Color bgColor,
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: iconColor.withOpacity(0.2)),
-      ),
+  Widget _buildDetailRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: iconColor, size: 20),
-          const SizedBox(width: 12),
+          Icon(icon, size: 18, color: AppColors.teal),
+          const SizedBox(width: 8),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: iconColor,
-                  ),
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.slate,
+                  height: 1.4,
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.ink,
-                    height: 1.4,
+                children: [
+                  TextSpan(
+                    text: "$label: ",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  TextSpan(text: value),
+                ],
+              ),
             ),
           ),
         ],

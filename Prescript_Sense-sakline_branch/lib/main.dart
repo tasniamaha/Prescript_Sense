@@ -4,10 +4,6 @@ import 'auth_service.dart';
 import 'landing_page.dart';
 import 'dashboard_page.dart';
 
-// --- GLOBAL THEME STATE ---
-// This allows any page to flip the theme without passing callbacks down the tree.
-// final ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final authService = AuthService();
@@ -31,8 +27,7 @@ class PrescriptSenseApp extends StatelessWidget {
           title: 'PrescriptSense',
           debugShowCheckedModeBanner: false,
           themeMode: currentMode,
-          
-          // --- LIGHT THEME ---
+
           theme: ThemeData(
             brightness: Brightness.light,
             scaffoldBackgroundColor: AppColors.cloud,
@@ -44,8 +39,7 @@ class PrescriptSenseApp extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          
-          // --- DARK THEME ---
+
           darkTheme: ThemeData(
             brightness: Brightness.dark,
             scaffoldBackgroundColor: AppColors.ink,
@@ -57,7 +51,7 @@ class PrescriptSenseApp extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          
+
           home: initialRoute ? const DashboardPage() : const LandingPage(),
         );
       },

@@ -267,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: tempGender,
+                          initialValue: tempGender,
                           isExpanded:
                               true, // 1. ADDED: Forces the dropdown to respect parent width bounds
                           dropdownColor: AppColors.white,
@@ -317,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: tempAllergy,
+                    initialValue: tempAllergy,
                     isExpanded: true,
                     dropdownColor: AppColors.white,
                     decoration: _dialogInputDecoration("Allergies"),

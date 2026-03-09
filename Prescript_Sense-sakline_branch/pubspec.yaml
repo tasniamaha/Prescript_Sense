@@ -24,6 +24,11 @@ dependencies:
   flutter_map: ^8.2.2
   url_launcher: ^6.3.0
   google_maps_flutter: ^2.3.1
+  geolocator: ^14.0.2
+  http: ^1.6.0
+  mapbox_maps_flutter: ^2.19.1
+  csv: ^7.2.0
+  fast_csv: ^0.2.11
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +45,4 @@ flutter:
     - assets/image/text_to_speech.png
     - assets/image/reminder.png
     - assets/image/find_clinic.png
+    - assets/data/medications.csv

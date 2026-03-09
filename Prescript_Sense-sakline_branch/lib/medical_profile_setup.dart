@@ -300,7 +300,7 @@ class _MedicalProfileSetupPageState extends State<MedicalProfileSetupPage> {
     required ValueChanged<String?> onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       isExpanded: true,
       dropdownColor: AppColors.white,
       style: const TextStyle(color: AppColors.ink, fontSize: 16),

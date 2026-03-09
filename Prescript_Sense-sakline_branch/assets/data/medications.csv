@@ -1,0 +1,110 @@
+drug_name,drug_class,pediatric_use_under_6,pediatric_dosing_note,adult_dosing_note,route_of_administration,rx_or_otc
+Lisinopril,ACE inhibitor,Limited use,Weight-based dosing under specialist care,10–40 mg daily typical,Oral,Rx
+Amlodipine,Calcium channel blocker,Limited use,Weight-based pediatric dosing,5–10 mg daily typical,Oral,Rx
+Metoprolol,Beta blocker,Limited use,Specialist dosing required,25–200 mg/day depending on condition,Oral,Rx
+Atorvastatin,Statin,Not usually used,Not routinely recommended under 6,10–80 mg daily,Oral,Rx
+Simvastatin,Statin,Not usually used,Not routinely recommended under 6,10–40 mg daily,Oral,Rx
+Losartan,ARB,Limited use,Weight-based dosing,25–100 mg daily,Oral,Rx
+Hydrochlorothiazide,Thiazide diuretic,Yes,Weight-based dosing,12.5–50 mg daily,Oral,Rx
+Furosemide,Loop diuretic,Yes,Weight-based dosing,20–80 mg/day typical,Oral/IV,Rx
+Carvedilol,Beta blocker,Limited use,Specialist pediatric dosing,6.25–25 mg twice daily,Oral,Rx
+Valsartan,ARB,Limited use,Weight-based dosing,80–320 mg daily,Oral,Rx
+Diltiazem,Calcium channel blocker,Limited use,Specialist dosing required,120–360 mg/day,Oral/IV,Rx
+Ramipril,ACE inhibitor,Limited use,Weight-based dosing,2.5–20 mg daily,Oral,Rx
+Spironolactone,Potassium-sparing diuretic,Yes,Weight-based dosing,25–100 mg daily,Oral,Rx
+Bisoprolol,Beta blocker,Limited use,Specialist dosing,5–10 mg daily,Oral,Rx
+Rosuvastatin,Statin,Not usually used,Not recommended under 6,5–40 mg daily,Oral,Rx
+Pravastatin,Statin,Not usually used,Not recommended under 6,10–40 mg daily,Oral,Rx
+Olmesartan,ARB,Limited use,Weight-based dosing,20–40 mg daily,Oral,Rx
+Irbesartan,ARB,Limited use,Weight-based dosing,150–300 mg daily,Oral,Rx
+Warfarin,Anticoagulant,Limited use,INR-guided dosing,INR-adjusted dosing,Oral,Rx
+Clopidogrel,Antiplatelet,Limited use,Specialist dosing required,75 mg daily,Oral,Rx
+Metformin,Biguanide antidiabetic,No,Not recommended under 6,500–2000 mg/day divided,Oral,Rx
+Glipizide,Sulfonylurea antidiabetic,No,Not recommended under 6,5–40 mg/day,Oral,Rx
+Glimepiride,Sulfonylurea antidiabetic,No,Not recommended under 6,1–8 mg/day,Oral,Rx
+Sitagliptin,DPP-4 inhibitor,No,Not approved for children under 18,100 mg daily,Oral,Rx
+Empagliflozin,SGLT2 inhibitor,No,Not approved for children under 18,10–25 mg daily,Oral,Rx
+Liraglutide,GLP-1 agonist,Limited use,Specialist dosing,0.6–1.8 mg daily,Injection,Rx
+Insulin glargine,Long-acting insulin,Yes,Weight-based insulin dosing,Individualized dosing,Injection,Rx
+Insulin aspart,Rapid insulin,Yes,Weight-based insulin dosing,Individualized dosing,Injection,Rx
+Pioglitazone,Thiazolidinedione,No,Not approved under 18,15–45 mg daily,Oral,Rx
+Canagliflozin,SGLT2 inhibitor,No,Not approved under 18,100–300 mg daily,Oral,Rx
+Ibuprofen,NSAID,Yes,Weight-based dosing,200–800 mg per dose,Oral,Rx/OTC
+Naproxen,NSAID,Limited use,Weight-based dosing,250–500 mg twice daily,Oral,Rx/OTC
+Acetaminophen,Analgesic/antipyretic,Yes,Weight-based dosing,325–1000 mg per dose,Oral,Rx/OTC
+Meloxicam,NSAID,Limited use,Specialist dosing,7.5–15 mg daily,Oral,Rx
+Celecoxib,COX-2 inhibitor,Limited use,Weight-based dosing,100–200 mg twice daily,Oral,Rx
+Diclofenac,NSAID,Limited use,Specialist dosing,50–150 mg/day,Oral/Topical,Rx
+Tramadol,Opioid analgesic,No,Not recommended under 12,50–400 mg/day,Oral,Rx
+Hydrocodone,Opioid analgesic,No,Not recommended under 18,Individualized dosing,Oral,Rx
+Oxycodone,Opioid analgesic,No,Not recommended under 18,Individualized dosing,Oral,Rx
+Morphine,Opioid analgesic,Limited use,Specialist dosing,Individualized dosing,Oral/IV,Rx
+Gabapentin,Anticonvulsant,Limited use,Weight-based dosing,300–3600 mg/day,Oral,Rx
+Pregabalin,Anticonvulsant,No,Not approved under 17,150–600 mg/day,Oral,Rx
+Cyclobenzaprine,Muscle relaxant,No,Not recommended under 15,5–10 mg three times daily,Oral,Rx
+Amoxicillin,Penicillin antibiotic,Yes,Weight-based dosing,500 mg every 8–12 hours,Oral,Rx
+Azithromycin,Macrolide antibiotic,Yes,Weight-based dosing,250–500 mg daily typical,Oral/IV,Rx
+Doxycycline,Tetracycline antibiotic,No,Avoid under 8 years,100 mg twice daily,Oral,Rx
+Ciprofloxacin,Fluoroquinolone antibiotic,Limited use,Specialist dosing,250–750 mg twice daily,Oral/IV,Rx
+Cephalexin,Cephalosporin antibiotic,Yes,Weight-based dosing,250–500 mg every 6 hours,Oral,Rx
+Clindamycin,Lincosamide antibiotic,Yes,Weight-based dosing,150–450 mg every 6–8 hours,Oral/IV,Rx
+Trimethoprim-sulfamethoxazole,Sulfonamide antibiotic,Yes,Weight-based dosing,800/160 mg twice daily,Oral,Rx
+Levofloxacin,Fluoroquinolone antibiotic,Limited use,Specialist dosing,250–750 mg daily,Oral/IV,Rx
+Amoxicillin-clavulanate,Penicillin antibiotic,Yes,Weight-based dosing,500–875 mg twice daily,Oral,Rx
+Metronidazole,Nitroimidazole antibiotic,Yes,Weight-based dosing,500 mg every 8 hours,Oral/IV,Rx
+Nitrofurantoin,Urinary antibiotic,Yes,Weight-based dosing,100 mg twice daily,Oral,Rx
+Penicillin V,Penicillin antibiotic,Yes,Weight-based dosing,250–500 mg every 6–8 hours,Oral,Rx
+Sertraline,SSRI antidepressant,Limited use,Specialist dosing,50–200 mg daily,Oral,Rx
+Escitalopram,SSRI antidepressant,Limited use,Specialist dosing,10–20 mg daily,Oral,Rx
+Fluoxetine,SSRI antidepressant,Limited use,Specialist dosing,20–80 mg daily,Oral,Rx
+Bupropion,NDRI antidepressant,No,Not approved under 18 for most uses,150–300 mg daily,Oral,Rx
+Duloxetine,SNRI antidepressant,Limited use,Specialist dosing,30–120 mg daily,Oral,Rx
+Venlafaxine,SNRI antidepressant,Limited use,Specialist dosing,75–225 mg daily,Oral,Rx
+Paroxetine,SSRI antidepressant,No,Not approved under 18,20–50 mg daily,Oral,Rx
+Citalopram,SSRI antidepressant,Limited use,Specialist dosing,20–40 mg daily,Oral,Rx
+Alprazolam,Benzodiazepine,No,Not recommended under 18,0.25–2 mg/day,Oral,Rx
+Lorazepam,Benzodiazepine,Limited use,Specialist dosing,1–10 mg/day,Oral/IV,Rx
+Clonazepam,Benzodiazepine,Limited use,Specialist dosing,0.5–4 mg/day,Oral,Rx
+Zolpidem,Sedative hypnotic,No,Not recommended under 18,5–10 mg nightly,Oral,Rx
+Trazodone,Atypical antidepressant,Limited use,Specialist dosing,50–300 mg daily,Oral,Rx
+Mirtazapine,Antidepressant,Limited use,Specialist dosing,15–45 mg nightly,Oral,Rx
+Quetiapine,Atypical antipsychotic,Limited use,Specialist dosing,150–800 mg/day,Oral,Rx
+Aripiprazole,Atypical antipsychotic,Limited use,Specialist dosing,10–30 mg daily,Oral,Rx
+Risperidone,Atypical antipsychotic,Limited use,Specialist dosing,1–6 mg daily,Oral,Rx
+Lithium,Mood stabilizer,Limited use,Serum level monitored dosing,900–1800 mg/day,Oral,Rx
+Lamotrigine,Anticonvulsant,Limited use,Weight-based dosing,100–400 mg/day,Oral,Rx
+Valproate,Anticonvulsant,Limited use,Weight-based dosing,500–2000 mg/day,Oral,Rx
+Albuterol,Beta2 agonist bronchodilator,Yes,Weight-based inhalation dosing,2 puffs every 4–6h PRN,Inhalation,Rx/OTC
+Fluticasone (inhaled),Inhaled corticosteroid,Yes,Weight-based dosing,100–500 mcg daily,Inhalation,Rx
+Montelukast,Leukotriene receptor antagonist,Yes,Age-based dosing,10 mg daily,Oral,Rx
+Tiotropium,Anticholinergic bronchodilator,Limited use,Specialist dosing,18 mcg daily,Inhalation,Rx
+Salmeterol,Long acting beta agonist,Limited use,Specialist dosing,50 mcg twice daily,Inhalation,Rx
+Budesonide (inhaled),Inhaled corticosteroid,Yes,Weight-based dosing,200–800 mcg/day,Inhalation,Rx
+Ipratropium,Anticholinergic bronchodilator,Yes,Weight-based dosing,2 puffs four times daily,Inhalation,Rx
+Cetirizine,Antihistamine,Yes,Age-based dosing,10 mg daily,Oral,OTC
+Loratadine,Antihistamine,Yes,Age-based dosing,10 mg daily,Oral,OTC
+Fexofenadine,Antihistamine,Yes,Age-based dosing,60–180 mg daily,Oral,OTC
+Diphenhydramine,Antihistamine,Yes,Weight-based dosing,25–50 mg every 6h,Oral/IV,OTC
+Prednisone,Systemic corticosteroid,Yes,Weight-based dosing,5–60 mg daily,Oral,Rx
+Methylprednisolone,Systemic corticosteroid,Yes,Weight-based dosing,4–48 mg daily,Oral/IV,Rx
+Omeprazole,Proton pump inhibitor,Yes,Weight-based dosing,20–40 mg daily,Oral,OTC/Rx
+Pantoprazole,Proton pump inhibitor,Limited use,Weight-based dosing,40 mg daily,Oral/IV,Rx
+Esomeprazole,Proton pump inhibitor,Limited use,Weight-based dosing,20–40 mg daily,Oral,Rx
+Lansoprazole,Proton pump inhibitor,Yes,Weight-based dosing,15–30 mg daily,Oral,OTC/Rx
+Ranitidine,H2 blocker,Limited use,Weight-based dosing,150 mg twice daily,Oral,Rx
+Famotidine,H2 blocker,Yes,Weight-based dosing,20–40 mg daily,Oral/IV,OTC/Rx
+Ondansetron,Antiemetic,Yes,Weight-based dosing,4–8 mg every 8h,Oral/IV,Rx
+Metoclopramide,Prokinetic agent,Limited use,Specialist dosing,10 mg up to 4x daily,Oral/IV,Rx
+Dicyclomine,Antispasmodic,No,Not recommended under 6,20 mg four times daily,Oral,Rx
+Loperamide,Antidiarrheal,Limited use,Age-based dosing,4 mg then 2 mg after stool,Oral,OTC
+Polyethylene glycol (MiraLAX),Osmotic laxative,Yes,Weight-based dosing,17 g daily typical,Oral,OTC
+Docusate,Stool softener,Yes,Age-based dosing,100–200 mg daily,Oral,OTC
+Levothyroxine,Thyroid hormone,Yes,Weight-based dosing,25–200 mcg daily,Oral,Rx
+Liothyronine,Thyroid hormone,Limited use,Specialist dosing,5–75 mcg daily,Oral,Rx
+Methimazole,Antithyroid drug,Limited use,Weight-based dosing,5–30 mg daily,Oral,Rx
+Estradiol,Estrogen hormone,No,Not used under 6,0.5–2 mg daily,Oral/Transdermal,Rx
+Progesterone,Progestin hormone,No,Not used under 6,100–200 mg daily,Oral,Rx
+Medroxyprogesterone,Progestin hormone,No,Not used under 6,5–10 mg daily,Oral/Injection,Rx
+Testosterone,Androgen hormone,No,Not used under 6,Individualized dosing,Injection/Topical,Rx
+Finasteride,5-alpha reductase inhibitor,No,Not used under 18,1–5 mg daily,Oral,Rx
+Dutasteride,5-alpha reductase inhibitor,No,Not used under 18,0.5 mg daily,Oral,Rx

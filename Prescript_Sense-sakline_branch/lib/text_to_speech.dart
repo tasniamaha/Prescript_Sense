@@ -103,7 +103,7 @@ class _HandwrittenToTextPageState extends State<HandwrittenToTextPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 /// 🔹 IMAGE INSTEAD OF ICON
-                Container(
+                SizedBox(
                   height: 300,
                   width: double.infinity,
                   child: Image.asset(
