@@ -1,4 +1,4 @@
-PrescriptSense (Shashtho-Link)
+# PrescriptSense (Shashtho-Link)
 
 AI-Based Digital Prescription Interpretation and Medication Safety System.
 
@@ -6,158 +6,139 @@ PrescriptSense is a mobile healthcare application designed to help users underst
 
 The application provides features such as prescription interpretation, medicine identification, medication reminders, and emergency healthcare support.
 
-Project Information
+---
 
-Course: CSE 4510 – Software Development Lab
-Team: RuntimeError
+## 📌 Project Information
 
-Team Members
+- **Course:** CSE 4510 – Software Development Lab  
+- **Team:** RuntimeError  
 
-Rafat Abdullah — 220041102
+---
 
-Tasnia Rahman Maha — 220041114
+## 👥 Team Members
 
-Noshin Syara — 220041120
+- Rafat Abdullah — 220041102  
+- Tasnia Rahman Maha — 220041114  
+- Noshin Syara — 220041120  
+- Sakline Muttakeen — 220041126  
+- Md Fahim Tazoar Pramanik — 220041140  
+- Asif Hasan — 220041156  
 
-Sakline Muttakeen — 220041126
+---
 
-Md Fahim Tazoar Pramanik — 220041140
+## 🛠️ Technologies Used
 
-Asif Hasan — 220041156
+### 📱 Mobile Application
+- Flutter  
+- Dart  
 
-Technologies Used
-Mobile Application
+### 🤖 Artificial Intelligence
+- Python  
+- OCR (Optical Character Recognition)  
 
-Flutter
+### 💾 Database
+- SQLite  
 
-Dart
+### 🔧 Tools
+- Git  
+- GitHub  
+- Android Studio / VS Code  
 
-Artificial Intelligence
+---
 
-Python
+## ✨ Features
 
-OCR (Optical Character Recognition)
-
-Database
-
-SQLite
-
-Tools
-
-Git
-
-GitHub
-
-Android Studio / VS Code
-
-Features
-Prescription Interpretation
-
+### 🧾 Prescription Interpretation
 Upload or capture prescription images and extract:
+- Medicine name  
+- Dosage  
+- Frequency  
+- Duration  
 
-Medicine name
-
-Dosage
-
-Frequency
-
-Duration
-
-Medicine Safety Checker
-
+### ⚠️ Medicine Safety Checker
 Detect potential issues such as:
+- Unsafe dosage  
+- Drug–food interactions  
 
-Unsafe dosage
-
-Drug–food interactions
-
-AI Medical Assistant
-
+### 🤖 AI Medical Assistant
 Users can describe symptoms and receive AI-generated guidance.
 
-Medicine Identification
-
+### 💊 Medicine Identification
 Upload images of medicine tablets or packaging to identify them.
 
-Medicine Reminder
-
+### ⏰ Medicine Reminder
 Schedule reminders for medication intake.
 
-Emergency Services
+### 🚑 Emergency Services
+- Locate nearby pharmacies  
+- Request ambulance support  
 
-Locate nearby pharmacies and request ambulance support.
+---
 
-System Requirements
-Hardware Requirements
+## ⚙️ System Requirements
 
-Android smartphone or emulator
+### 📱 Hardware Requirements
+- Android smartphone or emulator  
+- Camera support (for prescription scanning)  
 
-Camera support (for prescription scanning)
+### 💻 Software Requirements
+- Flutter SDK (latest version recommended)  
+- Dart SDK  
+- Android Studio or VS Code  
+- Git  
+- Python (for AI services if backend is run locally)  
 
-Software Requirements
+---
 
-Flutter SDK (latest version recommended)
+## 📥 How to Clone the Project
 
-Dart SDK
-
-Android Studio or VS Code
-
-Git
-
-Python (for AI services if backend is run locally)
-
-How to Clone the Project
-
-Open terminal and run:
-
+```bash
 git clone https://github.com/tasniamaha/Prescript_Sense.git
-
-Then move into the project directory:
-
 cd Prescript_Sense
-How to Run the Mobile Application
-Step 1: Install Flutter Dependencies
+```
 
-Run:
+---
 
+## ▶️ How to Run the Mobile Application
+
+### Step 1: Install Dependencies
+```bash
 flutter pub get
+```
 
-This installs all required packages.
-
-Step 2: Connect a Device or Emulator
-
-You can use:
-
-Android phone (USB debugging enabled)
-
-Android emulator from Android Studio
+### Step 2: Connect Device or Emulator
+- Android phone (USB debugging enabled)  
+- Android emulator  
 
 Check available devices:
-
+```bash
 flutter devices
-Step 3: Run the Application
+```
 
-Execute:
-
+### Step 3: Run the App
+```bash
 flutter run
+```
 
-The app will build and launch on the connected device or emulator.
+---
 
-Running the Backend (If Required)
+## 🧠 Running the Backend (If Required)
 
-If the AI or OCR services run locally with Python:
-
-Install Dependencies
+### Install Dependencies
+```bash
 pip install -r requirements.txt
-Run the API server
+```
 
-Example:
-
+### Run Server
+```bash
 python app.py
+```
 
-The mobile application will communicate with this backend service.
+---
 
-Project Structure (Simplified)
+## 📁 Project Structure
+
+```
 Prescript_Sense
 │
 ├── lib
@@ -171,57 +152,49 @@ Prescript_Sense
 ├── android
 ├── ios
 │
-├── backend (Python OCR / AI services)
+├── backend
 │
 └── pubspec.yaml
-Testing
+```
+
+---
+
+## 🧪 Testing
 
 Test cases include:
+- Authentication  
+- AI assistant responses  
+- OCR prescription scanning  
+- Reminder scheduling  
+- Emergency services  
 
-Authentication
+📄 **Bug Report & Backlog:**  
+https://docs.google.com/spreadsheets/d/1Lj9ZeJecRXGGcw2o6xKejAPnIvgI3yy552YQOb0uaEI/edit  
 
-AI assistant responses
+---
 
-OCR prescription scanning
+## ⚠️ Known Issues
 
-Reminder scheduling
+- Hardcoded API key in source code  
+- Plaintext password storage  
+- Missing reminder notifications  
+- Duplicate class definitions in some modules  
 
-Emergency service features
+---
 
-A detailed bug report and testing document is available here:
+## 🚀 Future Improvements
 
-Product Backlog and Bug Report
-https://docs.google.com/spreadsheets/d/1Lj9ZeJecRXGGcw2o6xKejAPnIvgI3yy552YQOb0uaEI/edit
+- Multi-user authentication system  
+- Secure password hashing  
+- Notification system for reminders  
+- Real clinic search using Google Places API  
+- Improved AI prescription analysis  
 
-Known Issues
+---
 
-Some issues identified during testing include:
+## ⚖️ Ethical Notice
 
-Hardcoded API key in source code
-
-Plaintext password storage
-
-Missing reminder notifications
-
-Duplicate class definitions in certain modules
-
-These issues are documented in the project evaluation report.
-
-Future Improvements
-
-Multi-user authentication system
-
-Secure password hashing
-
-Notification system for reminders
-
-Real clinic search using Google Places API
-
-Better AI prescription analysis
-
-Ethical Notice
-
-PrescriptSense provides supportive healthcare guidance only.
+PrescriptSense provides supportive healthcare guidance only.  
 It does not replace professional medical advice from licensed healthcare providers.
 
 Users should always consult qualified medical professionals before making medical decisions.
